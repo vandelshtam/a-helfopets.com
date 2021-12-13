@@ -2,18 +2,79 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
-
+        <link rel="preconnect" href="{{ asset('https://fonts.googleapis.com') }}">
+        <link rel="preconnect" href="{{ asset('https://fonts.gstatic.com') }}" crossorigin>
+        <link href="{{ asset('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Roboto:wght@100;400;500&display=swap') }}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ asset('asset/css/normalize.css') }}">
+        <link rel="stylesheet" href="{{ asset('asset/css/fonts.css') }}">
+        <link rel = "stylesheet"  href="{{ asset('asset/css/jquery.fancybox.css') }}">
+        <link rel="stylesheet" href="{{ asset('asset/css/slick.css') }}">
+        <link rel="stylesheet" href="{{ asset('asset/css/jquery.formstyler.css') }}">
+        <!--<link rel="stylesheet" href="{{ asset('asset/css/jquery.formstyler.theme.css') }}">-->
+        <link rel="stylesheet" href="{{ asset('asset/css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('asset/css/media.css') }}">
+        
+    </head>
+    <body>
+        <header class="hedaer">
+            <div class="header_top">
+                <div class="container">
+                    <div class="header_contacts">
+                        <a class="header_phone" href="tel:79957771830">+7(995) 777 18 30</a>
+                        <a class="header_email" href="#">mvlju977@gmail.com</a>
+                        <a data-fancybox data-src="#hidden-content" href="javascript:;" class="header_btn">Бесплатная консультация</a>
+                    </div>
+                </div>
+            </div>
+            <div class="header_content">
+                <div class="container">
+                    <div class="header_content-inner">
+                        <div class="header_logo">
+                            <a href="#">
+                                <img src="img/logo.png" alt="" class="logo">
+                            </a>
+                        </div>
+                        <nuv class="menu">
+                            <div class="header_btn-menu">
+                                <span class="icon-bars"></span>
+                            </div>
+                            <ul>
+                                <li><a href="{{ path('home') }}">Главная </a></li>
+                                <li><a href="#">О компании</a></li>
+                                <li><a href="#">Услуги</a></li>
+                                <li><a href="#">Контакты</a></li>
+                            </ul>
+                        </nuv>
+                    </div>
+                </div>
+            </div>
+        </header>
+        {% block body %}
+        
+        {% endblock %}
+        <div id="hidden-content">
+            <form action="">
+                <input type="text" placeholder="Ваше имя">
+                <input type="text" placeholder="Ваш телефон">
+                <input type="submit" value="Отправить">
+            </form>
+        </div>
+        
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
+        <script src="{{ asset('https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js') }}"></script>
+        <script src="{{ asset('asset/js/jquery.fancybox.min.js') }}"></script>
+        <script src="{{ asset('asset/js/slick.min.js') }}"></script>
+        <script src="{{ asset('asset/js/jquery.formstyler.min.js') }}"></script>
+        <script src="{{ asset('asset/js/main.js') }}"></script>
     </body>
 </html>
