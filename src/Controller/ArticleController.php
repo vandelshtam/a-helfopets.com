@@ -17,8 +17,11 @@ class ArticleController extends AbstractController
     #[Route('/', name: 'article_index', methods: ['GET'])]
     public function index(ArticleRepository $articleRepository): Response
     {
+        $user = $this->getUser();
+        
         return $this->render('article/index.html.twig', [
             'articles' => $articleRepository->findAll(),
+            'user' => $user
         ]);
     }
 

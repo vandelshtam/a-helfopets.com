@@ -31,7 +31,12 @@
                         <a class="header_phone" href="tel:79957771830">+7(995) 777 18 30</a>
                         <a class="header_email" href="#">mvlju977@gmail.com</a>
                         <a data-fancybox data-src="#hidden-content" href="javascript:;" class="header_btn">Бесплатная консультация</a>
+                        
                     </div>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    {# <p> Вы вошли как Админ {{ user.email }}</p> #}
+                    <p>Email: {{ app.user.email }}</p>
+                    {% endif %}
                 </div>
             </div>
             <div class="header_content">

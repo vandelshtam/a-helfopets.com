@@ -117,9 +117,12 @@
                             <a href="{{ path('article_edit', {'id': article.id}) }}" class="default-btn">
                                 Редактировать
                             </a>
-                            <a  href="javascript:;" class="default-btn">
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <a  href="" class="default-btn">
                                 Удалить
                             </a>
+                            {% endif %}
+                            
                     </div>       
                 </div>
                 
