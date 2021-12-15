@@ -8,4 +8,13 @@
     {{ include('article/_form.html.twig') }}
 
     <a href="{{ path('article_index') }}">back to list</a>
+    <input type="hidden" id="article__token" name="article[_token]" value="c14d568dc79cc5828295487a.93L4ofQYKVl6mi2wmWZDf4K-qgKfM0FTtJvDE_9wygI.qB6L5YNWTToNqmuD7jYpS-_m4DvxcCkcgeqoS84-uWivCpLGmUB_PQ3rZA">
+    <input type="hidden" id="article__token" name="article[_token]" value="c14d568dc79cc5828295487a.93L4ofQYKVl6mi2wmWZDf4K-qgKfM0FTtJvDE_9wygI.qB6L5YNWTToNqmuD7jYpS-_m4DvxcCkcgeqoS84-uWivCpLGmUB_PQ3rZA">
+    <button class="btn __web-inspector-hide-shortcut__">Save</button>
+
+<br><br>
+    <form name="article" method="post">
+    <div id="article"><div><label for="article_title">Title</label><input type="text" id="article_title" name="article[title]" maxlength="100"></div><div><label for="article_comment_foto">Comment foto</label><input type="text" id="article_comment_foto" name="article[comment_foto]" maxlength="100"></div><div><label for="article_article">Article</label><input type="text" id="article_article" name="article[article]" maxlength="10000"></div><div><label for="article_comment_auxiliary_one">Comment auxiliary one</label><input type="text" id="article_comment_auxiliary_one" name="article[comment_auxiliary_one]" maxlength="100"></div><div><label for="article_author" class="required">Author</label><input type="text" id="article_author" name="article[author]" required="required" maxlength="100"></div><div><label for="article_preview">Preview</label><textarea id="article_preview" name="article[preview]"></textarea></div><input type="hidden" id="article__token" name="article[_token]" value="6763636bd00ec2d2f17d2e12cd3468bc.H1THmgzJGWqUhkbnr7eR4W7Df6YTiPoC1juk82MHbco.QDi03nuHfQnjtgDU2Of71QObNZ99y5JN40rPq1JJHqBHLK39YZFPDuP3Dw"></div>
+    <button class="btn">Save</button>
+</form>
 {% endblock %}

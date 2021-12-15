@@ -59,6 +59,17 @@
             </div>
         </div>
     </section>
+    <div class="form_box">
+    <form action="{{ path('home') }}" name="consultation" method="post">
+        <div class="form_box-inner">
+            <div class="form_box-left">
+                    <div id="consultation"><div><label for="consultation_name" class="required">Name</label><input type="text" id="consultation_name" name="consultation[name]" required="required"></div><input type="hidden" id="consultation__token" name="consultation[_token]" value="eb10bd3fd9.6XPbARwPXU_XJLCVGIIFqrC_Kr7l34fEDCEMBkxD6S0.2hSjVVJmGByCcsfjSe1h48nLSPbWrsCObXE7TX8BnHKREuM1RVAJIoJu-Q"></div>
+                    <button class="default-btn btn">Получить консультацию</button>
+                    <button class="btn" type="submit">Получить консультацию</button>
+                </form>
+            </div>
+        </div>       
+
     <section class="servises">
         <div class="container">
             <div class="servises_top">
