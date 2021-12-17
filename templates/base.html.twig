@@ -65,14 +65,22 @@
         {% block body %}
         
         {% endblock %}
-        <div id="hidden-content">
+        {# <div id="hidden-content">
             <form action="">
                 <input type="text" placeholder="Ваше имя">
                 <input type="text" placeholder="Ваш телефон">
                 <input type="submit" value="Отправить">
             </form>
-        </div>
-        
+        </div> #}
+
+        <h2>Fast consultation form</h2>
+            <div id="hidden-content">
+                {{ form_start(fast_consultation_form) }}
+                    {{ form_widget(fast_consultation_form) }}
+                    <button class="default-btn">{{ path('fast_consultation') }}</button>
+                {{ form_end(fast_consultation_form) }}
+            </div>
+        {# {{ include('fast_consultation/index.html.twig') }}     #}
         {% block javascripts %}
             {# {{ encore_entry_script_tags('app') }} #}
         {% endblock %}
