@@ -3,8 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Consultation;
+
 use App\Form\ConsultationType;
-use App\Entity\GetConsultation;
+use App\Form\HomeControllerType;
 use Symfony\Component\Mime\Email;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,14 +29,10 @@ class HomeController extends AbstractController
         //$form = $this->createForm(TaskType::class, $consult);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //dd($consultation->getName());
+            //dd($consultation->getMessage());
             $entityManager->persist($consultation);
             $entityManager->flush();
-
-            return $this->redirectToRoute('consultation_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        $email = (new Email())
+   $email = (new Email())
             ->from('hello@example.com')
             ->to('you@example.com')
             //->cc('cc@example.com')
@@ -43,11 +40,11 @@ class HomeController extends AbstractController
             //->replyTo('fabien@example.com')
             //->priority(Email::PRIORITY_HIGH)
             ->subject('Time for Symfony Mailer!')
-            ->text($consultation->getName())
-            ->html('<h1>Welcome {{ email.toName }}!</h1>
+            ->text($consultation->getMessage())
+            ->html('<h1>Welcome {{ '.$consultation->getEmail().' }}!</h1>
 
             <p>
-                You signed up as {{ username }} the following email:
+                You signed up as {{ '.$consultation->getMessage().' }} the following email:
             </p>
             <p><code>{{ email.to[0].address }}</code></p>
             
@@ -64,14 +61,24 @@ class HomeController extends AbstractController
             //    'username' => 'foo',
             //])
             ;
-
-            try {
-                $mailer->send($email);
-            } catch (TransportExceptionInterface $e) {
-                // some error prevented the email sending; display an
-                // error message or try to resend the message
-            }
-
+                        try {
+                            $mailer->send($email);
+                        } catch (TransportExceptionInterface $e) {
+                            // some error prevented the email sending; display an
+                            // error message or try to resend the message
+                        }
+                    
+            return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
+        }
+//dd($consultation->getMessage());
+        
+                        return $this->renderForm('home/index.html.twig', [
+                            'consultation' => $consultation,
+                            'form' => $form,
+                            'title' => 'PlumbInstall',
+                            'user'  => $user,
+                            'controller_name' => 'HomeController',
+                        ]);
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
             'title' => 'PlumbInstall',

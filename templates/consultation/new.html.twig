@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 
-{% block title %}New Article{% endblock %}
+{% block title %}New Consultation{% endblock %}
 
 {% block body %}
     <h1>Create new consultation</h1>
@@ -10,6 +10,7 @@
 <div class="form_box-inner">
             <div class="form_box-left">
     {{ form_widget(form) }}
+    {{ form_rest(form) }}
 </div>
 </div>    
     <button class="default-btn btn">{{ button_label|default('Save') }}</button>
@@ -22,7 +23,47 @@
                     <div id="consultation"><div><label for="consultation_name" class="required">Name</label><input type="text" id="consultation_name" name="consultation[name]" required="required"></div><input type="hidden" id="consultation__token" name="consultation[_token]" value="eb10bd3fd9.6XPbARwPXU_XJLCVGIIFqrC_Kr7l34fEDCEMBkxD6S0.2hSjVVJmGByCcsfjSe1h48nLSPbWrsCObXE7TX8BnHKREuM1RVAJIoJu-Q"></div>
                     <button class="default-btn btn">Получить консультацию</button>
                     <button class="btn" type="submit">Получить консультацию</button>
-                </form>
             </div>
-        </div>        
+        </div>
+    </form>   
+</div>
+
+
+<div class="form_box">    
+    <form name="consultation" method="post">
+        <div class="form_box-inner">
+            <div class="form_box-left">
+                <div id="consultation">
+                    <div>
+                        <label for="consultation_name" class="required">Name</label>
+                            <div class="jq-selectbox jqselect" id="consultation_name-styler" style="z-index: 10;">
+                                <select id="consultation_name" name="consultation[name]">
+                                {% for article in articles %}
+                                    <option value="">{{ article.title }}</option>
+                                
+                                {% endfor %}
+                                </select>
+                                <div class="jq-selectbox__select"><div class="jq-selectbox__select-text">+79957771830</div>
+                                    <div class="jq-selectbox__trigger">
+                                        <div class="jq-selectbox__trigger-arrow">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="jq-selectbox__dropdown" style="height: auto; bottom: auto; top: 40px; display: none;">
+                                    <ul style="max-height: 667px;">
+                                    {% for article in articles %}
+                                        <li class="" style="">{{ article.title }}</li>
+                                        
+                                     {% endfor %}   
+                                    </ul>
+                                </div>
+                            </div>
+                    </div>
+                    <input type="hidden" id="consultation__token" name="consultation[_token]" value="4c559b727787b08a0c130ad958fe3._O6_AY_FUg9hNSJbtX6ZNHPwkJTdmePhRxBpi9hlOEo.mZ7aYuSfMFwRYk454C3OeRCD6vzkqNuzNyQO2ZMHfi6Guo1A0JIiXRdCQQ">
+                </div>
+            </div>
+        </div>    
+        <button class="default-btn btn">Save</button>
+    </form>
+</div>             
 {% endblock %}
