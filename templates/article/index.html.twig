@@ -101,10 +101,11 @@
                     </div>
                 </div>
                 {% for article in articles %}
-                <div id="link">
-                    <a id="c_1" href="{{ path('article_show', {'id': article.id}) }}" class="page news_blog none" data-filter-tags="{{ article.title }}">
+                <div id="link" class="none" data-filter-tags="{{ article.title }}">
+                    <a id="c_1" href="{{ path('article_show', {'id': article.id}) }}" class="page news_blog" >
                         <div class="news_images">
-                            <img src="img/news_1.jpeg" alt="">
+                            {# {{ article.AvatarArticle }} #}
+                            <img src="{{ asset('uploads/img/' ~ article.AvatarArticle) }}" alt="" style="width: 200px;">
                             <div class="news_date">03.04</div>
                         </div>
                         <div class="news_blog-title">
@@ -112,8 +113,18 @@
                         </div>
                         <div class="news_blog-text">
                             {{ article.preview }}
-                        </div>    
+                        </div>
+                            
                     </a> 
+                        {# <div class="news_blog-text">
+                            {# {{ asset('uploads/img/' ~ article.avatar_article) }} #}
+                        {# </div>
+                        <div class="news_images"> #}
+                        {# <img src="{{ asset('uploads/img/' ~ article.avatar_article) }}" alt=""> #}
+                        {# <a href="{{ asset('uploads/img/' ~ article.AvatarArticle) }}">View brochure (PDF)</a> #}
+                        {# <div class="news_date">03.04</div>
+                        </div>     #}
+                    
                     
                             {% if is_granted('ROLE_SUPER_ADMIN') %}
                             <a href="{{ path('article_edit', {'id': article.id}) }}" class="default-btn">
@@ -170,7 +181,7 @@
         document.querySelector('#elastic').oninput = function(){
             let val = this.value.trim();
             let elemNews = document.querySelectorAll('.elastic .none');
-            let elsticItems = document.querySelectorAll('.elastic a .news_blog-title');
+            let elasticItems = document.querySelectorAll('.elastic a .news_blog-title');
             if(val != ''){
                 elemNews.forEach(function(elem){
                     let value = elem.getAttribute('data-filter-tags');

@@ -8,8 +8,9 @@
         min-height: 330px;
     }
     .form_inner{
-        background-image: none;
+        background-size: 37%;
     }
+    
     .news_inner{
         display: block;
     }
@@ -46,6 +47,9 @@
         margin-bottom: 30px;
         max-width: 460px;
     }
+    .form_inner{
+        background-size: 30%;
+    }
 }
 @media (max-width: 900px){
     .slider .slick-btn{
@@ -57,6 +61,8 @@
     }
     .servises_title-box,
     .form_title-box,
+    .form_title-left,
+    div#consultation,
     .news_title-box
     .page_new news_title-box{
         padding-left: 0px;
@@ -76,6 +82,9 @@
     .add_new-form .form_box-inner{
         display: block;
     }
+    .form_inner{
+        background-image: none;
+    }
     .form_box-inner{
         display: block;
     }
@@ -90,6 +99,9 @@
     }
     .form{
         padding-bottom: 25px;
+    }
+    .form_box-inner button.default-btn.btn{
+        margin-right: 50px;
     }
     .advantages__inner{
         display: block;
@@ -154,6 +166,9 @@
     }
     .add_new-form .form_box{
         height: 1950px;  
+    }
+    .form_box-inner button.default-btn.btn{
+        margin-right: 0px;
     }
 }
 @media (max-width: 600px){

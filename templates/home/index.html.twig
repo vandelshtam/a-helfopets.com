@@ -3,10 +3,10 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block body %}
-<style>
+{# <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+</style> #}
 {% for label, messages in app.flashes(['success', 'notice']) %}
     {% for message in messages %}
         <div class="flash-{{ label }}">
@@ -17,45 +17,21 @@
 <section class="slider">
         <div class="container">
             <div class="slider_inner">
+            {% for slider in sliders %}
                 <div class="slider_item">
                     <div class="slider_item-content">
                         <div class="slider_title">
-                            КОМПЛЕКСНОЕ ЗАКРЫТИЕ ПРЕДПРИЯТИЯ
+                            {{ slider.serviceName }}
                         </div>
                         <div class="slider_text">
-                        Полное прекращение существования юридичского лица с сохранение легальности всей предыдущей деятельности 
+                            {{ slider.discriptionService }}
                         </div>
                         <a data-fancybox data-src="#hidden-content" href="javascript:;" class="slider_btn default-btn">
                             Оставить заявку
                         </a>
-                    </div>
+                    </div>    
                 </div>
-                <div class="slider_item">
-                    <div class="slider_item-content">
-                        <div class="slider_title">
-                            КОМПЛЕКСНОЕ ЗАКРЫТИЕ ПРЕДПРИЯТИЯ
-                        </div>
-                        <div class="slider_text">
-                        Полное прекращение существования юридичского лица с сохранение легальности всей предыдущей деятельности 
-                        </div>
-                        <a data-fancybox data-src="#hidden-content" href="javascript:;" class="slider_btn default-btn">
-                            Оставить заявку
-                        </a>
-                    </div>
-                </div>
-                <div class="slider_item">
-                    <div class="slider_item-content">
-                        <div class="slider_title">
-                            КОМПЛЕКСНОЕ ЗАКРЫТИЕ ПРЕДПРИЯТИЯ
-                        </div>
-                        <div class="slider_text">
-                        Полное прекращение существования юридичского лица с сохранение легальности всей предыдущей деятельности 
-                        </div>
-                        <a data-fancybox data-src="#hidden-content" href="javascript:;" class="slider_btn default-btn">
-                            Оставить заявку
-                        </a>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
             {% if is_granted('ROLE_SUPER_ADMIN') %}
             <a class="default-btn" href="{{ path('slider_index') }}">Edition</a>
@@ -98,7 +74,7 @@
                     </div>
                 </div>
                 <div class="servises_item">
-                    <img src="img/about-2.png" alt="" class="img_servises-2">
+                    <img src="{{ asset('asset/img/about-2.png') }}" alt="" class="img_servises-2">
                     <div class="servises_item-title">
                         Адвокатское сопровождение
                     </div>
@@ -163,52 +139,13 @@
                         </div>
                     </div>
                     <div class="form_box">
-                        <form action="">
-                            <div class="form_box-inner">
-                                <div class="form_box-left">
-                                    <label for="">
-                                        E-mail
-                                        <input type="text">
-                                    </label>
-                                    <label for="">
-                                        Контактный телефон
-                                        <input type="text">
-                                    </label>
-                                    <label for="">
-                                        Ф.И.О.
-                                        <input type="text">
-                                    </label>
-                                    <label for="">
-                                        Тема вопросов
-                                        <select name="" id="">
-                                            <option value="">11111</option>
-                                            <option value="">22222</option>
-                                            <option value="">33333</option>
-                                            <option value="">44444</option>
-                                        </select>
-                                    </label>
-                                </div>
-                                <div class="form_box-right">
-                                    <label for="">
-                                        Сообщение
-                                        <textarea></textarea>
-                                    </label>
-                                    <button class="default-btn" type="submit">Получить консультацию</button>
-                                </div>
-                            </div>    
-                        </form>       
-                    </div>
-                    
-                    <div class="form_box">
-                        <h2>Create new consultation</h2>
                             {{ form_start(form) }}
                             <div class="form_box-inner">
                                 <div class="form_box-left">
                                     {{ form_widget(form) }}
-                                    {{ form_rest(form) }}
                                 </div>
-                            </div>    
-                                <button class="default-btn btn">{{ button_label|default('Save') }}</button>
+                                <button class="default-btn btn">Получить консультацию</button>
+                            </div>        
                             {{ form_end(form) }}
                     </div>   
                 </div>

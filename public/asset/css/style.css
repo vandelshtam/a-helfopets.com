@@ -342,9 +342,10 @@ header{
 }
 .form{
     padding: 30px;
+    margin-bottom: 60px;
 }
 .form_inner{
-    padding-bottom: 40px;
+    padding-top: 0px;
     background-image: url(../img/form_fon_1.jpeg);
     min-height: 610px;
     background-repeat: no-repeat;
@@ -354,20 +355,20 @@ header{
     max-width: 700px;
     padding-top: 45px;
 }
+div#consultation{
+    max-width: 600px;
+    width: 100%;
+}
 .form_box-inner{
-    flex-direction: row;
+    flex-direction: column;
     display: flex;
     justify-content: space-between;
-    /*max-width: 700px;*/
 }
 .form_box-left{
-    max-width: 250px;
+    max-width: 600px;
     width: 100%;
 }
-.form_box-right{
-    max-width: 400px;
-    width: 100%;
-}
+
 .form_box-inner label,
 .form_box-inner input,
 .form_box-inner textarea{
@@ -461,6 +462,14 @@ header{
     background-color: transparent;
     color:#282828;
     float: right;
+}
+.form_box-inner button.default-btn.btn{
+    background-color: transparent;
+    color:#282828;
+    
+    float: right;
+    align-self:flex-end ;
+    margin-right: 100px;
 }
 .form_box-inner button:hover{
     display: inline-block;

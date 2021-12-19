@@ -47,6 +47,11 @@ class Article
      */
     private $preview;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $avatar_article;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +125,18 @@ class Article
     public function setPreview(?string $preview): self
     {
         $this->preview = $preview;
+
+        return $this;
+    }
+
+    public function getAvatarArticle(): ?string
+    {
+        return $this->avatar_article;
+    }
+
+    public function setAvatarArticle(?string $avatar_article): self
+    {
+        $this->avatar_article = $avatar_article;
 
         return $this;
     }
