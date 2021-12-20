@@ -170,6 +170,9 @@
     .form_box-inner button.default-btn.btn{
         margin-right: 0px;
     }
+    img.page_new_foto{
+        max-width: 300px;
+    }
 }
 @media (max-width: 600px){
     
@@ -201,6 +204,9 @@
     .news_slider-inner .slick-btn{
         bottom: -90px;
     }
+    img.page_new_foto{
+        max-width: 100%;
+    }
     
 }
 @media (max-width: 414px){
@@ -210,11 +216,13 @@
     .slider_text{
         font-size: 16px;
     }
+    
 }
 @media (max-width: 400px){
     .advantages-item{
         padding: 0;
     }
+    
 }
 @media (max-width: 375px){
     .header_email{

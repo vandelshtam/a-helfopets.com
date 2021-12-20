@@ -3,47 +3,6 @@
 {% block title %}Новости компании{% endblock %}
 
 {% block body %}
-    <h1>Article index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Comment_foto</th>
-                <th>Article</th>
-                <th>Comment_auxiliary_one</th>
-                <th>Author</th>
-                <th>Preview</th>
-                <th>actions</th>
-                
-            </tr>
-        </thead>
-        <tbody>
-        {% for article in articles %}
-            <tr>
-                <td>{{ article.id }}</td>
-                <td>{{ article.title }}</td>
-                <td>{{ article.commentFoto }}</td>
-                <td>{{ article.article }}</td>
-                <td>{{ article.commentAuxiliaryOne }}</td>
-                <td>{{ article.author }}</td>
-                <td>{{ article.preview }}</td>
-                
-                    <a href="{{ path('article_show', {'id': article.id}) }}">show</a>
-                    <a href="{{ path('article_edit', {'id': article.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('article_new') }}">Create new</a>
-
     <section class="page_news">
         <div class="container">
             <div class="news_top">
@@ -56,9 +15,13 @@
                     </div>
                 </div>
             </div>
-            <div class="page_news-search">
-                <input type="text" id="elastic" name="filter-contacts" class="" placeholder="Поиск новостей">
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <div class="create_new">
+                <a href="{{ path('article_new') }}" class="default-btn">
+                    Добавить
+                </a>
             </div>
+            {% endif %}     
             <div class="news_inner elastic" id="">
                 <div class="news_slider" >
                     <div class="news_slider-inner">
@@ -100,44 +63,31 @@
                         </div>
                     </div>
                 </div>
-                {% for article in articles %}
-                <div id="link" class="none" data-filter-tags="{{ article.title }}">
-                    <a id="c_1" href="{{ path('article_show', {'id': article.id}) }}" class="page news_blog" >
-                        <div class="news_images">
-                            {# {{ article.AvatarArticle }} #}
-                            <img src="{{ asset('uploads/img/' ~ article.AvatarArticle) }}" alt="" style="width: 200px;">
-                            <div class="news_date">03.04</div>
-                        </div>
-                        <div class="news_blog-title">
-                            {{ article.title }}
-                        </div>
-                        <div class="news_blog-text">
-                            {{ article.preview }}
-                        </div>
-                            
-                    </a> 
-                        {# <div class="news_blog-text">
-                            {# {{ asset('uploads/img/' ~ article.avatar_article) }} #}
-                        {# </div>
-                        <div class="news_images"> #}
-                        {# <img src="{{ asset('uploads/img/' ~ article.avatar_article) }}" alt=""> #}
-                        {# <a href="{{ asset('uploads/img/' ~ article.AvatarArticle) }}">View brochure (PDF)</a> #}
-                        {# <div class="news_date">03.04</div>
-                        </div>     #}
-                    
-                    
-                            {% if is_granted('ROLE_SUPER_ADMIN') %}
-                            <a href="{{ path('article_edit', {'id': article.id}) }}" class="default-btn">
-                                Редактировать
-                            </a>
-                            <a  href="" class="default-btn">
-                                Удалить
-                            </a>
-                            {% endif %}        
-                          
+                <div class="page_news-search">
+                    <input type="text" id="elastic" name="filter-contacts" class="" placeholder="Поиск новостей">
                 </div>
-                
-        {% endfor %}
+                {% for article in articles %}
+                    <div id="link" class="none" data-filter-tags="{{ article.title }}">
+                        <a id="c_1" href="{{ path('article_show', {'id': article.id}) }}" class="page news_blog" >
+                            <div class="news_images">
+                                <img class="avatar_new_image" src="{{ asset('uploads/img/' ~ article.AvatarArticle) }}" alt="">
+                            <div class="news_date">03.04</div>
+                            </div>
+                            <div class="news_blog-title">
+                                {{ article.title }}
+                            </div>
+                            <div class="news_blog-text">
+                                {{ article.preview }}
+                            </div>        
+                        </a> 
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <a href="{{ path('article_edit', {'id': article.id}) }}" class="default-btn">
+                            Редактировать
+                        </a>
+                        <a>{{ include('article/_delete_form.html.twig') }}</a>    
+                    {% endif %}                   
+                    </div>       
+                {% endfor %}
             </div>
         </div>
     </section>

@@ -52,6 +52,41 @@ class Article
      */
     private $avatar_article;
 
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $foto1;
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $foto2;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $comment_foto2;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $paragraph1;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $paragraph2;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $paragraph3;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $paragraph4;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -137,6 +172,90 @@ class Article
     public function setAvatarArticle(?string $avatar_article): self
     {
         $this->avatar_article = $avatar_article;
+
+        return $this;
+    }
+
+    public function getFoto1(): ?string
+    {
+        return $this->foto1;
+    }
+
+    public function setFoto1(?string $foto1): self
+    {
+        $this->foto1 = $foto1;
+
+        return $this;
+    }
+
+    public function getFoto2(): ?string
+    {
+        return $this->foto2;
+    }
+
+    public function setFoto2(?string $foto2): self
+    {
+        $this->foto2 = $foto2;
+
+        return $this;
+    }
+
+    public function getCommentFoto2(): ?string
+    {
+        return $this->comment_foto2;
+    }
+
+    public function setCommentFoto2(?string $comment_foto2): self
+    {
+        $this->comment_foto2 = $comment_foto2;
+
+        return $this;
+    }
+
+    public function getParagraph1(): ?string
+    {
+        return $this->paragraph1;
+    }
+
+    public function setParagraph1(?string $paragraph1): self
+    {
+        $this->paragraph1 = $paragraph1;
+
+        return $this;
+    }
+
+    public function getParagraph2(): ?string
+    {
+        return $this->paragraph2;
+    }
+
+    public function setParagraph2(?string $paragraph2): self
+    {
+        $this->paragraph2 = $paragraph2;
+
+        return $this;
+    }
+
+    public function getParagraph3(): ?string
+    {
+        return $this->paragraph3;
+    }
+
+    public function setParagraph3(?string $paragraph3): self
+    {
+        $this->paragraph3 = $paragraph3;
+
+        return $this;
+    }
+
+    public function getParagraph4(): ?string
+    {
+        return $this->paragraph4;
+    }
+
+    public function setParagraph4(?string $paragraph4): self
+    {
+        $this->paragraph4 = $paragraph4;
 
         return $this;
     }

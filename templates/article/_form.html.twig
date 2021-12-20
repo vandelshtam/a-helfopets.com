@@ -1,4 +1,78 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+<div class="my-custom-class-for-errors">
+        {{ form_errors(form) }}
+</div>
+    {# {{ form_widget(form) }} #}
+    
+        {# {{ form_row(form.article) }} #}
+        {{ form_row(form.paragraph3) }}
+    {# <button class="btn">{{ button_label|default('Save') }}</button> #}
+
+
+<section class="add_new-form">
+        <div class="container">
+            
+                <div class="form_content">
+                    <div class="form_title-box">
+                        <div class="form_title">
+                            Добавить новостную статью
+                        </div>
+                        <div class="form_text">
+                            При заполнении формы новостной статьи,пожалуйста следуйте правилам публикации статей на сайте и подсказкам системы.
+                        </div>
+                    </div>
+                    <div class="add_new-form form_box">
+                        <form action="">
+                            <div class="add_new-form form_box-inner">
+                                <div class="add_new-form form_box-left">
+                                    <label for="">
+                                        Название статьи, не более 70 знаков {{ form_row(form.title) }}
+                                        <input type="text">
+                                    </label>
+                                    <label for="file-upload" class="add_new custom-file-upload">
+                                        Загрузка фотографии/картинки для названия статьи и превью статьи в ленте новостей
+                                        <input type="file">
+                                    </label>
+                                    
+                                    <label for="file-upload" class="add_new custom-file-upload">
+                                        Загрузка главной (основной) фотографии/картинки для  статьи
+                                        <input type="file">
+                                    </label>
+                                    <label for="">
+                                        Комментарий к главной фотографии/картинке новостной статьи, не более 70 символов
+                                        <input type="text">
+                                    </label>
+                                    <label for="file-upload" class="add_new custom-file-upload">
+                                        Загрузка дополнительной фотографии/картинки к статье, меньшего размера которая будет находится внутри текста статьи
+                                        <input type="file">
+                                    </label>
+                                    <label for="">
+                                        Комментарий к дополнительной фотографии/картинке к новостной статье, не более 70 символов
+                                        <input type="text">
+                                    </label>
+                                    <label for="">
+                                        Комментарий к главной фотографии/картинке новостной статьи, не более 70 символов
+                                        <input type="text">
+                                    </label>   
+                                </div>
+                                <div class="add_new-form form_box-right">
+                                    <label for="">
+                                        Краткое превью статьи для ленты новостей, не более 500 знаков {{ form_row(form.preview) }}
+                                    </label>
+                                    <label for="">
+                                        Текст статьи{{ form_row(form.article) }}    
+                                    </label>
+                                    <label for="">
+                                        Автор, ссылки, источники
+                                        <textarea class="textarea-author"></textarea>
+                                    </label>
+                                    <button class="default-btn" type="submit">Сохранить статью</button>
+                                </div>
+                            </div>    
+                        </form>       
+                    </div>   
+                </div>
+            
+        </div>
+    </section>      
 {{ form_end(form) }}

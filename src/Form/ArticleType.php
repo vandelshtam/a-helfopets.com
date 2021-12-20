@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class ArticleType extends AbstractType
 {
@@ -16,23 +17,10 @@ class ArticleType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('comment_foto')
-            ->add('article')
-            ->add('comment_auxiliary_one')
-            ->add('author')
-            ->add('preview')
             ->add('avatar_article', FileType::class, [
                 'label' => 'avatar_article (JPEG file)',
-
-                // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
-
-                // make it optional so you don't have to re-upload the PDF file
-                // every time you edit the Product details
                 'required' => false,
-
-                // unmapped fields can't define their validation using annotations
-                // in the associated entity, so you can use the PHP constraint classes
                 'constraints' => [
                     new Image([
                         'maxSize' => '200000000k',
@@ -44,6 +32,46 @@ class ArticleType extends AbstractType
                     ])
                 ],
             ])
+            ->add('comment_foto')
+            ->add('paragraph1', TextareaType::class)
+            ->add('foto1', FileType::class, [
+                'label' => 'foto 1 (JPEG file)',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new Image([
+                        'maxSize' => '20000000k',
+                        'mimeTypes' => [
+                            'image/*',
+                            
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid image',
+                    ])
+                ],
+            ])
+            ->add('comment_auxiliary_one')
+            ->add('paragraph2')
+            ->add('article',TextareaType::class)
+            ->add('foto2', FileType::class, [
+                'label' => 'foto 2 (JPEG file)',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new Image([
+                        'maxSize' => '20000000k',
+                        'mimeTypes' => [
+                            'image/*',
+                            
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid image',
+                    ])
+                ],
+            ])
+            ->add('comment_foto2')
+            ->add('paragraph3')
+            ->add('paragraph4')
+            ->add('author')
+            ->add('preview')
         ;
     }
 
