@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Consultation;
+use App\Entity\Article;
+use App\Entity\Product;
 
+use App\Entity\Consultation;
 use App\Form\ConsultationType;
 use App\Entity\FastConsultation;
 use App\Form\HomeControllerType;
@@ -11,6 +13,7 @@ use Symfony\Component\Mime\Email;
 use App\Form\FastConsultationType;
 use App\Repository\SliderRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,14 +24,16 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 class HomeController extends AbstractController
 {
     #[Route('/home', name: 'home')]
-    public function index(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer, SliderRepository $sliderRepository): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer, SliderRepository $sliderRepository,ManagerRegistry $doctrine): Response
     {
         $user = $this->getUser();
         $consultation = new Consultation();
         
         $form = $this->createForm(ConsultationType::class, $consultation);
         $form->handleRequest($request);
-
+        //$value = 
+        $article = $doctrine->getRepository(Article::class)->findByExampleField();
+        //dd($article[0]->getTitle());
         //$form = $this->createForm(TaskType::class, $consult);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -110,6 +115,7 @@ class HomeController extends AbstractController
             'user'  => $user,
             'sliders' => $sliderRepository->findAll(),
             'controller_name' => 'HomeController',
+            'article' => $article,
         ]);
         // return $this->render('home/index.html.twig', [
         //     'controller_name' => 'HomeController',

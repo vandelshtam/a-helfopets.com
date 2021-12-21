@@ -23,16 +23,16 @@ class ArticleType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Image([
-                        'maxSize' => '200000000k',
+                        'maxSize' => '20000000k',
                         'mimeTypes' => [
                             'image/*',
                             
                         ],
-                        'mimeTypesMessage' => 'Please upload a valid image',
+                        'mimeTypesMessage' => 'Пожалуйста выберите файл имеющий расширение соответствующее типу - "изображение"',
                     ])
                 ],
             ])
-            ->add('comment_foto')
+            ->add('comment_foto',TextareaType::class)
             ->add('paragraph1', TextareaType::class)
             ->add('foto1', FileType::class, [
                 'label' => 'foto 1 (JPEG file)',
@@ -40,17 +40,17 @@ class ArticleType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Image([
-                        'maxSize' => '20000000k',
+                        'maxSize' => '2000000k',
                         'mimeTypes' => [
                             'image/*',
                             
                         ],
-                        'mimeTypesMessage' => 'Please upload a valid image',
+                        'mimeTypesMessage' => 'Пожалуйста выберите файл имеющий расширение соответствующее типу - "изображение"',
                     ])
                 ],
             ])
-            ->add('comment_auxiliary_one')
-            ->add('paragraph2')
+            ->add('comment_auxiliary_one',TextareaType::class)
+            ->add('paragraph2',TextareaType::class)
             ->add('article',TextareaType::class)
             ->add('foto2', FileType::class, [
                 'label' => 'foto 2 (JPEG file)',
@@ -58,19 +58,18 @@ class ArticleType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Image([
-                        'maxSize' => '20000000k',
+                        'maxSize' => '2000000k',
                         'mimeTypes' => [
                             'image/*',
                             
                         ],
-                        'mimeTypesMessage' => 'Please upload a valid image',
+                        'mimeTypesMessage' => 'Пожалуйста выберите файл имеющий расширение соответствующее типу - "изображение"',
                     ])
                 ],
             ])
-            ->add('comment_foto2')
-            ->add('paragraph3')
-            ->add('paragraph4')
-            ->add('author')
+            ->add('paragraph3',TextareaType::class)
+            ->add('paragraph4',TextareaType::class)
+            ->add('author',TextareaType::class)
             ->add('preview')
         ;
     }

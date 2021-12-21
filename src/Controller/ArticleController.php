@@ -35,6 +35,7 @@ class ArticleController extends AbstractController
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
         
+        //dd($articleRepository->find(id:11)->getCreatedAt());
         return $this->renderForm('article/index.html.twig', [
             'articles' => $articleRepository->findAll(),
             'user' => $user,
@@ -91,30 +92,61 @@ class ArticleController extends AbstractController
                 }
                 $article->setFoto1($newFilename);
             }
+            if ($foto2File) {
+                
+                $originalFilename2 = pathinfo($foto2File->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename2 = $slugger->slug($originalFilename2);
+                $newFilename2 = $safeFilename2.'-'.uniqid().'.'.$foto2File->guessExtension();
+
+                try {
+                    $foto2File->move(
+                        $this->getParameter('img_directory'),
+                        $newFilename2
+                    );
+                } catch (FileException $e) {
+                    echo "An error occurred while creating your directory at ";
+                }
+                $article->setFoto2($newFilename2);
+            }
             $entityManager->persist($article);
             $entityManager->flush();
+            $this->addFlash(
+                'success',
+                'Вы успешно создали новуюƒ новостную статью!'); 
             return $this->redirectToRoute('article_index', [], Response::HTTP_SEE_OTHER);
+            
         }
-
         return $this->renderForm('article/new.html.twig', [
             'article' => $article,
             'form' => $form,
             'fast_consultation' => $fast_consultation,
-            'fast_consultation_form' => $fast_consultation_form
+            'fast_consultation_form' => $fast_consultation_form,
         ]);
     }
 
+
     #[Route('/{id}', name: 'article_show', methods: ['GET'])]
-    public function show(Article $article): Response
+    public function show(Article $article,Request $request,MailerInterface $mailer): Response
     {
-        return $this->render('article/show.html.twig', [
+        
+        $fast_consultation = new FastConsultation();
+        $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
+        $fast_consultation_form->handleRequest($request);
+        return $this->renderForm('article/show.html.twig', [
             'article' => $article,
+            'fast_consultation' => $fast_consultation,
+            'fast_consultation_form' => $fast_consultation_form,
         ]);
     }
 
     #[Route('/{id}/edit', name: 'article_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Article $article, EntityManagerInterface $entityManager,SluggerInterface $slugger): Response
     {
+        $user = $this->getUser();
+        $fast_consultation = new FastConsultation();
+        $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
+        $fast_consultation_form->handleRequest($request);
+
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
         $foto1File = $form->get('foto1')->getData();
@@ -188,12 +220,17 @@ class ArticleController extends AbstractController
                 $article->setFoto2($newFilename2);
             }
             $entityManager->flush();
+            $this->addFlash(
+                'success',
+                'Вы успешно обновили новостную статью!');   
             return $this->redirectToRoute('article_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('article/edit.html.twig', [
             'article' => $article,
             'form' => $form,
+            'fast_consultation' => $fast_consultation,
+            'fast_consultation_form' => $fast_consultation_form,
         ]);
     }
 
@@ -203,6 +240,9 @@ class ArticleController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
             $entityManager->remove($article);
             $entityManager->flush();
+            $this->addFlash(
+                'success',
+                'Вы успешно удалили новостную статью!'); 
         }
 
         return $this->redirectToRoute('article_index', [], Response::HTTP_SEE_OTHER);

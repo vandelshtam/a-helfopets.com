@@ -3,13 +3,9 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block body %}
-{# <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style> #}
 {% for label, messages in app.flashes(['success', 'notice']) %}
     {% for message in messages %}
-        <div class="flash-{{ label }}">
+        <div class="flash-{{ label }} notice_message">
             {{ message }}
         </div>
     {% endfor %}
@@ -29,6 +25,7 @@
                         <a data-fancybox data-src="#hidden-content" href="javascript:;" class="slider_btn default-btn">
                             Оставить заявку
                         </a>
+                        
                     </div>    
                 </div>
                 {% endfor %}
@@ -150,8 +147,7 @@
                     </div>   
                 </div>
             </div>
-        </div>
-        
+        </div>    
     </section>
     <section class="advantages">
         <div class="container">
@@ -243,26 +239,26 @@
                 </div>
                 <a href="#" class="news_blog">
                     <div class="news_images">
-                        <img src="img/news_1.jpeg" alt="">
-                        <div class="news_date">03.04</div>
+                        <img src="{{ asset('uploads/img/' ~ article[1].AvatarArticle) }}" alt="">
+                        <div class="news_date">{{ article[1].created_at|date('m-d') }}</div>
                     </div>
                     <div class="news_blog-title">
-                        Новости права сегодня - Российская газета
+                        {{ article[1].title }}
                     </div>
                     <div class="news_blog-text">
-                        Последние новости в сфере права в России. Анализ событий. Экспертное мнение. ... Захарова и Барщевский задали видеовопросы участникам правового диктанта.
+                        {{ article[1].preview }}
                     </div>
                 </a>
                 <a href="#" class="news_blog">
                     <div class="news_images">
-                        <img src="img/news_2.jpeg" alt="">
-                        <div class="news_date">10.12</div>
+                        <img src="{{ asset('uploads/img/' ~ article[0].AvatarArticle) }}" alt="">
+                        <div class="news_date">{{ article[0].created_at|date('m-d') }}</div>
                     </div>
                     <div class="news_blog-title">
-                        Правовые новости за сегодня. Закон и Бизнес
+                        {{ article[0].title }}
                     </div>
                     <div class="news_blog-text">
-                        Правовые новости за сегодня. Закон и Бизнес. ... Бесплатная правовая помощь — еще одна гарантия от государства, цель которого часто искажается на практике.
+                        {{ article[0].preview }}
                     </div>
                 </a>
             </div>
@@ -302,17 +298,8 @@
             </div>
         </div>
     </footer>
-{# {{ include('fast_consultation/index.html.twig') }}     #}
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/Users/louisdefunes/Sites/localhost/project_symfony_two/src/Controller/HomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/Users/louisdefunes/Sites/localhost/project_symfony_two/templates/home/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a></code></li>
-    </ul>
-</div>
 {% endblock %}
 
 {% block javascripts %}
+    {{ include('js.html.twig') }}
 {% endblock %}

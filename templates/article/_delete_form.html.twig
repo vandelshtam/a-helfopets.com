@@ -1,4 +1,4 @@
 <form method="post" action="{{ path('article_delete', {'id': article.id}) }}" onsubmit="return confirm('Вы действительно хотите удалить статью?');">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
-    <button class="default-btn">Удалить</button>
+    <button class="default-btn btn">Удалить</button>
 </form>

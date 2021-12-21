@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Article{% endblock %}
+{% block title %}plumbInstall/Новости/Редактировать статью{% endblock %}
 
 {% block body %}
-    <h1>Edit Article</h1>
-
+    
     {{ include('article/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('article_index') }}">back to list</a>
+{% endblock %}
 
-    {{ include('article/_delete_form.html.twig') }}
+{% block javascripts %}
+    {{ include('js.html.twig') }}
 {% endblock %}

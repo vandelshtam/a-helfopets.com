@@ -1,17 +1,5 @@
-{{ form_start(form) }}
-<div class="my-custom-class-for-errors">
-        {{ form_errors(form) }}
-</div>
-    {# {{ form_widget(form) }} #}
-    
-        {# {{ form_row(form.article) }} #}
-        {{ form_row(form.paragraph3) }}
-    {# <button class="btn">{{ button_label|default('Save') }}</button> #}
-
-
-<section class="add_new-form">
-        <div class="container">
-            
+<section class="add_new-form">   
+        <div class="container">    
                 <div class="form_content">
                     <div class="form_title-box">
                         <div class="form_title">
@@ -21,58 +9,85 @@
                             При заполнении формы новостной статьи,пожалуйста следуйте правилам публикации статей на сайте и подсказкам системы.
                         </div>
                     </div>
-                    <div class="add_new-form form_box">
-                        <form action="">
+                    {% if form_errors(form) %}
+                    <div class="my-custom-class-for-errors">
+                        {{ form_errors(form) }}
+                    </div>
+                    {% endif %}
+                    <div class="add_new-form form_box">    
+                        {{ form_start(form) }}
                             <div class="add_new-form form_box-inner">
                                 <div class="add_new-form form_box-left">
                                     <label for="">
-                                        Название статьи, не более 70 знаков {{ form_row(form.title) }}
-                                        <input type="text">
+                                        Название статьи, не более 70 знаков
+                                         {{ form_row(form.title) }}
                                     </label>
                                     <label for="file-upload" class="add_new custom-file-upload">
-                                        Загрузка фотографии/картинки для названия статьи и превью статьи в ленте новостей
-                                        <input type="file">
+                                        Загрузка фотографии/картинки для названия статьи и превью статьи в ленте новостей (аватар статьи). 
+                                        Расположена в блоке названия статьи, обтекается текстом названия статьи.
+                                        {{ form_row(form.avatar_article) }}
                                     </label>
-                                    
                                     <label for="file-upload" class="add_new custom-file-upload">
-                                        Загрузка главной (основной) фотографии/картинки для  статьи
-                                        <input type="file">
+                                        Загрузка главной (основной) фотографии/картинки для  статьи. Фотография/картинка расположена после первого абаца статьи 
+                                        если он заполнен, или (если абзаца № 1 нет) будет расположена в самом начале статьи на всю ширину поля статьи.
+                                        {{ form_row(form.foto1) }}
                                     </label>
                                     <label for="">
-                                        Комментарий к главной фотографии/картинке новостной статьи, не более 70 символов
-                                        <input type="text">
+                                        Комментарий к главной фотографии/картинке новостной статьи, не более 70 символов. 
+                                        {{ form_row(form.comment_auxiliary_one) }}
                                     </label>
                                     <label for="file-upload" class="add_new custom-file-upload">
-                                        Загрузка дополнительной фотографии/картинки к статье, меньшего размера которая будет находится внутри текста статьи
-                                        <input type="file">
+                                        Загрузка дополнительной фотографии/картинки к статье, меньшего размера которая будет находится внутри текста статьи.
+                                        Фотография/картинка расположена нутри главного абцаца статьи, в правой верхней части абзаца, шириной 30% блока главного абзаца
+                                        и обтекается текстом слева.
+                                        {{ form_row(form.foto2) }}
                                     </label>
                                     <label for="">
                                         Комментарий к дополнительной фотографии/картинке к новостной статье, не более 70 символов
-                                        <input type="text">
+                                        {{ form_row(form.comment_foto) }}
                                     </label>
-                                    <label for="">
-                                        Комментарий к главной фотографии/картинке новостной статьи, не более 70 символов
-                                        <input type="text">
-                                    </label>   
                                 </div>
                                 <div class="add_new-form form_box-right">
                                     <label for="">
-                                        Краткое превью статьи для ленты новостей, не более 500 знаков {{ form_row(form.preview) }}
+                                        Краткое превью статьи для ленты новостей, не более 500 знаков 
+                                        {{ form_row(form.preview) }}
                                     </label>
                                     <label for="">
-                                        Текст статьи{{ form_row(form.article) }}    
+                                        Абзац № 1, не более 2500 знаков
+                                        {{ form_row(form.paragraph1) }}
                                     </label>
                                     <label for="">
-                                        Автор, ссылки, источники
-                                        <textarea class="textarea-author"></textarea>
+                                        Абзац № 2, не более 2500 знаков 
+                                        {{ form_row(form.paragraph2) }}
                                     </label>
+                                    <label for="">
+                                        Текст статьи главный абзац
+                                        {{ form_row(form.article) }}    
+                                    </label>
+                                    <label for="">
+                                        Абзац № 3, не более 2500 знаков 
+                                        {{ form_row(form.paragraph3) }}
+                                    </label>
+                                    <label for="">
+                                        Абзац статьи № 4 
+                                        {{ form_row(form.paragraph4) }}    
+                                    </label>
+                                    <label for="">
+                                        Имя автора, ссылки, источники
+                                        {{ form_row(form.author) }}
+                                    </label>
+                                    <a href="{{ path('article_index') }}" class="default-btn">Назад</a> 
                                     <button class="default-btn" type="submit">Сохранить статью</button>
                                 </div>
                             </div>    
-                        </form>       
+                            {{ form_end(form) }}  
                     </div>   
-                </div>
-            
+                </div>    
         </div>
-    </section>      
-{{ form_end(form) }}
+    </section> 
+
+{% block javascripts %}
+    {{ include('js.html.twig') }}
+{% endblock %}     
+
+ 

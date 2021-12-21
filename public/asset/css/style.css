@@ -56,11 +56,14 @@ header{
     clear: both;
     display: block;
 }
-.header_phone,.header_email{
+.header_phone,.header_email,.header_logout{
     color: #cbcacb;
     letter-spacing: 0.25px;
     line-height: 45px;
     position: relative;
+}
+.header_contacts span{
+    margin: 0px 20px 0px 20px
 }
 .header_phone{
     padding-right: 30px;
@@ -738,7 +741,12 @@ div#consultation{
     cursor: pointer;
     margin-top: 25px;
 }
-
+.notice_message{
+    background-color:#fae09f;
+    justify-content: center;
+    padding: 10px;
+    margin-bottom: 30px;
+}
 /* ========= page news ========= */
 .page_news{
     background-color: #f9f9f9;
@@ -795,9 +803,9 @@ img.avatar_new_image{
     margin-bottom: 20px;
     padding-bottom: 10px;
 }
-.page_news .default-btn{
+/* .page_news .default-btn{
     color: #373636;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     /* display: inline-block;
     font-size: 14px;
     line-height: 24px;
@@ -808,8 +816,8 @@ img.avatar_new_image{
     border: 1px solid#ffc222;
     border-right-width: 20px;
     position: relative;
-    outline: none; */
-}
+    outline: none; 
+} */
 .page_news a.default-btn{
     color: #373636;
     margin: 5px;
@@ -977,6 +985,11 @@ img.page_new_foto{
     position: relative;
     outline: none;
 }
+form button.default-btn{
+    color: #ce0700;
+    background-color:#fff;
+    margin: 5px;
+}
 /*  ========= add.new ========== */
 .add_new-form{
     padding: 30px;
@@ -1068,4 +1081,31 @@ img.page_new_foto{
     cursor: pointer;
     margin-top: 5px;
     margin-bottom: 30px;
+}
+.add_new-form .form_hidden-element{
+    display: none;
+}
+.add_new-form .my-custom-class-for-errors{
+    background-color:#fae09f;
+    justify-content: center;
+    padding: 10px;
+}
+.add_new-form label li{
+    color: red;
+}
+.add_new-form form .default-btn.btn{
+    color: #ce0700;
+    background-color:#fff;
+    margin: 5px;
+}
+.add_new-form form .default-btn{
+    color:#282828;
+    background-color:#fff;
+    margin: 5px;
+}
+/* =====  login ============*/
+.form_login_error{
+    background-color:#fae09f;
+    justify-content: center;
+    padding: 10px;
 }

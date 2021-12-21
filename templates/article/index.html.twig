@@ -66,12 +66,21 @@
                 <div class="page_news-search">
                     <input type="text" id="elastic" name="filter-contacts" class="" placeholder="Поиск новостей">
                 </div>
+                {% for label, messages in app.flashes(['success', 'notice']) %}
+                    {% for message in messages %}
+                        {% if message %}
+                            <div class="flash-{{ label }} notice_message">
+                                {{ message }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
                 {% for article in articles %}
                     <div id="link" class="none" data-filter-tags="{{ article.title }}">
                         <a id="c_1" href="{{ path('article_show', {'id': article.id}) }}" class="page news_blog" >
                             <div class="news_images">
                                 <img class="avatar_new_image" src="{{ asset('uploads/img/' ~ article.AvatarArticle) }}" alt="">
-                            <div class="news_date">03.04</div>
+                            <div class="news_date">{{ article.created_at|date('m-d') }}</div>
                             </div>
                             <div class="news_blog-title">
                                 {{ article.title }}
@@ -125,8 +134,9 @@
             </div>
         </div>
     </footer>
-{% endblock %}
 {% block javascripts %}
+    {{ include('js.html.twig') }}
+{% endblock %}
 <script>
         document.querySelector('#elastic').oninput = function(){
             let val = this.value.trim();

@@ -37,6 +37,11 @@ class Product
      */
     private $number;
 
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
+    private $create_at;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class Product
     public function setNumber(?int $number): self
     {
         $this->number = $number;
+
+        return $this;
+    }
+
+    public function getCreateAt(): ?\DateTimeImmutable
+    {
+        return $this->createAt;
+    }
+
+    public function setCreateAt(\DateTimeImmutable $createAt): self
+    {
+        $this->createAt = $createAt;
 
         return $this;
     }
