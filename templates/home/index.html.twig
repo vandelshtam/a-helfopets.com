@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div class="servises_btn">
-                    <a href="#">
+                    <a href="{{ path('service_index') }}">
                     Посмотреть все услуги
                     </a>
                 </div>    
@@ -200,6 +200,7 @@
                 <div class="news_slider">
                     <div class="news_slider-inner">
                         <div class="news_slider-item">
+                        <a href="{{ path('article_show', {'id': article[1].id}) }}">
                             <div class="news_slider-title">
                                 Право.ru: законодательство, судебная система, новости и ...
                             </div>
@@ -210,6 +211,7 @@
                             <div class="news_slider-author">
                                 Анастасия Синченкова
                             </div>
+                        </a>
                         </div>
                         <div class="news_slider-item">
                             <div class="news_slider-title">
@@ -237,10 +239,10 @@
                         </div>
                     </div>
                 </div>
-                <a href="#" class="news_blog">
+                <a href="{{ path('article_show', {'id': article[1].id}) }}" class="news_blog">
                     <div class="news_images">
-                        <img src="{{ asset('uploads/img/' ~ article[1].AvatarArticle) }}" alt="">
-                        <div class="news_date">{{ article[1].created_at|date('m-d') }}</div>
+                        <img src="{{ asset('uploads/img/' ~ article[1].AvatarArticle) }}" alt="" class="avatar_new_image">
+                        <div class="news_date">{{ article[1].created_at|date('d-m') }}</div>
                     </div>
                     <div class="news_blog-title">
                         {{ article[1].title }}
@@ -249,10 +251,10 @@
                         {{ article[1].preview }}
                     </div>
                 </a>
-                <a href="#" class="news_blog">
+                <a href="{{ path('article_show', {'id': article[0].id}) }}" class="news_blog">
                     <div class="news_images">
-                        <img src="{{ asset('uploads/img/' ~ article[0].AvatarArticle) }}" alt="">
-                        <div class="news_date">{{ article[0].created_at|date('m-d') }}</div>
+                        <img src="{{ asset('uploads/img/' ~ article[0].AvatarArticle) }}" alt="" class="avatar_new_image">
+                        <div class="news_date">{{ article[0].created_at|date('d-m') }}</div>
                     </div>
                     <div class="news_blog-title">
                         {{ article[0].title }}

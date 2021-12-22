@@ -40,7 +40,7 @@ class Product
     /**
      * @ORM\Column(type="datetime_immutable")
      */
-    private $create_at;
+    private $created_at;
 
     public function getId(): ?int
     {
@@ -95,14 +95,14 @@ class Product
         return $this;
     }
 
-    public function getCreateAt(): ?\DateTimeImmutable
+    public function getCreated_at(): ?\DateTimeImmutable
     {
-        return $this->createAt;
+        return $this->created_at;
     }
 
-    public function setCreateAt(\DateTimeImmutable $createAt): self
+    public function setCreated_at(\DateTimeImmutable $created_at): self
     {
-        $this->createAt = $createAt;
+        $this->createdAt = $created_at;
 
         return $this;
     }

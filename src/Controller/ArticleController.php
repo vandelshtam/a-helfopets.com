@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class ArticleController extends AbstractController
 {
     #[Route('/', name: 'article_index', methods: ['GET'])]
-    public function index(ArticleRepository $articleRepository,Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer, SliderRepository $sliderRepository): Response
+    public function index(ArticleRepository $articleRepository,Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
         $fast_consultation = new FastConsultation();
@@ -45,7 +45,7 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/new', name: 'article_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager,MailerInterface $mailer,SliderRepository $sliderRepository,SluggerInterface $slugger): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,SluggerInterface $slugger): Response
     {
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
@@ -112,7 +112,7 @@ class ArticleController extends AbstractController
             $entityManager->flush();
             $this->addFlash(
                 'success',
-                'Вы успешно создали новуюƒ новостную статью!'); 
+                'Вы успешно создали новую новостную статью!'); 
             return $this->redirectToRoute('article_index', [], Response::HTTP_SEE_OTHER);
             
         }
@@ -156,11 +156,12 @@ class ArticleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $filesystem = new Filesystem();
             if ($avatar_articleFile) {
-                $article->setAvatarArticle(
-                    $path = new File($this->getParameter('img_directory').'/'.$article->getAvatarArticle())
-                );
-                $filesystem->remove(['symlink', $path, $article->getAvatarArticle()]);
-
+                if($article->getAvatarArticle() != null){
+                    $article->setAvatarArticle(
+                        $path = new File($this->getParameter('img_directory').'/'.$article->getAvatarArticle())
+                    );
+                    $filesystem->remove(['symlink', $path, $article->getAvatarArticle()]);
+                }
                 $originalFilename = pathinfo($avatar_articleFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename.'-'.uniqid().'.'.$avatar_articleFile->guessExtension();

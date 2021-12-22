@@ -270,9 +270,9 @@ class Article
         return $this->created_at;
     }
 
-    public function setCreatedAt(?\DateTimeImmutable $createdAt): self
+    public function setCreatedAt(?\DateTimeImmutable $created_at): self
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = $created_at;
 
         return $this;
     }

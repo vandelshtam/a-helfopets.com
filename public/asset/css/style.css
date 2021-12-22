@@ -405,7 +405,8 @@ div#consultation{
     border: 1px solid#e6e6e6;
     background-color: transparent;
     border-radius: 0;
-    padding-left: 17px;    
+    padding-left: 17px; 
+    padding-top: 10px;   
 }
 .form_box-inner .jq-selectbox__trigger-arrow::before{
     content: "\f105";
@@ -482,7 +483,7 @@ div#consultation{
     font-weight: 500;
     font-family: 'Roboto', sans-serif;
     padding: 8px 30px 8px 24px;
-    border: 1px solid#f58013;
+    border: 1px solid#ad800d;
     border-right-width: 20px;
     position: relative;
     outline: none;
@@ -594,10 +595,12 @@ div#consultation{
     letter-spacing: 0.5px;
     color: #242424;
     padding: 12px 0px;
+    overflow-wrap: break-word;
 }
 .news_blog-text{
     letter-spacing: 0.1px;
     color: #5e5e5e;
+    overflow-wrap: break-word;
 }
 .news_slider-title{
     font-size: 18px;
@@ -608,10 +611,11 @@ div#consultation{
     margin-bottom: 15px;
     letter-spacing: 0.5px;
 }
-.news_slider-text{
+a .news_slider-text{
     margin-bottom: 30px;
     max-height: 150px;
-    overflow: auto;    
+    overflow: auto;
+    color: #5e5e5e;    
 }
 .news_slider-author{
     letter-spacing: 0.1px;
@@ -1109,3 +1113,127 @@ form button.default-btn{
     justify-content: center;
     padding: 10px;
 }
+/* =====  page  services ====    */
+.page_servises .servises_items{
+    display: block;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.page_servises .servises_item{
+    max-width: 1130px;
+    max-height: 300px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+.page_servises .img_servises-1{
+    width: 10%;
+}
+.page_servises .img_servises-2,.img_servises-3{
+    width: 10%;
+}
+.default-btn-create_service{
+    color:#282828;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 24px;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+    padding: 8px 30px 8px 24px;
+    border: 1px solid#ffc222;
+    border-right-width: 20px;
+    position: relative;
+    outline: none;
+    margin-bottom: 20px;
+}
+.default-btn-create_service::after{
+    content: "\f105";
+    font-family: 'icomoon';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: -12px;
+}
+.default-btn-create_service:hover{
+    border: 1px solid#ad800d;
+    border-right-width: 20px;
+}
+.page_servises .default-btn:hover{
+    border: 1px solid#ad800d;
+    border-right-width: 20px;
+}
+/*===========page service =============*/
+.page_servise .servises_item{
+    max-width: 1140px;
+    width: 100%;
+    margin-bottom: 20px;
+    display: block;
+}
+.page_servise .servises_item .slider-service{
+    background-color: #e4e3e1;
+}
+.page_servise .slider_item-content{
+    text-align: center;
+    padding-top: 80px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+.page_servise .slider_title{
+    margin-top: 20px;
+    color:#282828;   
+}
+.page_servise .slider_text{
+    color: rgb(141, 141, 141);
+    margin-top: 30px;
+} 
+.page_servise .default-btn-galery_service{
+    color:#282828;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 24px;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+    padding: 8px 30px 8px 24px;
+    border: 1px solid#ffc222;
+    border-right-width: 20px;
+    position: relative;
+    outline: none;
+}
+.page_servise .default-btn-galery_service:hover{
+    border: 1px solid#be960f;
+    border-right-width: 20px;
+}
+.page_servise .default-btn-galery_service::after{
+    content: "\f105";
+    font-family: 'icomoon';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: -12px;
+}
+.page_servise .default-btn:hover{
+    border: 1px solid#be960f;
+    border-right-width: 20px;
+}
+.page_servise .default-btn{
+    margin: 5px;
+}
+.page_servise .servises_item-btn{ 
+    margin-top: 150px;
+    max-width: 1140px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.page_servise .servises_item-text{
+    text-align: left;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    max-width: 1000px;
+    margin: 15 auto;
+    text-indent: 30px;
+}
+/* .page_servise .servises_item{
+    height: 2000px;
+} */

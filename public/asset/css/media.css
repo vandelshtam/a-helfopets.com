@@ -173,6 +173,17 @@
     img.page_new_foto{
         max-width: 300px;
     }
+    .page_servise .servises_item-btn{    
+        flex-direction: column; 
+        margin-top: 50px;   
+    }
+    .page_servise .servises_item-text{
+        padding-bottom: 30px;
+    }
+    .page_servise .servises_item{
+        min-height: 1150px;
+    } 
+
 }
 @media (max-width: 600px){
     
@@ -207,6 +218,9 @@
     img.page_new_foto{
         max-width: 100%;
     }
+    .page_servise .servises_item{
+        min-height: 1200px;
+    } 
     
 }
 @media (max-width: 414px){
@@ -216,6 +230,9 @@
     .slider_text{
         font-size: 16px;
     }
+    .page_servise .servises_item{
+        min-height: 1250px;
+    } 
     
 }
 @media (max-width: 400px){
@@ -237,7 +254,9 @@
     }
 }
 @media (max-width: 325px){
-
+    .page_servise .servises_item{
+        min-height: 1280px;
+    } 
 }
 @media (min-width: 700px){
     .menu ul{

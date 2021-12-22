@@ -31,7 +31,7 @@
                         <a class="header_phone" href="tel:79957771830">+7(995) 777 18 30</a>
                         <a class="header_email" href="#">mvlju977@gmail.com</a>
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                        <span>Вы вошли как: Email: {{ app.user.email }}</span>
+                        <span>login:{{ app.user.email }}</span>
                         <a class="header_email" href="{{ path('app_logout') }}">Выйти</a>
                         {% endif %}
                         <a data-fancybox data-src="#hidden-content" href="javascript:;" class="header_btn">Бесплатная консультация</a>    
@@ -66,12 +66,12 @@
         
         {% endblock %}
         
-        <div id="hidden-content">
+        {# <div id="hidden-content">
             {{ form_start(fast_consultation_form) }}
                 {{ form_widget(fast_consultation_form) }}
                 <input type="submit" value="Отправить">
             {{ form_end(fast_consultation_form) }}
-        </div>
+        </div> #}
 
         {% block javascripts %}
             
