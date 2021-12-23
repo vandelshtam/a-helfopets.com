@@ -18,27 +18,27 @@ class Article
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
+     * @ORM\Column(type="text", length=100, nullable=true)
      */
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
+     * @ORM\Column(type="text", length=100, nullable=true)
      */
     private $comment_foto;
 
     /**
-     * @ORM\Column(type="string", length=10000, nullable=true)
+     * @ORM\Column(type="text", length=5000, nullable=true)
      */
     private $article;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
+     * @ORM\Column(type="text", length=100, nullable=true)
      */
     private $comment_auxiliary_one;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="text", length=100)
      */
     private $author;
 
@@ -53,7 +53,7 @@ class Article
     private $avatar_article;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
+     * @ORM\Column(type="text", length=100, nullable=true)
      */
     private $foto1;
 
@@ -68,22 +68,22 @@ class Article
     private $comment_foto2;
 
     /**
-     * @ORM\Column(type="string", length=2550, nullable=true)
+     * @ORM\Column(type="text", length=2550, nullable=true)
      */
     private $paragraph1;
 
     /**
-     * @ORM\Column(type="string", length=2550, nullable=true)
+     * @ORM\Column(type="text", length=2550, nullable=true)
      */
     private $paragraph2;
 
     /**
-     * @ORM\Column(type="string", length=2550, nullable=true)
+     * @ORM\Column(type="text", length=2550, nullable=true)
      */
     private $paragraph3;
 
     /**
-     * @ORM\Column(type="string", length=2550, nullable=true)
+     * @ORM\Column(type="text", length=2550, nullable=true)
      */
     private $paragraph4;
 

@@ -47,4 +47,18 @@ class ServiceRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findOneByIdJoinedToCategory(int $serviceId): ?Service
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT p, c
+            FROM App\Entity\Service p
+            INNER JOIN p.category c
+            WHERE p.id = :id'
+        )->setParameter('id', $serviceId);
+
+        return $query->getOneOrNullResult();
+    }
 }

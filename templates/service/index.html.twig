@@ -97,9 +97,7 @@
             </div>
         </div>
     </footer>
-{% block javascripts %}
-    {{ include('js.html.twig') }}
-{% endblock %}
+
 <script>
         document.querySelector('#elastic').oninput = function(){
             let val = this.value.trim();
@@ -123,4 +121,7 @@
             }
         }
     </script>        
+{% endblock %}
+{% block javascripts %}
+    {{ include('js.html.twig') }}
 {% endblock %}

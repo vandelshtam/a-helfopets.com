@@ -181,9 +181,11 @@
         padding-bottom: 30px;
     }
     .page_servise .servises_item{
-        min-height: 1150px;
+        height: auto;
     } 
-
+    .page_servise .slick-btn{
+        display: none !important;
+    }
 }
 @media (max-width: 600px){
     

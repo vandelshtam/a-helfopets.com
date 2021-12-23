@@ -6794,12 +6794,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/validator.git",
-                "reference": "ddb92761196afd82161428fae81b516dcb394ee0"
+                "reference": "e3db7453553d8d6c04b43eaeae16f9a2bef3d194"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/validator/zipball/ddb92761196afd82161428fae81b516dcb394ee0",
-                "reference": "ddb92761196afd82161428fae81b516dcb394ee0",
+                "url": "https://api.github.com/repos/symfony/validator/zipball/e3db7453553d8d6c04b43eaeae16f9a2bef3d194",
+                "reference": "e3db7453553d8d6c04b43eaeae16f9a2bef3d194",
                 "shasum": ""
             },
             "require": {
@@ -6893,7 +6893,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-12-08T14:00:06+00:00"
+            "time": "2021-12-21T13:18:21+00:00"
         },
         {
             "name": "symfony/var-dumper",

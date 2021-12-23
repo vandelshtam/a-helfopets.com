@@ -26,18 +26,19 @@
                     <div  class="slider-service">
                         <div class="container">
                             <div class="slider_inner">
+                                {% for foto in categoryFoto %}
                                 <div class="slider_item">
                                     <div class="slider_item-content">
-                                        <img src="img/slider-fon1.jpg" alt="" style="max-width:100%">
+                                        <img src="{{ asset('uploads/img/galery/' ~ foto.Foto) }}" alt="" style="max-width:100%">
                                         <div class="slider_title">
                                             Название работы
                                         </div>
                                         <div class="slider_text">
                                             Комментарий к фотографии
-                                        </div>
-                                        
+                                        </div>                                        
                                     </div>
                                 </div>
+                                {% endfor %}
                                 <div class="slider_item">
                                     <div class="slider_item-content">
                                         <div class="slider_title">
@@ -65,10 +66,17 @@
                     </div>
                     <div class="servises_item-title">
                         Галерея
-                        <a data-fancybox data-src="#hidden-content" href="javascript:;" class="default-btn-galery_service">
+                        {{ form_start(form,{'action': path('service_show',{'id': service.id} )}) }}
+                        {{ form_widget(form) }}
+                        {# <a href="{{ path('service_edit_galery', {'id': service.id}) }}" class="default-btn-galery_service">
                             Редактировать галерею
-                        </a>
-                    </div>       
+                        </a> #}
+                        <button class="default-btn-galery_service">
+                            Редактировать галерею
+                        </button>
+                        {{ form_end(form) }}
+                    </div> 
+                    <div class="service_discription">      
                     <div class="servises_item-text">
                         Полное прекращение существования юридического лица с сохранением легальности предыдущей  деятельности. Полное прекращение существования юридичского лица с сохранение легальности всей предыдущей деятельности. Полное прекращение существования юридического лица с сохранением легальности предыдущей деятельности. Полное прекращение существования юридического лица с сохранением легальности предыдущей деятельности. 
                     </div>
@@ -77,6 +85,7 @@
                     </div>
                     <div class="servises_item-text">
                         Документы
+                    </div>
                     </div>
                     <div class="servises_item-btn">
                         <a href="{{ path('service_index') }}" class="default-btn">

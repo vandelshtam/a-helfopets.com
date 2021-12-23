@@ -31,6 +31,21 @@ class ServiceType extends AbstractType
                     ])
                 ],
             ])
+            ->add('image', FileType::class, [
+                'label' => 'image (JPEG file)',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new Image([
+                        'maxSize' => '200000k',
+                        'mimeTypes' => [
+                            'image/*',
+                            
+                        ],
+                        'mimeTypesMessage' => 'Пожалуйста выберите файл имеющий расширение соответствующее типу - "изображение"',
+                    ])
+                ],
+            ])
         ;
     }
 
