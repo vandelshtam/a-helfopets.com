@@ -14,7 +14,16 @@
                         Комплексный подход к вашему вопросу,своевременная помощь, представление интересов во всех органах и суде.
                     </div>
                 </div>
-            </div>    
+            </div> 
+            {% for label, messages in app.flashes(['success', 'notice']) %}
+                {% for message in messages %}
+                    {% if message %}
+                        <div class="flash-{{ label }} notice_message">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}   
                 <div class="servises_item">
                     <img src="{{ asset('uploads/img/avatars/' ~ service.Avatar) }}" alt="" class="img_servises-1">
                     <div class="servises_item-title">
@@ -30,37 +39,22 @@
                                 <div class="slider_item">
                                     <div class="slider_item-content">
                                         <img src="{{ asset('uploads/img/galery/' ~ foto.Foto) }}" alt="" style="max-width:100%">
-                                        <div class="slider_title">
+                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                            {% if foto.Foto!= null %}
+                                            <a href="{{ path('service_delete_galery', {'id': foto.id}) }}" class="default-btn-galery_service">
+                                                Удалить фото
+                                            </a>
+                                            {% endif %}
+                                            {% endif %}
+                                        {# <div class="slider_title">
                                             Название работы
-                                        </div>
+                                        </div> #}
                                         <div class="slider_text">
                                             Комментарий к фотографии
                                         </div>                                        
                                     </div>
                                 </div>
                                 {% endfor %}
-                                <div class="slider_item">
-                                    <div class="slider_item-content">
-                                        <div class="slider_title">
-                                            КОМПЛЕКСНОЕ ЗАКРЫТИЕ ПРЕДПРИЯТИЯ
-                                        </div>
-                                        <div class="slider_text">
-                                        Полное прекращение существования юридичского лица с сохранение легальности всей предыдущей деятельности 
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                                <div class="slider_item">
-                                    <div class="slider_item-content">
-                                        <div class="slider_title">
-                                            КОМПЛЕКСНОЕ ЗАКРЫТИЕ ПРЕДПРИЯТИЯ
-                                        </div>
-                                        <div class="slider_text">
-                                        Полное прекращение существования юридичского лица с сохранение легальности всей предыдущей деятельности. Полное прекращение существования юридического лица с сохранением легальности предыдущей деятельности. Полное прекращение существования юридического лица с сохранением легальности предыдущей деятельности. 
-                                        </div>
-                                        
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -72,7 +66,7 @@
                             Редактировать галерею
                         </a> #}
                         <button class="default-btn-galery_service">
-                            Редактировать галерею
+                            Добавить фото
                         </button>
                         {{ form_end(form) }}
                     </div> 

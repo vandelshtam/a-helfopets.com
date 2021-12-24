@@ -25,9 +25,14 @@ class Category
     private $foto;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Service::class, mappedBy="category")
+     * @ORM\ManyToMany(targetEntity=Service::class, mappedBy="category", orphanRemoval=true)
      */
     private $services;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $comment;
 
     public function __construct()
     {
@@ -74,6 +79,23 @@ class Category
         if ($this->services->removeElement($service)) {
             $service->removeCategory($this);
         }
+        // if ($this->service->contains($service)) {
+        //     $this->services->removeElement($service);
+        //     // set the owning side to null (unless already changed)
+            
+        // }
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
 
         return $this;
     }

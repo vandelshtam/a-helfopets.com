@@ -5,11 +5,11 @@ namespace App\Controller;
 use App\Entity\Service;
 use App\Entity\Category;
 use App\Form\ServiceType;
+use Doctrine\ORM\Mapping\Id;
 use App\Entity\FastConsultation;
 use App\Form\FastConsultationType;
 use App\Repository\ServiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +21,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 #[Route('/service')]
 class ServiceController extends AbstractController
@@ -41,7 +42,7 @@ class ServiceController extends AbstractController
     }
 
     #[Route('/new', name: 'service_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager,SluggerInterface $slugger, ManagerRegistry $doctrine, int $id): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,SluggerInterface $slugger, ManagerRegistry $doctrine): Response
     {
         $category = new Category();
         
@@ -87,17 +88,14 @@ class ServiceController extends AbstractController
                 } catch (FileException $e) {
                     echo "An error occurred while creating your directory at ";
                 }
-                //$service->addImage($newFilename);
+                
                 $category->setFoto($newFilename);
             }
             $service->addCategory($category);
             $entityManager = $doctrine->getManager();
             $entityManager->persist($category);
             $entityManager->persist($service);
-            
             $entityManager->flush();
-            
-
             $this->addFlash(
                 'success',
                 'Вы успешно создали новую услугу!'); 
@@ -106,31 +104,22 @@ class ServiceController extends AbstractController
 
         return $this->renderForm('service/new.html.twig', [
             'service' => $service,
-            // 'images' => $images,
             'form' => $form,
-            // 'form1' => $form1,
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
         ]);
     }
 
-    #[Route('/{id}', name: 'service_show', methods: ['GET', 'POST'])]
+   #[Route('/{id}', name: 'service_show', methods: ['GET', 'POST'])]
     public function show(Service $service,Request $request,ManagerRegistry $doctrine, int $id,SluggerInterface $slugger): Response
     {
-
-
-
-//dd($id);
-        //$service = $doctrine->getRepository(Service::class)->find($id);
         $service = $doctrine->getRepository(Service::class)->findOneByIdJoinedToCategory($id);
-        //dd($service);
-        $categoryFoto = $service->getCategory();
-        //$categoryFoto = $doctrine->getRepository(Category::class)->find($id);
+        
+        if($service->getCategory() != null){
+            $categoryFoto = $service->getCategory();
+        }
         $category = new Category;
         $category->setFoto('create');
-       // dd($categoryFoto);
-        //$form = $this->createForm(ServiceType::class, $service);
-        
         $form = $this->createFormBuilder($category)
         ->add('foto', FileType::class, [
             //'action' => $this->generateUrl('service_show/{id}'),
@@ -148,11 +137,10 @@ class ServiceController extends AbstractController
             ],
         ])
         ->getForm();
-//dd($form->get('foto')); 
-$form->handleRequest($request);
+
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
     
-           //dd($id);
             $imageFile = $form->get('foto')->getData();
 ;
             if ($imageFile) {
@@ -169,32 +157,20 @@ $form->handleRequest($request);
                 } catch (FileException $e) {
                     echo "An error occurred while creating your directory at ";
                 }
-                //$service->addImage($newFilename);
                 $category->setFoto($newFilename);
             }
             $service->addCategory($category);
             $entityManager = $doctrine->getManager();
             $entityManager->persist($category);
             $entityManager->persist($service);
-            
             $entityManager->flush();
-            
-
             $this->addFlash(
                 'success',
-                'Вы успешно создали новую услугу!'); 
+                'Вы успешно добавили новую фотографию!'); 
             return $this->redirectToRoute('service_show', array(
                 'id' => $service->getId()), Response::HTTP_SEE_OTHER);
         }
 
-
-
-
-
-
-
-        //dd($service);
-        //$service = $category->getServise();
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
@@ -286,14 +262,11 @@ $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $imageleFile */
             $imageFile = $form->get('image')->getData();
-
             $filesystem = new Filesystem();
             if ($imageFile) {
                 $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
-                
                 try {
                     $imageFile->move(
                         $this->getParameter('galery_directory'),
@@ -302,18 +275,17 @@ $form->handleRequest($request);
                 } catch (FileException $e) {
                     echo "An error occurred while creating your directory at ";
                 }
-                //$service->addImage($newFilename);
                 $category->setFoto($newFilename);
             }
             $service->addCategory($category);
             $entityManager = $doctrine->getManager();
             $entityManager->persist($category);
             $entityManager->persist($service);
-                $entityManager->flush();
-                $this->addFlash(
-                    'success',
-                    'Вы успешно обновили информацию об услуге!'); 
-                return $this->redirectToRoute('service_index', [], Response::HTTP_SEE_OTHER);
+            $entityManager->flush();
+            $this->addFlash(
+                'success',
+                'Вы успешно обновили информацию об услуге!'); 
+            return $this->redirectToRoute('service_index', [], Response::HTTP_SEE_OTHER);
         }
             return $this->renderForm('service/edit.html.twig', [
                 'service' => $service,
@@ -325,14 +297,59 @@ $form->handleRequest($request);
 }
 
 
-    #[Route('/{id}', name: 'service_delete', methods: ['POST'])]
-    public function delete(Request $request, Service $service, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/delete', name: 'service_delete', methods: ['POST','GET'])]
+    public function delete(Request $request, Service $service,  EntityManagerInterface $entityManager, int $id, ManagerRegistry $doctrine): Response
     {
         if ($this->isCsrfTokenValid('delete'.$service->getId(), $request->request->get('_token'))) {
+            $filesystem = new Filesystem();
+            if($service->getAvatar() != null){
+                $service->setAvatar(
+                    $path_avatar = new File($this->getParameter('avatar_directory').'/'.$service->getAvatar())
+                );
+                $filesystem->remove(['symlink', $path_avatar, $service->getAvatar()]);
+            }
+            $service = $doctrine->getRepository(Service::class)->findOneByIdJoinedToCategory($id);
+            $categoryFotos = $service->getCategory();
+            foreach ($categoryFotos as $categoryFoto){
+                if($categoryFoto->getFoto() != null){
+                    $categoryFoto->setFoto(
+                        $path_galery = new File($this->getParameter('galery_directory').'/'.$categoryFoto->getFoto())
+                    );
+                    $filesystem->remove(['symlink', $path_galery, $categoryFoto->getFoto()]);
+                }
+                $entityManager->remove($categoryFoto);
+            }
             $entityManager->remove($service);
             $entityManager->flush();
         }
-
+        $this->addFlash(
+            'success',
+            'Вы успешно удалили услугу!'); 
         return $this->redirectToRoute('service_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/delete/galery', name: 'service_delete_galery', methods: ['POST','GET'])]
+    public function deleteGalery(Request $request,Category $category, EntityManagerInterface $entityManager, int $id, ManagerRegistry $doctrine): Response
+    {
+        $category = $doctrine->getRepository(Category::class)->findOneByIdJoinedToService($id);
+        $services = $category->getServices();
+        foreach($services as $service){
+            $service_id = $service->getId();
+        }
+       $category = $doctrine->getRepository(Category::class)->find($id);
+       $services = $category->getServices();
+        
+       $entityManager->remove($category);
+       $filesystem = new Filesystem();
+       $category->setFoto(
+           $path_galery = new File($this->getParameter('galery_directory').'/'.$category->getFoto())
+       );
+       $filesystem->remove(['symlink', $path_galery, $category->getFoto()]);
+       $entityManager->flush();
+       $this->addFlash(
+        'success',
+        'Вы успешно удалили фотографию!'); 
+       return $this->redirectToRoute('service_show', array(
+           'id' => $service_id), Response::HTTP_SEE_OTHER);
     }
 }

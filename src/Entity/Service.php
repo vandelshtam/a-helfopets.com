@@ -35,9 +35,24 @@ class Service
     private $avatar;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="services")
+     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="services", orphanRemoval=true)
      */
     private $category;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description2;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description3;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $document;
 
 
     public function __construct()
@@ -107,6 +122,45 @@ class Service
     public function removeCategory(Category $category): self
     {
         $this->category->removeElement($category);
+        // if ($this->services->contains($category)) {
+        //     $this->services->removeElement($category);
+            
+        // }
+        return $this;
+    }
+
+    public function getDescription2(): ?string
+    {
+        return $this->description2;
+    }
+
+    public function setDescription2(?string $description2): self
+    {
+        $this->description2 = $description2;
+
+        return $this;
+    }
+
+    public function getDescription3(): ?string
+    {
+        return $this->description3;
+    }
+
+    public function setDescription3(?string $description3): self
+    {
+        $this->description3 = $description3;
+
+        return $this;
+    }
+
+    public function getDocument(): ?string
+    {
+        return $this->document;
+    }
+
+    public function setDocument(?string $document): self
+    {
+        $this->document = $document;
 
         return $this;
     }

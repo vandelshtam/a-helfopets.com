@@ -8,13 +8,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class ServiceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
+            ->add('name',TextType::class)
             ->add('discription')
             ->add('avatar', FileType::class, [
                 'label' => 'avatar (JPEG file)',
@@ -46,6 +48,9 @@ class ServiceType extends AbstractType
                     ])
                 ],
             ])
+            ->add('description2',TextareaType::class)
+            ->add('description3',TextareaType::class)
+            ->add('document')
         ;
     }
 

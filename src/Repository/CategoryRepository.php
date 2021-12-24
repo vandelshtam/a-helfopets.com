@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Category;
+use App\Entity\Service;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -35,8 +36,21 @@ class CategoryRepository extends ServiceEntityRepository
         ;
     }
     
+    // public function deleteOneByIdJoinedToCategory(int $serviceId): ?Service
+    // {
+    //     $entityManager = $this->getEntityManager();
 
-    /*
+    //     $query = $entityManager->createQuery(
+    //         'DELETE p, c
+    //         FROM App\Entity\Service p
+    //         WHERE p.id = :id'
+    //     )->setParameter('id', $serviceId);
+
+    //     return $query->getOneOrNullResult();
+    // }
+
+
+    
     public function findOneBySomeField($value): ?Category
     {
         return $this->createQueryBuilder('c')
@@ -46,5 +60,20 @@ class CategoryRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-    */
+    
+
+    public function findOneByIdJoinedToService(int $categoryId): ?Category
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT p, c
+            FROM App\Entity\Category p
+            INNER JOIN p.services c
+            WHERE p.id = :id'
+        )->setParameter('id', $categoryId);
+
+        return $query->getOneOrNullResult();
+    }
+    
 }
