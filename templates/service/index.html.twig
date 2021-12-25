@@ -3,12 +3,6 @@
 {% block title %}Service index{% endblock %}
 
 {% block body %}
-
-    
-
-    
-
-
 <section class="page_servises">
         <div class="container">
             <div class="servises_top">
@@ -22,9 +16,11 @@
                 </div>
             </div>
             <div class="servises_items elastic">
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
             <a href="{{ path('service_new') }}" class="default-btn-create_service">
                 Добавить
             </a>
+            {% endif %}
             {% for label, messages in app.flashes(['success', 'notice']) %}
                 {% for message in messages %}
                     {% if message %}
@@ -35,7 +31,7 @@
                 {% endfor %}
             {% endfor %}
             <div class="page_news-search">
-                <input type="text" id="elastic" name="filter-contacts" class="" placeholder="Поиск новостей">
+                <input type="text" id="elastic" name="filter-contacts" class="" placeholder="Поиск услуг">
             </div>
                 {% for service in services %}
                 <div class="servises_item none" data-filter-tags="{{ service.name }}">
@@ -53,16 +49,17 @@
                         <a data-fancybox data-src="#hidden-content" href="javascript:;" class="default-btn">
                             Заказать
                         </a>
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
                         <a href="{{ path('service_edit', {'id': service.id}) }}" class="default-btn">
                             edit
                         </a>
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
             </div>
         </div>
-    </section>
-    
+    </section>   
     <footer class="footer">
         <div class="footer_content">
             <div class="container">

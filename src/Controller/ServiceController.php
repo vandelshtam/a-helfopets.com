@@ -22,6 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 #[Route('/service')]
 class ServiceController extends AbstractController
@@ -58,6 +59,7 @@ class ServiceController extends AbstractController
             /** @var UploadedFile $avatarleFile */
             $avatarFile = $form->get('avatar')->getData();
             $imageFile = $form->get('image')->getData();
+            $documentFile = $form->get('document')->getData();
             if ($avatarFile) {
                 $originalFilename = pathinfo($avatarFile->getClientOriginalName(), PATHINFO_FILENAME);
                 
@@ -91,6 +93,24 @@ class ServiceController extends AbstractController
                 
                 $category->setFoto($newFilename);
             }
+            if ($documentFile) {
+                $originalDocFilename = pathinfo($documentFile->getClientOriginalName(), PATHINFO_FILENAME);
+                
+                $safeDocFilename = $slugger->slug($originalDocFilename);
+                $newDocFilename = $safeDocFilename.'-'.uniqid().'.'.$documentFile->guessExtension();
+                
+                try {
+                    $documentFile->move(
+                        $this->getParameter('files_directory'),
+                        $newDocFilename
+                    );
+                } catch (FileException $e) {
+                    echo "An error occurred while creating your directory at ";
+                }
+                
+                $service->setDocument($newDocFilename);
+            }
+            
             $service->addCategory($category);
             $entityManager = $doctrine->getManager();
             $entityManager->persist($category);
@@ -123,9 +143,9 @@ class ServiceController extends AbstractController
         $form = $this->createFormBuilder($category)
         ->add('foto', FileType::class, [
             //'action' => $this->generateUrl('service_show/{id}'),
-            'label' => 'image (JPEG file)',
+            'label' => 'Добавить фотографию в галерею, тип файла должен иметь расширение одного из типов изображений (jpg, jpeg, и др). Обязательное для заполнения поле. ',
             'mapped' => false,
-            'required' => false,
+            'required' => true,
             'constraints' => [
                 new Image([
                     'maxSize' => '200000k',
@@ -136,13 +156,16 @@ class ServiceController extends AbstractController
                 ])
             ],
         ])
+        ->add('comment', TextareaType::class, [
+            'label' => 'Добавить комментарий или описание к фотографии, не обязательное к заполнению поле',
+            'required' => false,
+        ])
         ->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
     
             $imageFile = $form->get('foto')->getData();
-;
             if ($imageFile) {
                 $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
                 
@@ -227,23 +250,18 @@ class ServiceController extends AbstractController
                     'Вы успешно обновили информацию об услуге!'); 
                 return $this->redirectToRoute('service_index', [], Response::HTTP_SEE_OTHER);
         }
-            return $this->renderForm('service/edit.html.twig', [
-                'service' => $service,
-                'form' => $form,
-                'fast_consultation' => $fast_consultation,
-                'fast_consultation_form' => $fast_consultation_form,
-            ]);
+        return $this->renderForm('service/edit.html.twig', [
+            'service' => $service,
+            'form' => $form,
+            'fast_consultation' => $fast_consultation,
+            'fast_consultation_form' => $fast_consultation_form,
+        ]);
         
 }
 #[Route('/{id}/edit/galery', name: 'service_edit_galery', methods: ['GET', 'POST'])]
     public function editGalery(Request $request, Service $service, EntityManagerInterface $entityManager,SluggerInterface $slugger,ManagerRegistry $doctrine): Response
     {
         $category = new Category();
-        
-       
-        $category->setCategory('create');
-        
-
         $form = $this->createFormBuilder($task)
             ->add('task', TextType::class)
             ->add('dueDate', DateType::class)
@@ -287,12 +305,12 @@ class ServiceController extends AbstractController
                 'Вы успешно обновили информацию об услуге!'); 
             return $this->redirectToRoute('service_index', [], Response::HTTP_SEE_OTHER);
         }
-            return $this->renderForm('service/edit.html.twig', [
-                'service' => $service,
-                'form' => $form,
-                'fast_consultation' => $fast_consultation,
-                'fast_consultation_form' => $fast_consultation_form,
-            ]);
+        return $this->renderForm('service/edit.html.twig', [
+            'service' => $service,
+            'form' => $form,
+            'fast_consultation' => $fast_consultation,
+            'fast_consultation_form' => $fast_consultation_form,
+        ]);
         
 }
 
@@ -329,7 +347,7 @@ class ServiceController extends AbstractController
     }
 
     #[Route('/{id}/delete/galery', name: 'service_delete_galery', methods: ['POST','GET'])]
-    public function deleteGalery(Request $request,Category $category, EntityManagerInterface $entityManager, int $id, ManagerRegistry $doctrine): Response
+    public function deleteGalery(Category $category, EntityManagerInterface $entityManager, int $id, ManagerRegistry $doctrine): Response
     {
         $category = $doctrine->getRepository(Category::class)->findOneByIdJoinedToService($id);
         $services = $category->getServices();
@@ -351,5 +369,82 @@ class ServiceController extends AbstractController
         'Вы успешно удалили фотографию!'); 
        return $this->redirectToRoute('service_show', array(
            'id' => $service_id), Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/edition/galery', name: 'service_edition_galery', methods: ['POST','GET'])]
+    public function editionGalery(Request $request,Category $category, EntityManagerInterface $entityManager, int $id, ManagerRegistry $doctrine, SluggerInterface $slugger): Response
+    {
+        $category = $doctrine->getRepository(Category::class)->find($id);
+        
+        $form = $this->createFormBuilder($category)
+        ->add('foto', FileType::class, [
+            'label' => 'Заменить фотографию в галерею, тип файла должен иметь расширение одного из типов изображений (jpg, jpeg, и др). Обязательное для заполнения поле. ',
+            'mapped' => false,
+            'required' => true,
+            'constraints' => [
+                new Image([
+                    'maxSize' => '200000k',
+                    'mimeTypes' => [
+                        'image/*',    
+                    ],
+                    'mimeTypesMessage' => 'Пожалуйста выберите файл имеющий расширение соответствующее типу - "изображение"',
+                ])
+            ],
+        ])
+        ->add('comment', TextareaType::class, [
+            'label' => 'Редактировать комментарий или описание к фотографии, не обязательное к заполнению поле',
+            'required' => false,
+        ])
+        ->getForm();
+        $form->handleRequest($request);
+
+         $services = $category->getServices();
+         foreach($services as $service){
+             $service_id = $service->getId();
+        }
+       
+        if ($form->isSubmitted() && $form->isValid()) {
+            $fotoFile = $form->get('foto')->getData();
+            $comment = $form->get('comment')->getData();
+            if ($fotoFile) {
+                
+                $filesystem = new Filesystem();
+                $originalFilename = pathinfo($fotoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$fotoFile->guessExtension();
+                $category->setFoto(
+                    $path_foto = new File($this->getParameter('galery_directory').'/'.$category->getFoto())
+                );
+                $filesystem->remove(['symlink', $path_foto, $category->getFoto()]);
+                try {
+                    $fotoFile->move(
+                        $this->getParameter('galery_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    echo "An error occurred while creating your directory at ";
+                }
+                $category->setFoto($newFilename);
+            }
+            $category->setComment($comment);
+            $entityManager->flush();
+            $this->addFlash(
+            'success',
+            'Вы успешно обновили фотографию!');
+            
+            return $this->redirectToRoute('service_show', array(
+                'id' => $service_id), Response::HTTP_SEE_OTHER); 
+        }
+
+        $fast_consultation = new FastConsultation();
+        $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
+        $fast_consultation_form->handleRequest($request);
+
+        return $this->renderForm('service/edit_galery_service.html.twig', [
+        'category' => $category,
+        'form' => $form,
+        'fast_consultation' => $fast_consultation,
+        'fast_consultation_form' => $fast_consultation_form,
+        ]);
     }
 }

@@ -1,13 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Service{% endblock %}
+{% block title %}PlumbInstall/Services/add service{% endblock %}
 
-{% block body %}
-    <h1>Create new Service</h1>
+{% block body %}    
+<section class="add_new-form">
+        <div class="container">
+                <div class="form_content">
+                    <div class="form_title-box">
+                        <div class="form_title">
+                            Добавить новую услугу
+                        </div>
+                        <div class="form_text">
+                            При заполнении формы новостной статьи,пожалуйста следуйте правилам публикации статей на сайте и подсказкам системы.
+                        </div>
+                    </div>
+                    {{ include('service/_form.html.twig') }}
+                    </div>    
+                </div>    
+        </div>
+    </section>
 
-    {{ include('service/_form.html.twig') }}
 
-    <a href="{{ path('service_index') }}">back to list</a>
 {% endblock %}
 
 {% block javascripts %}

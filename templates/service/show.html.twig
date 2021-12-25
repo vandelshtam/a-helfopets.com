@@ -38,62 +38,79 @@
                                 {% for foto in categoryFoto %}
                                 <div class="slider_item">
                                     <div class="slider_item-content">
-                                        <img src="{{ asset('uploads/img/galery/' ~ foto.Foto) }}" alt="" style="max-width:100%">
-                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                            {% if foto.Foto!= null %}
-                                            <a href="{{ path('service_delete_galery', {'id': foto.id}) }}" class="default-btn-galery_service">
-                                                Удалить фото
-                                            </a>
-                                            {% endif %}
-                                            {% endif %}
-                                        {# <div class="slider_title">
-                                            Название работы
-                                        </div> #}
+                                        <img src="{{ asset('uploads/img/galery/' ~ foto.Foto) }}" alt="" >
                                         <div class="slider_text">
-                                            Комментарий к фотографии
-                                        </div>                                        
-                                    </div>
+                                            {{ foto.comment }}
+                                        </div> 
+                                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                            {% if foto.Foto!= null %}
+                                                <a href="{{ path('service_delete_galery', {'id': foto.id}) }}" class="default-btn-galery_service" >
+                                                        Удалить фото и комментарий
+                                                </a> 
+                                                <a href="{{ path('service_edition_galery', {'id': foto.id}) }}" class="default-btn-galery_service" >
+                                                        Редактировать фото и комментарий
+                                                </a> 
+                                            {% endif %} 
+                                        {% endif %}                                      
+                                    </div>    
                                 </div>
                                 {% endfor %}
                             </div>
                         </div>
                     </div>
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
                     <div class="servises_item-title">
                         Галерея
                         {{ form_start(form,{'action': path('service_show',{'id': service.id} )}) }}
-                        {{ form_widget(form) }}
-                        {# <a href="{{ path('service_edit_galery', {'id': service.id}) }}" class="default-btn-galery_service">
-                            Редактировать галерею
-                        </a> #}
-                        <button class="default-btn-galery_service">
-                            Добавить фото
-                        </button>
+                            <div class="form_box-inner">
+                                <div class="form_box-left" required>
+                                    {{ form_widget(form) }}
+                                    {# <a href="{{ path('service_edit_galery', {'id': service.id}) }}" class="default-btn-galery_service">
+                                        Редактировать галерею
+                                    </a> #}
+                                    
+                                    <button class="default-btn-galery_service">
+                                        Добавить фото
+                                    </button>    
+                                </div>
+                            </div>
                         {{ form_end(form) }}
                     </div> 
+                    {% endif %}
                     <div class="service_discription">      
                     <div class="servises_item-text">
-                        Полное прекращение существования юридического лица с сохранением легальности предыдущей  деятельности. Полное прекращение существования юридичского лица с сохранение легальности всей предыдущей деятельности. Полное прекращение существования юридического лица с сохранением легальности предыдущей деятельности. Полное прекращение существования юридического лица с сохранением легальности предыдущей деятельности. 
+                       {{  service.description2  }}
                     </div>
                     <div class="servises_item-text">
-                        Полное прекращение существования юридического лица с сохранением легальности предыдущей  деятельности
+                        {{ service.description3 }}
                     </div>
                     <div class="servises_item-text">
-                        Документы
+                        ссылка на документ: 
+                        <a href="{{ asset('uploads/files/' ~ service.Document) }}">(PDF) {{ service.document }}</a>
+                        {# <iframe src="https://docs.google.com/gview?url=https://path.com/to/your/pdf.pdf&embedded=true" style="width:300px; height:200px;" frameborder="0">{{ asset('uploads/files/' ~ service.Document) }}</iframe> #}
+                        <div class="service_embed">
+                            <embed src="{{ asset('uploads/files/' ~ service.Document) }}">
+                        </div>
+                        {# <object data="{{ asset('uploads/files/' ~ service.Document) }}" type="application/pdf" width="300" height="200">
+                            <a href="{{ asset('uploads/files/' ~ service.Document) }}">test.pdf</a>
+                        </object> #}
                     </div>
                     </div>
                     <div class="servises_item-btn">
                         <a href="{{ path('service_index') }}" class="default-btn">
                             Назад
                         </a>
-                        <a href="{{ path('service_edit', {'id': service.id}) }}" class="default-btn">
-                            Редактировать
-                        </a>
                         <a data-fancybox data-src="#hidden-content" href="javascript:;" class="default-btn">
                             Заказать услугу
                         </a>
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <a href="{{ path('service_edit', {'id': service.id}) }}" class="default-btn">
+                            Редактировать
+                        </a>
                         {{ include('service/_delete_form.html.twig') }}
+                        {% endif %}
                     </div>
-                </div>          
+                </>          
         </div>
     </section>
     <footer class="footer">
@@ -130,11 +147,8 @@
             </div>
         </div>
     </footer>
+{% endblock %}
 
 {% block javascripts %}
     {{ include('js.html.twig') }}
 {% endblock %} 
-
-{% endblock %}
-
-

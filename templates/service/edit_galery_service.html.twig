@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Service galery{% endblock %}
+
+{% block body %}
+<section class="add_new-form">
+        <div class="container">
+                <div class="form_content">
+                    <div class="form_title-box">
+                        <div class="form_title">
+                            Редактировать галерею услуги
+                        </div>
+                        <div class="form_text">
+                            При заполнении формы новостной статьи,пожалуйста следуйте правилам публикации статей на сайте и подсказкам системы.
+                        </div>
+                    </div>
+                    <div class="add_new-form form_box">
+                        {{ form_start(form, {'action': path('service_edition_galery',{'id': category.id} )},{'button_label': 'Update'}) }}
+                            <div class="add_new-form form_box-inner">
+                                <div class="add_new-form form_box-left">
+                                {# {{ form_widget(form) }} #}
+                                    <label for="">
+                                        {{ form_row(form.comment) }}
+                                    </label>
+                                </div>
+                                <div class="add_new-form form_box-right">
+                                    <label for="file-upload" class="add_new custom-file-upload">
+                                        Текущее фото 
+                                        <img src="{{ asset('uploads/img/galery/' ~ category.Foto) }}" alt="" class="img_servises-1">
+                                        Загрузить новое фото
+                                        {{ form_row(form.foto) }}
+                                    </label>
+                                    <button class="default-btn" type="submit">Сохранить</button>
+                                    <a href="{{ path('service_index') }}" class="default-btn">Назад</a>  
+                                </div>
+                            </div>    
+                        {{ form_end(form) }}
+                    </div>    
+                </div>    
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ include('js.html.twig') }}
+{% endblock %}

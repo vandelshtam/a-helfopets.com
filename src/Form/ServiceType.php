@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Service;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -16,12 +17,18 @@ class ServiceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name',TextType::class)
-            ->add('discription')
+            ->add('name',TextType::class, [
+                'label' => 'Название услуги не более 70 символов',
+                'required' => true,  
+            ])
+            ->add('discription', TextareaType::class,[
+                'label' => 'Краткое описание услуги не более 250 символов',
+                'required' => true,  
+            ])
             ->add('avatar', FileType::class, [
-                'label' => 'avatar (JPEG file)',
+                'label' => 'Пожалуйста выберите файл с расширением сооответствующим изображению (jpg, jpeg  и т п) Поле обязательное для заполнения',
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
                 'constraints' => [
                     new Image([
                         'maxSize' => '200000k',
@@ -34,9 +41,9 @@ class ServiceType extends AbstractType
                 ],
             ])
             ->add('image', FileType::class, [
-                'label' => 'image (JPEG file)',
+                'label' => 'Пожалуйста выберите файл с расширением сооответствующим изображению (jpg, jpeg  и т п) Поле обязательное для заполнения',
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
                 'constraints' => [
                     new Image([
                         'maxSize' => '200000k',
@@ -48,9 +55,29 @@ class ServiceType extends AbstractType
                     ])
                 ],
             ])
-            ->add('description2',TextareaType::class)
-            ->add('description3',TextareaType::class)
-            ->add('document')
+            ->add('description2',TextareaType::class, [
+                'label' => 'Основное описание услуги не более 1000 символов',
+                'required' => true,  
+            ])
+            ->add('description3',TextareaType::class, [
+                'label' => 'Дополнительное описание услуги не более 1000 символов',
+                'required' => true,  
+            ])
+            ->add('document', FileType::class, [
+                'label' => 'Пожалуйста выберите файл с расширением pdf',
+                'mapped' => false,
+                'required' => true,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'application/pdf',
+                            'application/x-pdf',
+                        ],
+                        'mimeTypesMessage' => 'Пожалуйста выберите файл имеющий расширение pdf',
+                    ])
+                ],
+            ])
         ;
     }
 
