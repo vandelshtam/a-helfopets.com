@@ -1,13 +1,37 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Slider{% endblock %}
+{% block title %}Страница создания нового слайдера главной страницы{% endblock %}
 
 {% block body %}
-    <h1>Create new Slider</h1>
+<section class="add_new-form">
+        <div class="container">
+                <div class="form_content">
+                    <div class="form_title-box">
+                        <div class="form_title">
+                            Добавить элемент слайдера главной страницы
+                        </div>
+                        <div class="form_text">
+                            При заполнении формы,пожалуйста следуйте правилам сайта и подсказкам системы.
+                        </div>
+                    </div>
+                     {{ include('slider/_form.html.twig') }}
+                    </div>   
+                </div>    
+        </div>
+</section>
+    <div id="hidden-content">
+        <form action="">
+            <input type="text" placeholder="Ваше имя">
+            <input type="text" placeholder="Ваш телефон">
+            <input type="submit" value="Отправить">
+        </form>
+    </div>                    
+    {# <div class="about_item-btn-jobs">
+        <a href="{{ path('slider_index') }}" class="default-btn-about">
+            Назад
+        </a> 
+    </div> #}
 
-    {{ include('slider/_form.html.twig') }}
-
-    <a href="{{ path('slider_index') }}">back to list</a>
 {% endblock %}
 
 {% block javascripts %}
