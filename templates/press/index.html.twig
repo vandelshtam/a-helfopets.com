@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}slider_show{% endblock %}
+{% block title %}Press index{% endblock %}
 
 {% block body %}
 <section class="page news">
@@ -8,40 +8,48 @@
             <div class="news_top">
                 <div class="news_title-box">
                     <div class="news_title">
-                        Страница слайдера
+                        Страница управления содержимым слайдера страницы "О нас" в разделе "Пресса о нас"
                     </div>
                     <div class="news_text">
                         Пожалуйста следуйте рекомендациям системы
                     </div>   
                 </div>
                 <div class="about_item-btn-jobs">
-                        <a  href="{{ path('slider_new') }}" class="default-btn-about admin">
+                        <a  href="{{ path('press_new') }}" class="default-btn-about admin">
                             Добавить
                         </a>
                     </div>
-            </div>            
-            <div class="page news_inner elastic" id="">    
-                <a id="c_1" href="{{ path('slider_show', {'id': slider.id}) }}" class="page news_blog none" data-filter-tags="{{ slider.serviceName }}">
-                    <div class="page news_images">
+            </div>
+            <div class="page news_inner elastic" id="">
+            {% for press in presses %}
+                <a id="c_1" href="#" class="about_slider_press page news_blog none" data-filter-tags="black">
+                    <div class="about_slider_press page news_images">
+                        {% if press.Img != null %}
+                                <img src="{{ asset('uploads/img/' ~ press.Img) }}" alt="">
+                                {% else %}
+                                <img src="{{ asset('asset/img/fon-foto-default-2.jpeg') }}" alt="">
+                        {% endif %}
+                        <div class="news_date">{{ press.created_at|date('m-d') }}</div>
                     </div>
                     <div class="news_blog-title">
-                        {{ slider.serviceName }}
+                        {{ press.title }}
                     </div>
                     <div class="news_blog-text">
-                        {{ slider.discriptionService }}
+                        {{ press.text }}
                     </div>
                 </a>
                 <div class="about_item-btn-jobs">
-                    <a href="{{ path('slider_index') }}" class="default-btn-about">
+                    <a href="{{ path('about_comtroller') }}" class="default-btn-about">
                         Назад
                     </a>
-                    <a  href="{{ path('slider_edit', {'id': slider.id}) }}" class="default-btn-about admin">
+                    <a  href="{{ path('press_edit', {'id': press.id}) }}" class="default-btn-about admin">
                         Редактировать
                     </a>
-                    <a>
-                        {{ include('slider/_delete_form.html.twig') }}   
-                    </a>     
+                    <a  href="#" class="default-btn-about admin">
+                        Удалить
+                    </a>    
                 </div>
+            {% endfor %}    
             </div>
         </div>
     </section>
@@ -79,17 +87,4 @@
             </div>
         </div>
     </footer>
-
-    <div id="hidden-content">
-        <form action="">
-            <input type="text" placeholder="Ваше имя">
-            <input type="text" placeholder="Ваш телефон">
-            <input type="submit" value="Отправить">
-
-        </form>
-    </div>
-{% endblock %}
-
-{% block javascripts %}
-    {{ include('js.html.twig') }}
 {% endblock %}

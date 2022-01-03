@@ -1,0 +1,30 @@
+{% if form_errors(form) %}
+    <div class="my-custom-class-for-errors">
+        {{ form_errors(form) }}
+    </div>
+{% endif %}
+{{ form_start(form) }}
+    <div class="add_new-form form_box-inner">
+        <div class="add_new-form form_box-left">
+            <label for="">
+                 {{ form_row(form.title) }}
+            </label>
+            <label for="file-upload" class="add_new custom-file-upload">
+                текущая фотография
+                {% if press.Img != null %}
+                    <img src="{{ asset('uploads/img/' ~ press.Img) }}" alt="">
+                    {% else %}
+                    <img src="{{ asset('asset/img/fon-foto-default-2.jpeg') }}" alt="">
+                {% endif %}  
+                 {{ form_row(form.img) }}
+            </label>   
+            </div>
+        <div class="add_new-form form_box-right">   
+            <label for="">
+                 {{ form_row(form.text) }}
+            </label>
+            <button class="default-btn" type="submit">Сохранить</button>
+            <a href="{{ path('press_index') }}" class="default-btn" >Назад</a>
+        </div>
+    </div>    
+{{ form_end(form) }}      

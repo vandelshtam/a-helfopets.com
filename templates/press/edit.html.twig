@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Press{% endblock %}
+
+{% block body %}
+    <h1>Edit Press</h1>
+
+    {{ include('press/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('press_index') }}">back to list</a>
+
+    {{ include('press/_delete_form.html.twig') }}
+{% endblock %}

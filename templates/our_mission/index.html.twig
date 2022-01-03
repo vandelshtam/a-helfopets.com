@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}OurMission index{% endblock %}
+
+{% block body %}
+    <h1>OurMission index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Title</th>
+                <th>Text</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for our_mission in our_missions %}
+            <tr>
+                <td>{{ our_mission.id }}</td>
+                <td>{{ our_mission.name }}</td>
+                <td>{{ our_mission.title }}</td>
+                <td>{{ our_mission.text }}</td>
+                <td>
+                    <a href="{{ path('our_mission_show', {'id': our_mission.id}) }}">show</a>
+                    <a href="{{ path('our_mission_edit', {'id': our_mission.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('our_mission_new') }}">Create new</a>
+
+    <div id="hidden-content">
+        <form action="">
+            <input type="text" placeholder="Ваше имя">
+            <input type="text" placeholder="Ваш телефон">
+            <input type="submit" value="Отправить">
+        </form>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ include('js.html.twig') }}
+{% endblock %}

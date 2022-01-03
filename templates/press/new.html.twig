@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Press{% endblock %}
+
+{% block body %}
+    <section class="add_new-form">
+        <div class="container">
+                <div class="form_content">
+                    <div class="form_title-box">
+                        <div class="form_title">
+                            Страница добавления нового слайдера в блок Пресса о нас на странице О нас
+                        </div>
+                        <div class="form_text">
+                            При заполнении формы ,пожалуйста следуйте правилам публикации статей на сайте и подсказкам системы.
+                        </div>
+                    </div>
+                    <div class="add_new-form form_box">
+                        {{ include('press/_form.html.twig') }}
+                    </div>   
+                </div>   
+        </div>
+    </section>
+{% endblock %}

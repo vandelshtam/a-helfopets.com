@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Achievements{% endblock %}
+
+{% block body %}
+<section class="add_new-form">
+        <div class="container">
+                <div class="form_content">
+                    <div class="form_title-box">
+                        <div class="form_title">
+                            Страница добавления карточки на странице Онас в блоке "Достижения, награды, деятельность"
+                        </div>
+                        <div class="form_text">
+                            При заполнении формы,пожалуйста следуйте правилам публикации статей на сайте и подсказкам системы.
+                        </div>
+                    </div>
+                    <div class="add_new-form form_box">
+                    {{ include('achievements/_form.html.twig') }}
+                    </div>   
+                </div>    
+        </div>
+    </section> 
+<div id="hidden-content">
+    {{ form_start(fast_consultation_form) }}
+        {{ form_widget(fast_consultation_form) }}
+        <input type="submit" value="Отправить">
+    {{ form_end(fast_consultation_form) }}
+</div>       
+{% endblock %}
+{% block javascripts %}
+    {{ include('js.html.twig') }}
+{% endblock %}

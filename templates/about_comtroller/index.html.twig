@@ -1,0 +1,533 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}О нас{% endblock %}
+
+{% block body %}
+<div class="page_about">
+        <div class="container">
+            <div class="about_top">
+                <div class="about_title-box">
+                    <div class="about_title">
+                        О нас
+                    </div>
+                    <div class="about_text">
+                        Мы не коммерческое партнерство, которое занимается организацией и проведением помощи животным
+                    </div>
+                </div>
+            </div>
+            {% for label, messages in app.flashes(['success', 'notice']) %}
+                {% for message in messages %}
+                    {% if message %}
+                        <div class="flash-{{ label }} notice_message">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            <div class="about_items">
+                {% for our_mission in our_missions %}
+                    <div class="about_item">                
+                        <div class="about_title">
+                            {{ our_mission.name }}
+                        </div>
+                        <div class="about_top">
+                            <div class="img_about">
+                                {% if our_mission.Img != null %}
+                                <img src="{{ asset('uploads/img/' ~ our_mission.Img) }}" alt="">
+                                {% else %}
+                                <img src="{{ asset('asset/img/fon-foto-default-3.jpeg') }}" alt="">
+                                {% endif %}
+                            </div>
+                            <div class="about_top_item-title">
+                                <div class="about_item-title">
+                                    {{ our_mission.title }}
+                                </div>
+                                <div class="about_item-text">
+                                    {{ our_mission.text }}
+                                </div>
+                            </div>
+                        </div>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <div class="about_item-btn">
+                                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <a  href="{{ path('our_mission_new') }}" class="default-btn-about admin">
+                                    Заполнить
+                                </a>
+                                {% endif %}
+                                <a  href="{{ path('our_mission_edit', {'id': our_mission.id}) }}" class="default-btn-about admin">
+                                    Редактировать
+                                </a>
+                                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <a  href="#" class="default-btn-about admin">
+                                    Удалить
+                                </a> 
+                                {% endif %}   
+                            </div>
+                        {% endif %}                                    
+                    </div> 
+                {% endfor %}         
+            </div>
+            <div class="about_items">
+                <div class="about_item">
+                    <div class="about_title">
+                        Наша работа, награды, достижения
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <a  href="{{ path('achievements_new') }}" class="default-btn-about admin">
+                            Добавить
+                        </a>
+                        {% endif %}
+                    </div>
+                    {% for achievement in achievements %}
+                    <div class="about_item-string">
+                        <div class="about_top">
+                            <div class="img_about">
+                                {% if achievement.Img != null %}
+                                <img src="{{ asset('uploads/img/' ~ achievement.Img) }}" alt="">
+                                {% else %}
+                                <img src="{{ asset('asset/img/fon-foto-default-3.jpeg') }}" alt="">
+                                {% endif %}
+                            </div>
+                            <div class="about_top_item-title">
+                                <div class="about_item-title">
+                                    {{ achievement.title }}
+                                </div>
+                                <div class="about_item-text">
+                                    {{ achievement.text }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="about_item-text">
+                            {{ achievement.paragraph }}
+                        </div>
+                        <div class="about_item-text">
+                            {{ achievement.link }}
+                        </div>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <div class="about_item-btn">
+                                <a  href="{{ path('achievements_edit', {'id': achievement.id}) }}" class="default-btn-about admin">
+                                    Редактировать
+                                </a>
+                                 <a  href="#">
+                                    {{ include('achievements/_delete_form.html.twig') }} 
+                                </a>       
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}       
+                </div>    
+            </div>
+            <div class="about_items">
+                <div class="about_item press">
+                    <div class="about_title">
+                        Пресса о нас
+                    </div>
+                    <div class="about_top">
+                        <div class="img_about">
+                            <img src="{{ asset('asset/img/icone-press-3.png') }}" alt="" >
+                        </div>
+                        <div class="about_top_item-title">
+                            <div class="about_item-title">
+                                Средства массовой информации о нашей дейтельности
+                            </div>
+                            <div class="about_item-text">
+                                Информация которая рассказывает о нашей дейтельности
+                            </div>
+                        </div>   
+                    </div>
+                    <div class="about_slider">
+                        <div class="about_slider-inner">
+                            <div class="about_slider-item">
+                                <a href="#" class="about_img"><img src="{{ asset('asset/img/fon-foto-default-2.jpeg') }}"></a>
+                                <div class="about_slider-title">
+                                    Раненого лосенка нашли во дворе сельской школы под Хабаровском 
+                                </div>
+                                <div class="about_slider-text">
+                                    Во дворе сельской школы в районе Полины Осипенко Хабаровского края нашли раненого лосенка, который прятался от сторожевых собак. Он бегал под окнами образовательного учреждения, привлекая внимание людей. Поняв, что собаки ушли, лосенок скрылся в направлении леса.
+                                    По словам местных жителей, которые приводит ИА AmurMedia, животное было ранено в области шеи. Они не исключили, что лосенок забрел на сельскую базу, где его покусали собаки.
+                                    Об инциденте руководство школы рассказало главе местной администрации и участковому уполномоченному полиции. Дальнейшая судьба животного неизвестна.
+                                </div> 
+                                <div class="about_slider_btn">Управлять слайдером
+                                    <a  data-fancybox data-src="#hidden-content-slider-edit" href="javascript:;" class="default-btn-about">
+                                        Редактировать
+                                    </a>
+                                    <a  href="#" class="default-btn-about">
+                                        Удалить
+                                    </a>
+                                </div>      
+                            </div>
+                            <div class="about_slider-item">
+                                <a href="#" class="about_img"><img src="{{ asset('asset/img/fon-foto-default-2.jpeg') }}"></a>
+                                
+                                <div class="about_slider-title">
+                                    Раненого лосенка нашли во дворе сельской школы под Хабаровском 2
+                                </div>
+                                <div class="about_slider-text">
+                                    Во дворе сельской школы в районе Полины Осипенко Хабаровского края нашли раненого лосенка, который прятался от сторожевых собак. Он бегал под окнами образовательного учреждения, привлекая внимание людей. Поняв, что собаки ушли, лосенок скрылся в направлении леса.
+                                    По словам местных жителей, которые приводит ИА AmurMedia, животное было ранено в области шеи. Они не исключили, что лосенок забрел на сельскую базу, где его покусали собаки.
+                                    Об инциденте руководство школы рассказало главе местной администрации и участковому уполномоченному полиции. Дальнейшая судьба животного неизвестна.
+                                </div> 
+                                <div class="about_slider_btn">Управлять слайдером
+                                    <a  data-fancybox data-src="#hidden-content-slider-edit" href="javascript:;" class="default-btn-about">
+                                        Редактировать
+                                    </a>
+                                    <a  href="#" class="default-btn-about" onclick="confirm('выдействительно желаете удалить?')">
+                                        Удалить
+                                    </a>
+                                </div>      
+                            </div>
+                            <div class="about_slider-item">   
+                                <a href="#" class="about_img"><img src="{{ asset('asset/img/fon-foto-default-2.jpeg') }}"></a>    
+                                <div class="about_slider-title">
+                                    Раненого лосенка нашли во дворе сельской школы под Хабаровском 3
+                                </div>
+                                <div class="about_slider-text">
+                                    Во дворе сельской школы в районе Полины Осипенко Хабаровского края нашли раненого лосенка, который прятался от сторожевых собак. Он бегал под окнами образовательного учреждения, привлекая внимание людей. Поняв, что собаки ушли, лосенок скрылся в направлении леса.
+                                    По словам местных жителей, которые приводит ИА AmurMedia, животное было ранено в области шеи. Они не исключили, что лосенок забрел на сельскую базу, где его покусали собаки.
+                                    Об инциденте руководство школы рассказало главе местной администрации и участковому уполномоченному полиции. Дальнейшая судьба животного неизвестна.
+                                </div> 
+                                <div class="about_slider_btn">Управлять слайдером
+                                    <a  data-fancybox data-src="#hidden-content-slider-edit" href="javascript:;" class="default-btn-about">
+                                        Редактировать
+                                    </a>
+                                    <a  href="#" class="default-btn-about">
+                                        Удалить
+                                    </a>
+                                </div>      
+                            </div>
+                            <div class="about_slider-item">    
+                                <a href="#" class="about_img"><img src="{{ asset('asset/img/fon-foto-default-2.jpeg') }}"></a>    
+                                <div class="about_slider-title">
+                                    Раненого лосенка нашли во дворе сельской школы под Хабаровском  4
+                                </div>
+                                <div class="about_slider-text">
+                                    Во дворе сельской школы в районе Полины Осипенко Хабаровского края нашли раненого лосенка, который прятался от сторожевых собак. Он бегал под окнами образовательного учреждения, привлекая внимание людей. Поняв, что собаки ушли, лосенок скрылся в направлении леса.
+                                    По словам местных жителей, которые приводит ИА AmurMedia, животное было ранено в области шеи. Они не исключили, что лосенок забрел на сельскую базу, где его покусали собаки.
+                                    Об инциденте руководство школы рассказало главе местной администрации и участковому уполномоченному полиции. Дальнейшая судьба животного неизвестна.
+                                </div>
+                                    <div class="about_slider_btn">Управлять слайдером
+                                        <a  data-fancybox data-src="#hidden-content-slider-edit" href="javascript:;" class="default-btn-about">
+                                            Редактировать
+                                        </a>
+                                        <a  href="#" class="default-btn-about">
+                                            Удалить
+                                        </a>
+                                    </div>         
+                            </div>
+                            <div class="about_slider-item">       
+                                    <a href="#" class="about_img"><img src="{{ asset('asset/img/fon-foto-default-2.jpeg') }}"></a>        
+                                    <div class="about_slider-title">
+                                        Раненого лосенка нашли во дворе сельской школы под Хабаровском 5
+                                    </div>
+                                    <div class="about_slider-text">
+                                        Во дворе сельской школы в районе Полины Осипенко Хабаровского края нашли раненого лосенка, который прятался от сторожевых собак. Он бегал под окнами образовательного учреждения, привлекая внимание людей. Поняв, что собаки ушли, лосенок скрылся в направлении леса.
+                                        По словам местных жителей, которые приводит ИА AmurMedia, животное было ранено в области шеи. Они не исключили, что лосенок забрел на сельскую базу, где его покусали собаки.
+                                        Об инциденте руководство школы рассказало главе местной администрации и участковому уполномоченному полиции. Дальнейшая судьба животного неизвестна.
+                                    </div> 
+                                    <div class="about_slider_btn">Управлять слайдером
+                                        <a  data-fancybox data-src="#hidden-content-slider-edit" href="javascript:;" class="default-btn-about">
+                                            Редактировать
+                                        </a>
+                                        <a  href="#" class="default-btn-about">
+                                            Удалить
+                                        </a>
+                                    </div>        
+                            </div>
+                            <div class="about_slider-item">       
+                                    <a href="#" class="about_img"><img src="{{ asset('aaset/img/fon-foto-default-2.jpeg') }}"></a>
+                                    
+                                    <div class="about_slider-title">
+                                        Раненого лосенка нашли во дворе сельской школы под Хабаровском 6
+                                    </div>
+                                    <div class="about_slider-text">
+                                        Во дворе сельской школы в районе Полины Осипенко Хабаровского края нашли раненого лосенка, который прятался от сторожевых собак. Он бегал под окнами образовательного учреждения, привлекая внимание людей. Поняв, что собаки ушли, лосенок скрылся в направлении леса.
+                                        По словам местных жителей, которые приводит ИА AmurMedia, животное было ранено в области шеи. Они не исключили, что лосенок забрел на сельскую базу, где его покусали собаки.
+                                        Об инциденте руководство школы рассказало главе местной администрации и участковому уполномоченному полиции. Дальнейшая судьба животного неизвестна.
+                                    </div> 
+                                    <div class="about_slider_btn">Управлять слайдером
+                                        <a  data-fancybox data-src="#hidden-content-slider-edit" href="javascript:;" class="default-btn-about">
+                                            Редактировать
+                                        </a>
+                                        <a  href="#" class="default-btn-about">
+                                            Удалить
+                                        </a>
+                                    </div>        
+                            </div>
+                            <div class="about_slider-item">   
+                                <a href="#" class="about_img"><img src="{{ asset('asset/img/fon-foto-default-2.jpeg') }}"></a>    
+                                <div class="about_slider-title">
+                                    Раненого лосенка нашли во дворе сельской школы под Хабаровском 7
+                                </div>
+                                <div class="about_slider-text">
+                                    Во дворе сельской школы в районе Полины Осипенко Хабаровского края нашли раненого лосенка, который прятался от сторожевых собак. Он бегал под окнами образовательного учреждения, привлекая внимание людей. Поняв, что собаки ушли, лосенок скрылся в направлении леса.
+                                    По словам местных жителей, которые приводит ИА AmurMedia, животное было ранено в области шеи. Они не исключили, что лосенок забрел на сельскую базу, где его покусали собаки.
+                                    Об инциденте руководство школы рассказало главе местной администрации и участковому уполномоченному полиции. Дальнейшая судьба животного неизвестна.
+                                </div> 
+                                <div class="about_slider_btn">Управлять слайдером 
+                                    <a  data-fancybox data-src="#hidden-content-slider-edit" href="javascript:;" class="default-btn-about">
+                                        Редактировать
+                                    </a>
+                                    <a  href="#" class="default-btn-about" onclick="confirm('выдействительно желаете удалить?')">
+                                        Удалить
+                                    </a>
+                                </div>        
+                            </div>
+                            <div class="about_slider-item add">
+                                <div class="about_slider-title add">
+                                    
+                                    <a  data-fancybox data-src="#hidden-contact-slider" href="javascript:;" class="default-btn-about admin">   
+                                    Добваить сладер
+                                    </a>
+                                </div>      
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about_item-btn">
+                            <a href="{{ path('press_index') }}" class="default-btn-about">
+                                Управлять слайдером
+                            </a>
+                            {# <a  href="#" class="default-btn-about admin">
+                                Добавить
+                            </a> #}
+                            <a  href="#" class="default-btn-about admin">
+                                Редактировать блок
+                            </a>
+                            {# <a  href="#" class="default-btn-about admin">
+                                Удалить
+                            </a>     #}
+                    </div>
+                </div>    
+            </div>
+            <!--  блок отзывы -->
+            <div class="about_items">
+                <div class="about_item reviews">
+                    <div class="about_title">
+                        Отзывы о нас и оценки
+                    </div>
+                    <div class="about_top">
+                        <div class="img_about">
+                            <img src="{{ asset('asset/img/icone-reviews-2.png') }}" alt="" >
+                        </div>
+                        <div class="about_top_item-title">
+                            <div class="about_item-title">
+                                Тут вы можете увидеть отзывы о нашей работе и оценки
+                            </div>
+                            <div class="about_item-text">
+                                Всегда рады вашим отзывам и оценкам, это помогает быть лучше. Мы внимательно следим за отзывами, оценками и стараемся улучшать нашу работу
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="about_item-text">
+                            Наша оценка
+                        </div>
+                        <div class="rating-result">
+                            <span class="active"></span>	
+                            <span class="active"></span>    
+                            <span class="active"></span>  
+                            <span></span>    
+                            <span></span>
+                        </div> 
+                        <div class="about_item-text">
+                            Оцените нашу деятельность 
+                        </div>
+                        <form action="">  
+                        <div class="rating-area">
+                            <input type="radio" id="star-5" name="rating" value="5">
+                            <label for="star-5" title="Оценка «5»"></label>	
+                            <input type="radio" id="star-4" name="rating" value="4">
+                            <label for="star-4" title="Оценка «4»"></label>    
+                            <input type="radio" id="star-3" name="rating" value="3">
+                            <label for="star-3" title="Оценка «3»"></label>  
+                            <input type="radio" id="star-2" name="rating" value="2">
+                            <label for="star-2" title="Оценка «2»"></label>    
+                            <input type="radio" id="star-1" name="rating" value="1">
+                            <label for="star-1" title="Оценка «1»"></label>
+                        </div> 
+                        </form>  
+                    </div>
+                    <!-- оставить отзыв-->
+                    <div id="">
+                        <form action="">    
+                            <div class="form_box-inner">
+                                <div class="form_box-left" required>
+                                    <input type="text" placeholder="Ваше имя">
+                                    <textarea type="textarea" placeholder="Ваш отзыв"></textarea>
+                                    <input type="file" placeholder="выбрать фото">
+                                    <div class="rating-area">
+                                        <input type="radio" id="star-5" name="rating" value="5">
+                                        <label for="star-5" title="Оценка «5»"></label>	
+                                        <input type="radio" id="star-4" name="rating" value="4">
+                                        <label for="star-4" title="Оценка «4»"></label>    
+                                        <input type="radio" id="star-3" name="rating" value="3">
+                                        <label for="star-3" title="Оценка «3»"></label>  
+                                        <input type="radio" id="star-2" name="rating" value="2">
+                                        <label for="star-2" title="Оценка «2»"></label>    
+                                        <input type="radio" id="star-1" name="rating" value="1">
+                                        <label for="star-1" title="Оценка «1»"></label>
+                                    </div>   
+                                    <button class="default-btn">
+                                        Отправить
+                                    </button>    
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!--отзывы-->
+                    <div class="page_reviews">
+                        <a id="c_1" href="#" class="page news_blog none" data-filter-tags="black">
+                        <div class="page news_images">
+                            <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
+                            <div class="news_date">03.04.2021</div>
+                        </div>
+                        <div class="news_blog-title">
+                            Имя 
+                        </div>
+                        <div class="news_blog-text">
+                            Последние новости в сфере права в России. Анализ событий. Экспертное мнение. ... Захарова и Барщевский задали видеовопросы участникам правового диктанта.
+                        </div>
+                    </a>
+                    <a id="c_1" href="#" class="page news_blog none" data-filter-tags="black">
+                        <div class="page news_images">
+                            <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
+                            <div class="news_date">03.04.2021</div>
+                        </div>
+                        <div class="news_blog-title">
+                            Имя
+                        </div>
+                        <div class="news_blog-text">
+                            Последние новости в сфере права в России. Анализ событий. Экспертное мнение. ... Захарова и Барщевский задали видеовопросы участникам правового диктанта.
+                        </div>
+                    </a>
+                    <a id="c_1" href="#" class="page news_blog none" data-filter-tags="black">
+                        <div class="page news_images">
+                            <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
+                            <div class="news_date">03.04.2021</div>
+                        </div>
+                        <div class="news_blog-title">
+                            Имя 
+                        </div>
+                        <div class="news_blog-text">
+                            Последние новости в сфере права в России. Анализ событий. Экспертное мнение. ... Захарова и Барщевский задали видеовопросы участникам правового диктанта.
+                        </div>
+                    </a>
+                    <a id="c_1" href="#" class="page news_blog none" data-filter-tags="black">
+                        <div class="page news_images">
+                            <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
+                            <div class="news_date">03.04.2021</div>
+                        </div>
+                        <div class="news_blog-title">
+                            Имя
+                        </div>
+                        <div class="news_blog-text">
+                            Последние новости в сфере права в России. Анализ событий. Экспертное мнение. ... Захарова и Барщевский задали видеовопросы участникам правового диктанта.
+                        </div>
+                    </a>
+                    <a id="c_1" href="#" class="page news_blog none" data-filter-tags="black">
+                        <div class="page news_images">
+                            <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
+                            <div class="news_date">03.04.2021</div>
+                        </div>
+                        <div class="news_blog-title">
+                            Имя 
+                        </div>
+                        <div class="news_blog-text">
+                            Последние новости в сфере права в России. Анализ событий. Экспертное мнение. ... Захарова и Барщевский задали видеовопросы участникам правового диктанта.
+                        </div>
+                    </a>
+                    <a id="c_1" href="#" class="page news_blog-user none" data-filter-tags="black">
+                        <div class="page news_images">
+                            <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
+                            <div class="news_date">03.04.2021</div>
+                        </div>
+                        <div class="news_blog-title">
+                            Имя
+                        </div>
+                        <div class="news_blog-text">
+                            Последние новости в сфере права в России. Анализ событий. Экспертное мнение. ... Захарова и Барщевский задали видеовопросы участникам правового диктанта.
+                        </div>
+                    </a>
+                    <a id="c_1" href="#" class="page news_blog-user none" data-filter-tags="black">
+                        <div class="page news_images">
+                            <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
+                            <div class="news_date">03.04.2021</div>
+                        </div>
+                        <div class="news_blog-title">
+                            Имя 
+                        </div>
+                        <div class="news_blog-text">
+                            Последние новости в сфере права в России. Анализ событий. Экспертное мнение. ... Захарова и Барщевский задали видеовопросы участникам правового диктанта.
+                        </div>
+                    </a>
+                    <a id="c_1" href="#" class="page news_blog none" data-filter-tags="black">
+                        <div class="page news_images">
+                            <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
+                            <div class="news_date">03.04.2021</div>
+                        </div>
+                        <div class="news_blog-title">
+                            Имяbvz
+                        </div>
+                        <div class="news_blog-text">
+                            Последние новости в сфере права в России. Анализ событий. Экспертное мнение. ... Захарова и Барщевский задали видеовопросы участникам правового диктанта.
+                        </div>
+                    </a>    
+                    </div>
+                <div class="about_item-btn">
+                            <a href="#" class="default-btn-about">
+                            Назад
+                            </a>
+                            <a  href="#" class="default-btn-about admin">
+                                Редактировать
+                            </a>
+                            <a  href="#" class="default-btn-about admin">
+                                Удалить
+                            </a>    
+                    </div>    
+                </div>    
+            </div>
+        </div>    
+    </section>
+    <footer class="footer">
+        <div class="footer_content">
+            <div class="container">
+                <div class="footer_inner">
+                    <div class="footer_info">
+                        <div class="footer_title">
+                            Юрист по гражданству в турции - Русскоговорящий турецкий...
+                        </div>
+                        <div class="footer_text">
+                            Нужна надежная юридическая поддержка для ваших сделок с недвижимостью и гражданством. Наше бюро, состоящее из опытной команды, предоставляет решение...
+                        </div>
+                        <a data-fancybox data-src="#hidden-content" href="javascript:;" class="header_btn">
+                            Бесплатная консультация
+                        </a>
+                        <ul class="footer_list">
+                            <li><a class="footer_phone" href="tel:79957771830">+7 (995) 777 18 30</a></li>
+                            <li><a  href="#">mvlju977@gmail.com</a></li>
+                            <li><a class="footer_adress" href="#">224. Sk. 3 A Hurma, 224. Sk. 3 A, 07130 Bahtılı Köyü Köyü/Konyaaltı/Antalya</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer_map">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12769.001896835982!2d30.602218242904456!3d36.86042302995611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14c393c2dbf54b39%3A0x85d588ae3693fa3b!2zSHVybWEsIDIyNC4gU2suIDMgQSwgMDcxMzAgQmFodMSxbMSxIEvDtnnDvCBLw7Z5w7wvS29ueWFhbHTEsS9BbnRhbHlh!5e0!3m2!1sru!2str!4v1638958614135!5m2!1sru!2str"  height="320px" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer_copy">
+            <div class="container">
+                <div class="copy_text">
+                    2017 Template by Anastasia Shaposhnyk. Все права защищены.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+<div id="hidden-content">
+    {{ form_start(fast_consultation_form) }}
+        {{ form_widget(fast_consultation_form) }}
+        <input type="submit" value="Отправить">
+    {{ form_end(fast_consultation_form) }}
+</div>
+{% endblock %}
+{% block javascripts %}
+    {{ include('js.html.twig') }}
+{% endblock %}

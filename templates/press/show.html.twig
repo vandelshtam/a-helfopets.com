@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Press{% endblock %}
+
+{% block body %}
+    <h1>Press</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ press.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ press.title }}</td>
+            </tr>
+            <tr>
+                <th>Img</th>
+                <td>{{ press.img }}</td>
+            </tr>
+            <tr>
+                <th>Text</th>
+                <td>{{ press.text }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('press_index') }}">back to list</a>
+
+    <a href="{{ path('press_edit', {'id': press.id}) }}">edit</a>
+
+    {{ include('press/_delete_form.html.twig') }}
+{% endblock %}
