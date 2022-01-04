@@ -23,10 +23,16 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class OurMissionController extends AbstractController
 {
     #[Route('/', name: 'our_mission_index', methods: ['GET'])]
-    public function index(OurMissionRepository $ourMissionRepository): Response
+    public function index(OurMissionRepository $ourMissionRepository,Request $request): Response
     {
+        $fast_consultation = new FastConsultation();
+        $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
+        $fast_consultation_form->handleRequest($request);
+
         return $this->render('our_mission/index.html.twig', [
             'our_missions' => $ourMissionRepository->findAll(),
+            'fast_consultation' => $fast_consultation,
+            'fast_consultation_form' => $fast_consultation_form,
         ]);
     }
 
@@ -79,10 +85,16 @@ class OurMissionController extends AbstractController
     }
 
     #[Route('/{id}', name: 'our_mission_show', methods: ['GET'])]
-    public function show(OurMission $ourMission): Response
+    public function show(OurMission $ourMission,Request $request): Response
     {
+        $fast_consultation = new FastConsultation();
+        $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
+        $fast_consultation_form->handleRequest($request);
+
         return $this->render('our_mission/show.html.twig', [
             'our_mission' => $ourMission,
+            'fast_consultation' => $fast_consultation,
+            'fast_consultation_form' => $fast_consultation_form,
         ]);
     }
 
@@ -141,8 +153,11 @@ class OurMissionController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$ourMission->getId(), $request->request->get('_token'))) {
             $entityManager->remove($ourMission);
             $entityManager->flush();
+            $this->addFlash(
+            'success',
+            'Вы успешно информацию из  блока номер 1 на странице "О нас"'); 
         }
-
+        
         return $this->redirectToRoute('our_mission_index', [], Response::HTTP_SEE_OTHER);
     }
 }

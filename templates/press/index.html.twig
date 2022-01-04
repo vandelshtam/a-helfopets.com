@@ -20,6 +20,15 @@
                         </a>
                     </div>
             </div>
+            {% for label, messages in app.flashes(['success', 'notice']) %}
+                {% for message in messages %}
+                    {% if message %}
+                        <div class="flash-{{ label }} notice_message">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
             <div class="page news_inner elastic" id="">
             {% for press in presses %}
                 <a id="c_1" href="#" class="about_slider_press page news_blog none" data-filter-tags="black">

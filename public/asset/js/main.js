@@ -21,3 +21,11 @@ $(function(){
     });
     $('').styler();
 });
+function showStuff(id) {
+    document.getElementById(id).style.display = 'block';
+    return false; 
+}
+function showClose(id) {
+        document.getElementById(id).style.display = 'none';
+        return false;
+}

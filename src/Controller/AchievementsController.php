@@ -119,7 +119,7 @@ class AchievementsController extends AbstractController
             $entityManager->flush();
             $this->addFlash(
                         'success',
-                        'Вы успешно отредактировали новую запись в  блок номер 2 на странице "О нас"'); 
+                        'Вы успешно отредактировали новую запись в  блоке номер 2 на странице "О нас"'); 
             return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);
         }
         
@@ -139,7 +139,7 @@ class AchievementsController extends AbstractController
             $entityManager->flush();
             $this->addFlash(
                 'success',
-                'Вы успешно удалили запись в  блок номер 2 на странице "О нас"'); 
+                'Вы успешно удалили запись из  блока номер 2 на странице "О нас"'); 
         }
         return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);
     }
