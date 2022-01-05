@@ -3574,12 +3574,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/form.git",
-                "reference": "80470cc50a46664caf3d877677fbcd100d5df873"
+                "reference": "2c1403f70659f3fc4cd8ef220309524c3d54367c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/form/zipball/80470cc50a46664caf3d877677fbcd100d5df873",
-                "reference": "80470cc50a46664caf3d877677fbcd100d5df873",
+                "url": "https://api.github.com/repos/symfony/form/zipball/2c1403f70659f3fc4cd8ef220309524c3d54367c",
+                "reference": "2c1403f70659f3fc4cd8ef220309524c3d54367c",
                 "shasum": ""
             },
             "require": {
@@ -3668,7 +3668,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-12-13T20:40:50+00:00"
+            "time": "2022-01-02T09:56:25+00:00"
         },
         {
             "name": "symfony/framework-bundle",
