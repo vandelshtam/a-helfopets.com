@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Rating;
+use App\Repository\RatingRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +22,7 @@ class RatingController extends AbstractController
     }
 
     #[Route('/rating/new', name: 'rating_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine, RatingRepository $ratingRepository): Response
     {
         
         $value = $request->request->get('ratin');
@@ -33,8 +34,7 @@ class RatingController extends AbstractController
         $entityManager->flush();
         $this->addFlash(
             'success',
-            'Вы успешно оценили нашу деятельность'); 
-        return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);
-        
+            'Спасибо за вашу оценку'); 
+        return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);    
     }
 }

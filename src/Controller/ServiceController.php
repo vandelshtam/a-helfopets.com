@@ -262,11 +262,11 @@ class ServiceController extends AbstractController
     public function editGalery(Request $request, Service $service, EntityManagerInterface $entityManager,SluggerInterface $slugger,ManagerRegistry $doctrine): Response
     {
         $category = new Category();
-        $form = $this->createFormBuilder($task)
-            ->add('task', TextType::class)
-            ->add('dueDate', DateType::class)
-            ->add('save', SubmitType::class, ['label' => 'Create Task'])
-            ->getForm();
+        // $form = $this->createFormBuilder($task)
+        //     ->add('task', TextType::class)
+        //     ->add('dueDate', DateType::class)
+        //     ->add('save', SubmitType::class, ['label' => 'Create Task'])
+        //     ->getForm();
 
         $service = new Service();
 

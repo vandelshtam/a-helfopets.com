@@ -47,4 +47,31 @@ class RatingRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findAllRating()
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT COUNT (r.id)
+            FROM App\Entity\Rating r'
+        )->getSingleScalarResult();
+
+        // returns an array of Product objects
+        return $query;
+    }
+
+    public function findAllGrade(): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT r
+            FROM App\Entity\Rating r
+            ORDER BY r.grade ASC'
+        );
+
+        // returns an array of Product objects
+        return $query->getResult();
+    }
 }

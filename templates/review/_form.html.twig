@@ -1,0 +1,14 @@
+{{ form_start(form) }}   
+    <div class="form_box-inner">
+        <div class="form_box-left" required>
+            {{ form_row(form.username) }}
+            {{ form_row(form.text) }}
+            {{ form_row(form.fotorev) }}
+            {{ form_row(form.fotorev2) }}
+            {# {{ form_row(form.img3) }}  #}
+            <button class="default-btn">
+                Отправить
+            </button>    
+        </div>
+    </div>
+{{ form_end(form) }}

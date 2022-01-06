@@ -237,15 +237,14 @@
                             Наша оценка
                         </div>
                         <div class="rating-result">
-                        {% for i in range(1, 3-0) %}
+                        {% for i in range(1, rating_value-0) %}
                             <span class="active"><span class="active_value">{{ i }}</span></span>
                         {% endfor %}
                         </div> 
                         <div class="about_item-text">
                             Оцените нашу деятельность 
                         </div>
-                        
-                            
+                        {# <a href="{{ path('rewiew_index') }}">back to list</a> #}
                         <form action="{{ path('rating_new') }}" method="POST">  
                         
                             <div class="rating-area">
@@ -264,7 +263,9 @@
                     </div>
                     <!-- оставить отзыв-->
                     <div id="">
-                        <form action="">    
+                    <h2>Create new Rewiew</h2>
+                    {{ include('review/_form.html.twig') }}
+                        {# <form action="">    
                             <div class="form_box-inner">
                                 <div class="form_box-left" required>
                                     <input type="text" placeholder="Ваше имя">
@@ -272,27 +273,16 @@
                                     <input type="file" placeholder="выбрать фото">
                                     <input type="file" placeholder="выбрать фото">
                                     <input type="file" placeholder="выбрать фото">
-                                    <div class="rating-area">
-                                        <input type="radio" id="star-5" name="rating" value="5">
-                                        <label for="star-5" title="Оценка «5»"></label>	
-                                        <input type="radio" id="star-4" name="rating" value="4">
-                                        <label for="star-4" title="Оценка «4»"></label>    
-                                        <input type="radio" id="star-3" name="rating" value="3">
-                                        <label for="star-3" title="Оценка «3»"></label>  
-                                        <input type="radio" id="star-2" name="rating" value="2">
-                                        <label for="star-2" title="Оценка «2»"></label>    
-                                        <input type="radio" id="star-1" name="rating" value="1">
-                                        <label for="star-1" title="Оценка «1»"></label>
-                                    </div>   
                                     <button class="default-btn">
                                         Отправить
                                     </button>    
                                 </div>
                             </div>
-                        </form>
+                        </form> #}
                     </div>
                     <!--отзывы-->
                     <div class="page_reviews">
+                        {% for review in reviews %}
                         <div class="rewiews_block">
                             <a id="c_1" href="#" class="page news_blog none answer" data-filter-tags="black">
                                 <div class="page news_images">
@@ -303,7 +293,7 @@
                                     Ответ на сообщение
                                 </div>
                                 <div class="news_blog-title">
-                                    Имя 
+                                    Имя
                                 </div>
                                 <div class="news_blog-text">
                                     Последние новости в сфере права в России. Анализ событий. Экспертное мнение. ... Захарова и Барщевский задали видеовопросы участникам правового диктанта.
@@ -315,10 +305,10 @@
                                     <div class="news_date">03.04.2021</div>    
                                 </div>
                                 <div class="news_blog-title">
-                                    Имя 
+                                    {{ review.username }} 
                                 </div>
                                 <div class="news_blog-text">
-                                    Последние новости в сфере права в России. Анализ событий. Экспертное мнение. ... Захарова и Барщевский задали видеовопросы участникам правового диктанта.
+                                    {{ review.text }}
                                 </div>   
                             </a>
                             <div class="img_about rewiews">
@@ -355,6 +345,7 @@
                                 </div>
                             </form>
                         </div>
+                        {% endfor %}
                         <div class="rewiews_block">
                             <a id="c_1" href="#" class="page news_blog none answer" data-filter-tags="black">
                                 <div class="page news_images">
@@ -377,10 +368,10 @@
                                     <div class="news_date">03.04.2021</div>    
                                 </div>
                                 <div class="news_blog-title">
-                                    Имя 
+                                    bvz
                                 </div>
                                 <div class="news_blog-text">
-                                    Последние новости в сфере права в России. Анализ событий. Экспертное мнение. ... Захарова и Барщевский задали видеовопросы участникам правового диктанта.
+                                    
                                 </div>   
                             </a>
                             <div class="img_about rewiews">
@@ -549,6 +540,7 @@
     }
     $('input[type=radio]').on('change', function() {
     $(this).closest("form").submit();
+    return false;
 });
   </script>
 {% endblock %}
