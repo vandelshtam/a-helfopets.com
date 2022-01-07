@@ -284,6 +284,7 @@
                     <div class="page_reviews">
                         {% for review in reviews %}
                         <div class="rewiews_block">
+                            {% if review.answerId != null %}
                             <a id="c_1" href="#" class="page news_blog none answer" data-filter-tags="black">
                                 <div class="page news_images">
                                     <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
@@ -299,23 +300,26 @@
                                     Последние новости в сфере права в России. Анализ событий. Экспертное мнение. ... Захарова и Барщевский задали видеовопросы участникам правового диктанта.
                                 </div>   
                             </a>
+                            {% endif %}
                             <a id="c_1" href="#" class="page news_blog none" data-filter-tags="black">
                                 <div class="page news_images">
                                     <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
-                                    <div class="news_date">03.04.2021</div>    
+                                    <div class="news_date">{{ review.createdAt|date('m-d') }}</div>    
                                 </div>
                                 <div class="news_blog-title">
-                                    {{ review.username }} 
+                                    {{ review.name }} 
                                 </div>
                                 <div class="news_blog-text">
                                     {{ review.text }}
                                 </div>   
                             </a>
+                            {% for foto in review.fotoreview %}
+                            {# {% if fotoreview_foto != null %} #}
                             <div class="img_about rewiews">
-                                    <img src="{{ asset('asset/img/fon-foto-default-3.jpeg') }}" alt="">
-                                    <img src="{{ asset('asset/img/fon-foto-default-3.jpeg') }}" alt="">
-                                    <img src="{{ asset('asset/img/fon-foto-default-3.jpeg') }}" alt="">
-                                </div>
+                                    <img src="{{ asset('uploads/img/' ~ foto.Foto) }}" alt="">
+                            </div>
+                            {# {% endif %} #}
+                            {% endfor %}
                             <div class="about_item-btn">
                                     <a  href="#" onclick="showStuff('answer1'); return false;" class="default-btn-about admin" >
                                         Ответить

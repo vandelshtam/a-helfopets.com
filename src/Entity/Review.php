@@ -20,24 +20,29 @@ class Review
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Fotorev::class, inversedBy="name")
+     * @ORM\OneToMany(targetEntity=Fotoreview::class, mappedBy="review")
      */
-    private $fotorev;
+    private $fotoreview;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="string", length=255)
      */
     private $text;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $username;
+    private $answer_id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Fotoreview::class, mappedBy="review")
+     * @ORM\Column(type="datetime_immutable", nullable=true)
      */
-    private $fotoreview;
+    private $created_at;
 
     public function __construct()
     {
@@ -47,42 +52,6 @@ class Review
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getFotorev(): ?Fotorev
-    {
-        return $this->fotorev;
-    }
-
-    public function setFotorev(?Fotorev $fotorev): self
-    {
-        $this->fotorev = $fotorev;
-
-        return $this;
-    }
-
-    public function getText(): ?string
-    {
-        return $this->text;
-    }
-
-    public function setText(?string $text): self
-    {
-        $this->text = $text;
-
-        return $this;
-    }
-
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    public function setUsername(?string $username): self
-    {
-        $this->username = $username;
-
-        return $this;
     }
 
     /**
@@ -111,6 +80,54 @@ class Review
                 $fotoreview->setReview(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getText(): ?string
+    {
+        return $this->text;
+    }
+
+    public function setText(string $text): self
+    {
+        $this->text = $text;
+
+        return $this;
+    }
+
+    public function getAnswerId(): ?int
+    {
+        return $this->answer_id;
+    }
+
+    public function setAnswerId(?int $answer_id): self
+    {
+        $this->answer_id = $answer_id;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(?\DateTimeImmutable $created_at): self
+    {
+        $this->created_at = $created_at;
 
         return $this;
     }

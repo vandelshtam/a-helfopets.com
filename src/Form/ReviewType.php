@@ -15,42 +15,58 @@ class ReviewType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('text',TextType::class, [
-            'label' => 'отзыв не более 70 символов',
-            'required' => true,  
-        ])
-        ->add('username',TextType::class, [
-            'label' => 'имя не более 70 символов',
-            'required' => true,  
-        ])
-            ->add('fotorev', FileType::class, [
-                'label' => 'Фотография отзыва (JPEG, JPG, WEBP file)',
-                'mapped' => false,
-                'required' => false,
-                'constraints' => [
-                    new Image([
-                        'maxSize' => '20000000k',
-                        'mimeTypes' => [
-                            'image/*',    
-                        ],
-                        'mimeTypesMessage' => 'Пожалуйста выберите файл имеющий расширение соответствующее типу - "изображение"',
-                    ])
-                ],
+            //->add('answer_id')
+            //->add('created_at')
+            ->add('name',TextType::class, [
+                'label' => 'Ваше имя не более 70 символов',
+                'required' => true,  
             ])
-            ->add('fotorev2', FileType::class, [
-                'label' => 'Фотография отзыва (JPEG, JPG, WEBP file)',
-                'mapped' => false,
-                'required' => false,
-                'constraints' => [
-                    new Image([
-                        'maxSize' => '20000000k',
-                        'mimeTypes' => [
-                            'image/*',    
-                        ],
-                        'mimeTypesMessage' => 'Пожалуйста выберите файл имеющий расширение соответствующее типу - "изображение"',
-                    ])
-                ],
+            ->add('text',TextType::class, [
+                'label' => 'Текст сообщения не более 250 символов',
+                'required' => true,  
             ])
+                ->add('foto', FileType::class, [
+                    'label' => 'Фотография отзыва (JPEG, JPG, WEBP file)',
+                    'mapped' => false,
+                    'required' => false,
+                    'constraints' => [
+                        new Image([
+                            'maxSize' => '20000000k',
+                            'mimeTypes' => [
+                                'image/*',    
+                            ],
+                            'mimeTypesMessage' => 'Пожалуйста выберите файл имеющий расширение соответствующее типу - "изображение"',
+                        ])
+                    ],
+                ])
+                ->add('foto2', FileType::class, [
+                    'label' => 'Фотография отзыва (JPEG, JPG, WEBP file)',
+                    'mapped' => false,
+                    'required' => false,
+                    'constraints' => [
+                        new Image([
+                            'maxSize' => '20000000k',
+                            'mimeTypes' => [
+                                'image/*',    
+                            ],
+                            'mimeTypesMessage' => 'Пожалуйста выберите файл имеющий расширение соответствующее типу - "изображение"',
+                        ])
+                    ],
+                ])
+                ->add('foto3', FileType::class, [
+                    'label' => 'Фотография отзыва (JPEG, JPG, WEBP file)',
+                    'mapped' => false,
+                    'required' => false,
+                    'constraints' => [
+                        new Image([
+                            'maxSize' => '20000000k',
+                            'mimeTypes' => [
+                                'image/*',    
+                            ],
+                            'mimeTypesMessage' => 'Пожалуйста выберите файл имеющий расширение соответствующее типу - "изображение"',
+                        ])
+                    ],
+                ])
         ;
     }
 

@@ -47,4 +47,18 @@ class ReviewRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findOneByIdJoinedToFotoreview(int $reviewId): ?Review
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT p, c
+            FROM App\Entity\Review p
+            INNER JOIN p.fotoreview c
+            WHERE p.id = :id'
+        )->setParameter('id', $reviewId);
+
+        return $query->getOneOrNullResult();
+    }
 }

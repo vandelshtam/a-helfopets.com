@@ -9,8 +9,10 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Name</th>
                 <th>Text</th>
-                <th>Username</th>
+                <th>Answer_id</th>
+                <th>Created_at</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -18,8 +20,10 @@
         {% for review in reviews %}
             <tr>
                 <td>{{ review.id }}</td>
+                <td>{{ review.name }}</td>
                 <td>{{ review.text }}</td>
-                <td>{{ review.username }}</td>
+                <td>{{ review.answerId }}</td>
+                <td>{{ review.createdAt ? review.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('review_show', {'id': review.id}) }}">show</a>
                     <a href="{{ path('review_edit', {'id': review.id}) }}">edit</a>
@@ -27,7 +31,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="4">no records found</td>
+                <td colspan="6">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

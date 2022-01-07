@@ -23,6 +23,11 @@ class Fotoreview
     private $foto;
 
     /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $created_at;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Review::class, inversedBy="fotoreview")
      */
     private $review;
@@ -40,6 +45,18 @@ class Fotoreview
     public function setFoto(?string $foto): self
     {
         $this->foto = $foto;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(?\DateTimeImmutable $created_at): self
+    {
+        $this->created_at = $created_at;
 
         return $this;
     }

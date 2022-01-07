@@ -8,17 +8,22 @@ use App\Entity\Review;
 use App\Entity\Fotorev;
 
 use App\Form\RatingType;
-use App\Form\ReviewType;
 
+
+
+
+use App\Form\ReviewType;
 use App\Entity\Fotoreview;
+
 use App\Entity\OurMission;
 use Doctrine\ORM\Mapping\Id;
 use App\Entity\FastConsultation;
-// use Symfony\Bridge\Doctrine\ManagerRegistry;
+
 use App\Form\FastConsultationType;
 use App\Repository\PressRepository;
 use App\Repository\RatingRepository;
 use App\Repository\ReviewRepository;
+use App\Repository\FotoreviewRepository;
 use App\Repository\OurMissionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -34,20 +39,49 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class AboutComtrollerController extends AbstractController
 {
     #[Route('/about/comtroller', name: 'about_comtroller')]
-    public function index(Request $request,OurMissionRepository $ourMissionRepository,AchievementsRepository $achievementsRepository,PressRepository $pressRepository,RatingRepository $ratingRepository, ManagerRegistry $doctrine, EntityManagerInterface $entityManager,SluggerInterface $slugger,ReviewRepository $reviewRepository): Response
+    public function index(Request $request,OurMissionRepository $ourMissionRepository,FotoreviewRepository $fotoreviewRepository, AchievementsRepository $achievementsRepository,PressRepository $pressRepository,RatingRepository $ratingRepository, ManagerRegistry $doctrine, EntityManagerInterface $entityManager,SluggerInterface $slugger,ReviewRepository $reviewRepository): Response
     {
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
+
+        $repository = $doctrine->getRepository(Fotoreview::class);
+        $fotos = $repository->findAll();
+        $foto1 = $repository->findBy(['review' => 1]);
+        //$reviews = $foto->getReview();
+        //dd($fotos);
+
+
+        $review1 = $reviewRepository->findAll();
+        //dd($review1);
+
+        //$fotoreviewReviewId = $review1->getFotoreview();
+        //dd($fotoreviewReviewId);
+        $reviews = [];
+        for($i=1; $i<=4; $i++){
+            $reviews[] = $doctrine->getRepository(Review::class)->findOneByIdJoinedToFotoreview($i);
+        }
+        //dd($reviews);
+        $review_user = $doctrine->getRepository(Review::class)->findOneByIdJoinedToFotoreview(1);
+        $review = $doctrine->getRepository(Review::class)->findAll();
+        //dd($review);
+        if($review_user->getFotoreview() != null){
+            $fotoreview_foto = $review_user->getFotoreview();
+        }
+        else{
+            $fotoreview_foto = null;
+        }
 
         $review = new Review();
         $form = $this->createForm(ReviewType::class, $review);
         $form->handleRequest($request);
         $fotoreview = new Fotoreview;
         $fotoreview2 = new Fotoreview;
+        $fotoreview3 = new Fotoreview;
         if ($form->isSubmitted() && $form->isValid()) {
-            $imageFile = $form->get('fotorev')->getData();
-            $image2File = $form->get('fotorev2')->getData();
+            $imageFile = $form->get('foto')->getData();
+            $image2File = $form->get('foto2')->getData();
+            $image3File = $form->get('foto3')->getData();
             if ($imageFile) {
                 $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
                 
@@ -82,11 +116,30 @@ class AboutComtrollerController extends AbstractController
                 $fotoreview2->setFoto($newFilename2);
                 
             }
+            if ($image3File) {
+                $originalFilename3 = pathinfo($image3File->getClientOriginalName(), PATHINFO_FILENAME);
+                
+                $safeFilename3 = $slugger->slug($originalFilename3);
+                $newFilename3 = $safeFilename3.'-'.uniqid().'.'.$image3File->guessExtension();
+                
+                try {
+                    $image3File->move(
+                        $this->getParameter('img_directory'),
+                        $newFilename3
+                    );
+                } catch (FileException $e) {
+                    echo "An error occurred while creating your directory at ";
+                }
+                $fotoreview3->setFoto($newFilename3);
+                
+            }
             $review->addFotoreview($fotoreview);
             $review->addFotoreview($fotoreview2);
+            $review->addFotoreview($fotoreview3);
             $entityManager = $doctrine->getManager();
             $entityManager->persist($fotoreview);
             $entityManager->persist($fotoreview2);
+            $entityManager->persist($fotoreview3);
             $entityManager->persist($review);
             $entityManager->flush();
             $this->addFlash(
@@ -115,7 +168,9 @@ class AboutComtrollerController extends AbstractController
             'presses' => $pressRepository->findAll(),
             'rating_value' => $rating_value,
             'form' => $form,
-            'reviews' => $reviewRepository->findAll(),
+            'reviews' => $reviews,
+            'repository' => $repository,
+            'fotos'=> $fotos,
         ]);
     }
 }
