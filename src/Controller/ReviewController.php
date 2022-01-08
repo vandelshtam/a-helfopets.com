@@ -2,14 +2,21 @@
 
 namespace App\Controller;
 
+use App\Entity\Answer;
 use App\Entity\Review;
 use App\Form\ReviewType;
+use App\Entity\Fotoreview;
 use App\Repository\ReviewRepository;
+
+use App\Repository\FotoreviewRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 #[Route('/review')]
 class ReviewController extends AbstractController
@@ -23,23 +30,34 @@ class ReviewController extends AbstractController
     }
 
     #[Route('/new', name: 'review_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine, FotoreviewRepository $fotoreviewRepository,SluggerInterface $slugger,ReviewRepository $reviewRepository)
     {
+        $localIP = getHostByName(getHostName());
+        $answer = new Answer();
         $review = new Review();
-        $form = $this->createForm(ReviewType::class, $review);
-        $form->handleRequest($request);
+        $fotoreview = new Fotoreview;
+        
+        $value = $request->request->get('text');
+        $name = $request->request->get('name');
+        $answer_name = $request->request->get('answer_name');
+        $id = $request->request->get('answer_id');
+        $answer_text = $request->request->get('answer_text');
+        $answer->setText($answer_text);
+        $answer->setName($answer_name);
+        $answer->setAnswerId($id);
+        $review->setIp($localIP);
+        $review->addFotoreview($fotoreview);
+        $entityManager->persist($fotoreview);
+        $review->addAnswer($answer);
+        $entityManager->persist($answer);
+        $entityManager = $doctrine->getManager();
+        $review->setText($value);
+        $review->setAnswerId($id);
+        $review->setName($name);
+        $entityManager->persist($review);
+        $entityManager->flush();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($review);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('review_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('review/new.html.twig', [
-            'review' => $review,
-            'form' => $form,
-        ]);
+        return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);    
     }
 
     #[Route('/{id}', name: 'review_show', methods: ['GET'])]

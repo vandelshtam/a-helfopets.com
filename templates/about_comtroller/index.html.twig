@@ -54,9 +54,11 @@
                                     Заполнить
                                 </a>
                                 {% endif %}
+                                {% if is_granted('ROLE_ADMIN') %}
                                 <a  href="{{ path('our_mission_edit', {'id': our_mission.id}) }}" class="default-btn-about admin">
                                     Редактировать
                                 </a>
+                                {% endif %}  
                                 {% if is_granted('ROLE_SUPER_ADMIN') %}
                                 <a  href="#" class="default-btn-about admin">
                                     Удалить
@@ -107,7 +109,7 @@
                                 <a  href="{{ path('achievements_edit', {'id': achievement.id}) }}" class="default-btn-about admin">
                                     Редактировать
                                 </a>
-                                 <a  href="#">
+                                <a  href="#">
                                     {{ include('achievements/_delete_form.html.twig') }} 
                                 </a>       
                             </div>
@@ -152,7 +154,8 @@
                                 </div> 
                                 <div class="about_slider-title">
                                     Дата: {{ press.created_at|date('d-m-Y') }}
-                                </div> 
+                                </div>
+                                {% if is_granted('ROLE_ADMIN') %}
                                 <div class="about_slider_btn">Управлять слайдером
                                     <a href="{{ path('press_edit', {'id': press.id}) }}" class="default-btn-about">
                                         Редактировать
@@ -160,14 +163,12 @@
                                     <a  href="#">
                                         {{ include('press/_delete_form.html.twig') }} 
                                     </a>
-                                </div>      
+                                </div> 
+                                {% endif %}     
                             </div>
                             {% endfor %} 
-                            
-                            
                             <div class="about_slider-item">    
-                                <a href="#" class="about_img"><img src="{{ asset('asset/img/fon-foto-default-2.jpeg') }}"></a> 
-                                 
+                                <a href="#" class="about_img"><img src="{{ asset('asset/img/fon-foto-default-2.jpeg') }}"></a>         
                                 <div class="about_slider-title">
                                     Раненого лосенка нашли во дворе сельской школы под Хабаровском  4
                                 </div>
@@ -184,10 +185,7 @@
                                             Удалить
                                         </a>
                                     </div>         
-                            </div>
-                            
-                            
-                            
+                            </div>   
                             <div class="about_slider-item add">
                                 <div class="about_slider-title add">
                                     <a  href="{{ path('press_new') }}" class="default-btn-about admin">  
@@ -198,18 +196,16 @@
                         </div>
                     </div>
                     <div class="about_item-btn">
+                            {% if is_granted('ROLE_ADMIN') %} 
                             <a href="{{ path('press_index') }}" class="default-btn-about">
                                 Управлять слайдером
                             </a>
-                            {# <a  href="#" class="default-btn-about admin">
-                                Добавить
-                            </a> #}
+                            {% endif %} 
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
                             <a  href="#" class="default-btn-about admin">
                                 Редактировать блок
                             </a>
-                            {# <a  href="#" class="default-btn-about admin">
-                                Удалить
-                            </a>     #}
+                            {% endif %}   
                     </div>
                 </div>    
             </div>
@@ -244,9 +240,7 @@
                         <div class="about_item-text">
                             Оцените нашу деятельность 
                         </div>
-                        {# <a href="{{ path('rewiew_index') }}">back to list</a> #}
                         <form action="{{ path('rating_new') }}" method="POST">  
-                        
                             <div class="rating-area">
                                 <input type="radio" id="star-5" name="ratin" value="5">
                                 <label for="star-5" title="Оценка «5»"></label>	
@@ -263,41 +257,32 @@
                     </div>
                     <!-- оставить отзыв-->
                     <div id="">
-                    <h2>Create new Rewiew</h2>
+                    <h2>Написать отзыв </h2>
                     {{ include('review/_form.html.twig') }}
-                        {# <form action="">    
-                            <div class="form_box-inner">
-                                <div class="form_box-left" required>
-                                    <input type="text" placeholder="Ваше имя">
-                                    <textarea type="textarea" placeholder="Ваш отзыв"></textarea>
-                                    <input type="file" placeholder="выбрать фото">
-                                    <input type="file" placeholder="выбрать фото">
-                                    <input type="file" placeholder="выбрать фото">
-                                    <button class="default-btn">
-                                        Отправить
-                                    </button>    
-                                </div>
-                            </div>
-                        </form> #}
                     </div>
                     <!--отзывы-->
                     <div class="page_reviews">
                         {% for review in reviews %}
+                        {% if review.ip != ip %}
                         <div class="rewiews_block">
                             {% if review.answerId != null %}
                             <a id="c_1" href="#" class="page news_blog none answer" data-filter-tags="black">
                                 <div class="page news_images">
                                     <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
-                                    <div class="news_date">03.04.2021</div>    
+                                    {# <div class="news_date">{{ review.createdAt|date('m-d') }}</div>     #}
                                 </div>
                                 <div class="news_blog-title answer">
-                                    Ответ на сообщение
+                                 Ответ на сообщение:
                                 </div>
                                 <div class="news_blog-title">
-                                    Имя
+                                {% for answer in review.answer %}
+                                    {{ answer.name|default('undefined') }}
+                                {% endfor %} 
                                 </div>
                                 <div class="news_blog-text">
-                                    Последние новости в сфере права в России. Анализ событий. Экспертное мнение. ... Захарова и Барщевский задали видеовопросы участникам правового диктанта.
+                                {% for answer in review.answer %}
+                                    {{ answer.text }}
+                                {% endfor %} 
                                 </div>   
                             </a>
                             {% endif %}
@@ -307,7 +292,7 @@
                                     <div class="news_date">{{ review.createdAt|date('m-d') }}</div>    
                                 </div>
                                 <div class="news_blog-title">
-                                    {{ review.name }} 
+                                    {{ review.name|default('undefined') }} 
                                 </div>
                                 <div class="news_blog-text">
                                     {{ review.text }}
@@ -321,171 +306,123 @@
                             {# {% endif %} #}
                             {% endfor %}
                             <div class="about_item-btn">
-                                    <a  href="#" onclick="showStuff('answer1'); return false;" class="default-btn-about admin" >
+                                    <a  href="#" onclick="showStuff('answer{{ review.id }}'); return false;" class="default-btn-about admin" >
                                         Ответить
                                     </a>
+                                    {% if is_granted('ROLE_ADMIN') %}
                                     <a  href="#" class="default-btn-about admin">
                                         Заблокировать
                                     </a>
                                     <a  href="#" class="default-btn-about admin">
                                         Удалить
-                                    </a>    
+                                    </a> 
+                                    {% endif %}   
                             </div>
-                            <form action=""  id="answer1" class="hidden_form">    
+                            <form action="{{ path('review_new') }}"  id="answer{{ review.id }}" class="hidden_form" method="post" enctype="multipart/form-data">    
                                 <div class="form_box-inner">
                                     <div class="form_box-left" required>
-                                        <input type="text" placeholder="Ваше имя">
-                                        <textarea type="textarea" placeholder="Ваш отзыв"></textarea>
-                                        <input type="file" placeholder="выбрать фото">
-                                        <input type="file" placeholder="выбрать фото">
-                                        <input type="file" placeholder="выбрать фото">
+                                        <input type="hidden"  name="answer_id" value="{{ review.id }}" >
+                                        <input type="hidden"  name="answer_name" value="{{ review.name }}" >
+                                        <input type="hidden"  name="answer_text" value="{{ review.text }}" >
+                                        <input type="text" name="name" placeholder="Ваше имя">
+                                        <textarea type="textarea" name="text" placeholder="Ваш отзыв"></textarea>
                                         <button class="default-btn">
                                             Отправить
                                         </button>
-                                        <a  href="#" class="default-btn-about admin" onclick="showClose('answer1'); return false;">
+                                        <a href="#" class="default-btn-about admin" onclick="showClose('answer{{ review.id }}'); return false;">
                                             Скрыть
                                         </a>      
                                     </div>
                                 </div>
                             </form>
                         </div>
-                        {% endfor %}
-                        <div class="rewiews_block">
-                            <a id="c_1" href="#" class="page news_blog none answer" data-filter-tags="black">
-                                <div class="page news_images">
-                                    <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
-                                    <div class="news_date">03.04.2021</div>    
-                                </div>
-                                <div class="news_blog-title answer">
-                                    Ответ на сообщение
-                                </div>
-                                <div class="news_blog-title">
-                                    Имя 
-                                </div>
-                                <div class="news_blog-text">
-                                    Последние новости в сфере права в России. Анализ событий. Экспертное мнение. ... Захарова и Барщевский задали видеовопросы участникам правового диктанта.
-                                </div>   
-                            </a>
-                            <a id="c_1" href="#" class="page news_blog none" data-filter-tags="black">
-                                <div class="page news_images">
-                                    <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
-                                    <div class="news_date">03.04.2021</div>    
-                                </div>
-                                <div class="news_blog-title">
-                                    bvz
-                                </div>
-                                <div class="news_blog-text">
-                                    
-                                </div>   
-                            </a>
-                            <div class="img_about rewiews">
-                                    <img src="{{ asset('asset/img/fon-foto-default-3.jpeg') }}" alt="">
-                                    <img src="{{ asset('asset/img/fon-foto-default-3.jpeg') }}" alt="">
-                                    <img src="{{ asset('asset/img/fon-foto-default-3.jpeg') }}" alt="">
-                                </div>
-                            <div class="about_item-btn">
-                                    <a  href="#" onclick="showStuff('answer2'); return false;" class="default-btn-about admin" >
-                                        Ответить
-                                    </a>
-                                    <a  href="#" class="default-btn-about admin">
-                                        Заблокировать
-                                    </a>
-                                    <a  href="#" class="default-btn-about admin">
-                                        Удалить
-                                    </a>    
-                            </div>
-                            <form action=""  id="answer2" class="hidden_form">    
-                                <div class="form_box-inner">
-                                    <div class="form_box-left" required>
-                                        <input type="text" placeholder="Ваше имя">
-                                        <textarea type="textarea" placeholder="Ваш отзыв"></textarea>
-                                        <input type="file" placeholder="выбрать фото">
-                                        <button class="default-btn">
-                                            Отправить
-                                        </button>
-                                        <a  href="#" class="default-btn-about admin" onclick="showClose('answer2'); return false;">
-                                            Скрыть
-                                        </a>      
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+                        {% endif %}
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        {% if review.ip == ip %}
                         <div class="rewiews_block rewiews_user">
+                            {% if review.answerId != null %}
                             <a id="c_1" href="#" class="page news_blog none answer" data-filter-tags="black">
                                 <div class="page news_images">
                                     <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
-                                    <div class="news_date">03.04.2021</div>    
+                                    {# <div class="news_date">03.04.2021</div>     #}
                                 </div>
                                 <div class="news_blog-title answer">
                                     Ответ на сообщение
                                 </div>
                                 <div class="news_blog-title">
-                                    Имя 
+                                {% for answer in review.answer %}
+                                    {{ answer.name|default('undefined') }}
+                                {% endfor %}  
                                 </div>
                                 <div class="news_blog-text">
-                                    Последние новости в сфере права в России. Анализ событий. Экспертное мнение. ... Захарова и Барщевский задали видеовопросы участникам правового диктанта.
+                                {% for answer in review.answer %}
+                                    {{ answer.text }}
+                                {% endfor %} 
                                 </div>   
                             </a>
+                            {% endif %}
                             <a id="c_1" href="#" class="page news_blog none" data-filter-tags="black">
                                 <div class="page news_images">
                                     <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
-                                    <div class="news_date">03.04.2021</div>    
+                                    <div class="news_date">{{ review.createdAt|date('m-d') }}</div>    
                                 </div>
                                 <div class="news_blog-title">
-                                    Имя 
+                                    {{ review.name|default('undefined') }}  
                                 </div>
                                 <div class="news_blog-text">
-                                    Последние новости в сфере права в России. Анализ событий. Экспертное мнение. ... Захарова и Барщевский задали видеовопросы участникам правового диктанта.
+                                    {{ review.text }} 
                                 </div>   
                             </a>
+                            {% for foto in review.fotoreview %}
+                            {# {% if fotoreview_foto != null %} #}
                             <div class="img_about rewiews">
-                                    <img src="{{ asset('asset/img/fon-foto-default-3.jpeg') }}" alt="">
-                                    <img src="{{ asset('asset/img/fon-foto-default-3.jpeg') }}" alt="">
-                                    <img src="{{ asset('asset/img/fon-foto-default-3.jpeg') }}" alt="">
-                                </div>
+                                    <img src="{{ asset('uploads/img/' ~ foto.Foto) }}" alt="">
+                            </div>
+                            {# {% endif %} #}
+                            {% endfor %}
                             <div class="about_item-btn">
-                                    <a  href="#" onclick="showStuff('answer3'); return false;" class="default-btn-about admin" >
+                                    <a  href="#" onclick="showStuff('answer{{ review.id }}'); return false;" class="default-btn-about admin" >
                                         Ответить
                                     </a>
+                                    {% if is_granted('ROLE_ADMIN') %}
                                     <a  href="#" class="default-btn-about admin">
                                         Заблокировать
                                     </a>
                                     <a  href="#" class="default-btn-about admin">
                                         Удалить
-                                    </a>    
+                                    </a> 
+                                    {% endif %}   
                             </div>
-                            <form action=""  id="answer3" class="hidden_form">    
+                            <form action="{{ path('review_new') }}"  id="answer{{ review.id }}" class="hidden_form" method="post" enctype="multipart/form-data">    
                                 <div class="form_box-inner">
                                     <div class="form_box-left" required>
-                                        <input type="text" placeholder="Ваше имя">
-                                        <textarea type="textarea" placeholder="Ваш отзыв"></textarea>
-                                        <input type="file" placeholder="выбрать фото">
-                                        <input type="file" placeholder="выбрать фото">
-                                        <input type="file" placeholder="выбрать фото">
+                                        <input type="hidden"  name="answer_id" value="{{ review.id }}" >
+                                        <input type="hidden"  name="answer_name" value="{{ review.name }}" >
+                                        <input type="hidden"  name="answer_text" value="{{ review.text }}" >
+                                        <input type="text" name="name" placeholder="Ваше имя">
+                                        <textarea type="textarea" name="text" placeholder="Ваш отзыв"></textarea>
                                         <button class="default-btn">
                                             Отправить
                                         </button>
-                                        <a  href="#" class="default-btn-about admin" onclick="showClose('answer3'); return false;">
+                                        <a  href="#" class="default-btn-about admin" onclick="showClose('answer{{ review.id }}'); return false;">
                                             Скрыть
                                         </a>      
                                     </div>
                                 </div>
                             </form>
                         </div>
-                           
-                        <div class="about_item-btn">
-                                    <a href="#" class="default-btn-about">
-                                    Назад
-                                    </a>
-                                    <a  href="#" class="default-btn-about admin">
-                                        Редактировать
-                                    </a>
-                                    <a  href="#" class="default-btn-about admin">
-                                        Удалить
-                                    </a>    
-                            </div>    
-                        </div>    
+                        {% endif %} 
+                        {% endif %}
+                        {% endfor %}          
             </div>
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <div class="about_item-btn">
+                <a  href="#" class="default-btn-about admin">
+                    Редактировать
+                </a>
+            </div> 
+            {% endif %}   
+        </div>    
         </div>    
     </section>
     <footer class="footer">

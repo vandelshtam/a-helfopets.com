@@ -45,33 +45,15 @@ class AboutComtrollerController extends AbstractController
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
 
-        $repository = $doctrine->getRepository(Fotoreview::class);
-        $fotos = $repository->findAll();
-        $foto1 = $repository->findBy(['review' => 1]);
-        //$reviews = $foto->getReview();
-        //dd($fotos);
-
-
-        $review1 = $reviewRepository->findAll();
-        //dd($review1);
-
-        //$fotoreviewReviewId = $review1->getFotoreview();
-        //dd($fotoreviewReviewId);
+        $reviews_all = $reviewRepository->findAll();
+        
         $reviews = [];
-        for($i=1; $i<=4; $i++){
-            $reviews[] = $doctrine->getRepository(Review::class)->findOneByIdJoinedToFotoreview($i);
+        foreach($reviews_all as $elem){   
+            $reviews[] = $doctrine->getRepository(Review::class)->findOneByIdJoinedToFotoreview($elem->getId());
         }
-        //dd($reviews);
-        $review_user = $doctrine->getRepository(Review::class)->findOneByIdJoinedToFotoreview(1);
-        $review = $doctrine->getRepository(Review::class)->findAll();
-        //dd($review);
-        if($review_user->getFotoreview() != null){
-            $fotoreview_foto = $review_user->getFotoreview();
-        }
-        else{
-            $fotoreview_foto = null;
-        }
-
+        
+	$localIP = getHostByName(getHostName());
+dd($localIP);
         $review = new Review();
         $form = $this->createForm(ReviewType::class, $review);
         $form->handleRequest($request);
@@ -133,6 +115,7 @@ class AboutComtrollerController extends AbstractController
                 $fotoreview3->setFoto($newFilename3);
                 
             }
+            $review->setIp($localIP);
             $review->addFotoreview($fotoreview);
             $review->addFotoreview($fotoreview2);
             $review->addFotoreview($fotoreview3);
@@ -148,11 +131,9 @@ class AboutComtrollerController extends AbstractController
             return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);
         }
 
-        // $product = $doctrine->getRepository(Rating::class)->findAll();
         $rating_all = $ratingRepository->findAll();
-        // $rating_all_grade = $ratingRepository->findAllGrade();
         $rating = $ratingRepository->findAllRating();
-
+    
         $summ_rating = 0;
         foreach($rating_all as $elem){
             $summ_rating += $elem->getGrade();
@@ -169,8 +150,7 @@ class AboutComtrollerController extends AbstractController
             'rating_value' => $rating_value,
             'form' => $form,
             'reviews' => $reviews,
-            'repository' => $repository,
-            'fotos'=> $fotos,
+            'ip' => $localIP,
         ]);
     }
 }

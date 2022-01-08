@@ -44,9 +44,20 @@ class Review
      */
     private $created_at;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="review")
+     */
+    private $answer;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $ip;
+
     public function __construct()
     {
         $this->fotoreview = new ArrayCollection();
+        $this->answer = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -128,6 +139,48 @@ class Review
     public function setCreatedAt(?\DateTimeImmutable $created_at): self
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Answer[]
+     */
+    public function getAnswer(): Collection
+    {
+        return $this->answer;
+    }
+
+    public function addAnswer(Answer $answer): self
+    {
+        if (!$this->answer->contains($answer)) {
+            $this->answer[] = $answer;
+            $answer->setReview($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnswer(Answer $answer): self
+    {
+        if ($this->answer->removeElement($answer)) {
+            // set the owning side to null (unless already changed)
+            if ($answer->getReview() === $this) {
+                $answer->setReview(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getIp(): ?string
+    {
+        return $this->ip;
+    }
+
+    public function setIp(?string $ip): self
+    {
+        $this->ip = $ip;
 
         return $this;
     }
