@@ -3,18 +3,91 @@
 {% block title %}Hello ContactController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/Users/louisdefunes/Sites/localhost/project_symfony_two/src/Controller/ContactController.php'|file_link(0) }}">src/Controller/ContactController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/Users/louisdefunes/Sites/localhost/project_symfony_two/templates/contact/index.html.twig'|file_link(0) }}">templates/contact/index.html.twig</a></code></li>
-    </ul>
-</div>
+<section class="page_contacts">
+        <div class="container">
+            <div class="contacts_top">
+                <div class="contacts_title-box">
+                    <div class="contacts_title">
+                        Наши контакты
+                    </div>
+                    <div class="contacts_text">
+                        Вы всегда сможете с нами связатся одним из ниже перечисленных способов 
+                    </div>
+                </div>
+            </div>
+            <div class="contacts_items">
+                <div class="contacts_item">
+                    <div class="contact_top">
+                        <div class="image_contacts">
+                            <img src="{{ asset('asset/img/anymals-4.jpeg') }}" alt="" >
+                        </div>
+                        <div class="contact_top_item-title">
+                            <div class="contact_item-title">
+                                Мы оказывем помощь животным 
+                            </div>
+                            <div class="contact_item-text">
+                                Обращайтесь к нам, если возникнут проблемы с вашими любимыми питомцами или каким-либо животным понадобиться помощь. Мы всегда рады и готовы оказать помощь.
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="page_contacts_inner">
+                        <div class="page_contacts_info">
+                            <div class="page_contacts_title">
+                                Специалисты по оказанию надежной и квалифицированной помощи вашим любимым питомцам!
+                            </div>
+                            <div class="page_contacts_text">
+                                Нужна надежная квалифицированная поддержка для ваших любымых животных? Обращайтесь к нам. Наше бюро, состоящее из опытной команды, предоставляет помощь даже в самых сложных ситуациях. Наши специалисты говорят на нескольких языках! 
+                            </div>
+                            <a data-fancybox data-src="#hidden-content" href="javascript:;" class="header_btn">
+                                Бесплатная консультация
+                            </a>
+                            - обращайтесь к нам в любое время!
+                            <ul class="page_contacts_list">
+                                <li><a class="page_contacts_phone" href="tel:79957771830">+7 (995) 777 18 30</a></li>
+                                <li><a class="page_contacts_email"  href="#">mvlju977@gmail.com</a></li>
+                                <li><a class="page_contacts_adress" href="#">224. Sk. 3 A Hurma, 224. Sk. 3 A, 07130 Bahtılı Köyü Köyü/Konyaaltı/Antalya</a></li>
+                            </ul>
+                        </div>
+                        <div class="page_contacts_title">
+                            Мы в социальных сетях :
+                        </div>
+                        <div id="sicials_span"> 
+                            <span><a href="#" id="instagram"></a></span>
+                            <span><a href="#"id="face"></a></span>
+                            <span><a href="#"id="twitter"></a></span>
+                            <span><a href="#"id="vk"></a></span>
+                            <span><a href="#"id="scool"></a></span>
+                            <span><a href="#"id="telegram"></a></span>
+                            <span><a href="#"id="whatts"></a></span>
+                        </div>
+                        <div class="page_contacts_title">
+                            Где мы находимся :
+                        </div>
+                        <div class="page_contacts_map">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12769.001896835982!2d30.602218242904456!3d36.86042302995611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14c393c2dbf54b39%3A0x85d588ae3693fa3b!2zSHVybWEsIDIyNC4gU2suIDMgQSwgMDcxMzAgQmFodMSxbMSxIEvDtnnDvCBLw7Z5w7wvS29ueWFhbHTEsS9BbnRhbHlh!5e0!3m2!1sru!2str!4v1638958614135!5m2!1sru!2str"  height="320px" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        </div>
+                    </div>
+                    <div class="contacts_item-btn">
+                        <div class="contacts_btn">
+                            <a href="#" class="default-btn-contacts">
+                                На главную
+                            </a>
+                            <a  href="#" class="default-btn-contacts admin">
+                                Редактировать
+                            </a>
+                        </div> 
+                    </div>
+                </div>    
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+        <div class="footer_copy">
+            <div class="container">
+                <div class="copy_text">
+                    2017 Template by Anastasia Shaposhnyk. Все права защищены.
+                </div>
+            </div>
+        </div>
+    </footer>
 {% endblock %}

@@ -1205,7 +1205,14 @@ form button.default-btn{
     margin: 0 auto;
 }
 .page_servise .slider_item-content img{
-    max-width:100%;  
+    background-size: auto 600px;
+	background-repeat: no-repeat;
+    height: 600px;
+    width: 800px;
+    background-repeat: no-repeat;
+    
+    
+    
 }
 .page_servise .slider_title{
     margin-top: 20px;
@@ -1855,7 +1862,7 @@ form button.default-btn{
     font-weight: 500;
     line-height: 36px;
     letter-spacing: 0.5px;
-    margin-bottom: 30px;
+    margin-bottom: 0px;
 }
 .page_contacts_info{
     max-width: 1140px;
@@ -1949,6 +1956,12 @@ form button.default-btn{
 .contacts_item:hover{
     box-shadow: 0px 7px 24.3px 2.7px rgba(20, 20, 4, 0.14);
 }
+#social_span{
+    margin-bottom: 30px;
+}
+#footer_bottom_span{
+    margin-top: 20px;
+}
 #telegram,
 #scool,
 #whatts,
@@ -1959,8 +1972,8 @@ form button.default-btn{
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
     border-radius: 100%;    
 }
 #instagram{
