@@ -74,4 +74,16 @@ class RatingRepository extends ServiceEntityRepository
         // returns an array of Product objects
         return $query->getResult();
     }
+
+    public function findAllIp(): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT r
+            FROM App\Entity\Rating r
+            ORDER BY r.ip ASC'
+        );
+        return $query->getResult();
+    }
 }

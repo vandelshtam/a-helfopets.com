@@ -18,8 +18,8 @@ use App\Entity\Fotoreview;
 use App\Entity\OurMission;
 use Doctrine\ORM\Mapping\Id;
 use App\Entity\FastConsultation;
-
 use App\Form\FastConsultationType;
+use App\Controller\ImageController;
 use App\Repository\PressRepository;
 use App\Repository\RatingRepository;
 use App\Repository\ReviewRepository;
@@ -39,7 +39,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class AboutComtrollerController extends AbstractController
 {
     #[Route('/about/comtroller', name: 'about_comtroller')]
-    public function index(Request $request,OurMissionRepository $ourMissionRepository,FotoreviewRepository $fotoreviewRepository, AchievementsRepository $achievementsRepository,PressRepository $pressRepository,RatingRepository $ratingRepository, ManagerRegistry $doctrine, EntityManagerInterface $entityManager,SluggerInterface $slugger,ReviewRepository $reviewRepository): Response
+    public function index(Request $request,OurMissionRepository $ourMissionRepository,FotoreviewRepository $fotoreviewRepository, AchievementsRepository $achievementsRepository,PressRepository $pressRepository,RatingRepository $ratingRepository, ManagerRegistry $doctrine, EntityManagerInterface $entityManager,SluggerInterface $slugger,ReviewRepository $reviewRepository, ImageController $imageController): Response
     {
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
@@ -52,8 +52,8 @@ class AboutComtrollerController extends AbstractController
             $reviews[] = $doctrine->getRepository(Review::class)->findOneByIdJoinedToFotoreview($elem->getId());
         }
         
-	$localIP = getHostByName(getHostName());
-dd($localIP);
+	    $localIP = getHostByName(getHostName());
+
         $review = new Review();
         $form = $this->createForm(ReviewType::class, $review);
         $form->handleRequest($request);
@@ -65,11 +65,11 @@ dd($localIP);
             $image2File = $form->get('foto2')->getData();
             $image3File = $form->get('foto3')->getData();
             if ($imageFile) {
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                
+                //$imageController = new ImageController;
+                //$newFilename = $imageController->newNameImage($slugger, $imageFile);
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);        
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
-                
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();  
                 try {
                     $imageFile->move(
                         $this->getParameter('img_directory'),
@@ -78,8 +78,7 @@ dd($localIP);
                 } catch (FileException $e) {
                     echo "An error occurred while creating your directory at ";
                 }
-                $fotoreview->setFoto($newFilename);
-                
+                $fotoreview->setFoto($newFilename);    
             }
             if ($image2File) {
                 $originalFilename2 = pathinfo($image2File->getClientOriginalName(), PATHINFO_FILENAME);
@@ -133,7 +132,6 @@ dd($localIP);
 
         $rating_all = $ratingRepository->findAll();
         $rating = $ratingRepository->findAllRating();
-    
         $summ_rating = 0;
         foreach($rating_all as $elem){
             $summ_rating += $elem->getGrade();

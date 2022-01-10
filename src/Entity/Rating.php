@@ -22,6 +22,11 @@ class Rating
      */
     private $grade;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $ip;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -35,6 +40,18 @@ class Rating
     public function setGrade(int $grade): self
     {
         $this->grade = $grade;
+
+        return $this;
+    }
+
+    public function getIp(): ?string
+    {
+        return $this->ip;
+    }
+
+    public function setIp(?string $ip): self
+    {
+        $this->ip = $ip;
 
         return $this;
     }
