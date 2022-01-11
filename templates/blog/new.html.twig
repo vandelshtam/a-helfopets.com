@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Blog{% endblock %}
+
+{% block body %}
+<section class="form add_blog">
+        <div class="container">
+            
+                <div class="form_content">
+                    <div class="form_title-box">
+                        <div class="form_title">
+                            Страница создания нового поста
+                        </div>
+                        <div class="form_text">
+                            При создании поста пожалуйста следуйте рекомендациям системы
+                        </div>
+                    </div>
+                    <div class="form_box">
+                        {{ include('blog/_form.html.twig') }}      
+                    </div>   
+                </div>    
+        </div>
+    </section>
+{% endblock %}
+{% block javascripts %}
+    {{ include('js.html.twig') }}
+{% endblock %}

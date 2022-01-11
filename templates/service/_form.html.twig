@@ -1,5 +1,9 @@
 
-
+{% if form_errors(form) %}
+<div class="my-custom-class-for-errors">
+    {{ form_errors(form) }}
+</div>
+{% endif %}
                     <div class="add_new-form form_box">
                         {{ form_start(form) }}
                             <div class="add_new-form form_box-inner">

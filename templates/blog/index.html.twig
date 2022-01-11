@@ -1,26 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Service index{% endblock %}
+{% block title %}Blog index{% endblock %}
 
 {% block body %}
-<section class="page_servises">
+<section class="page_blogs">
         <div class="container">
             <div class="servises_top">
                 <div class="servises_title-box">
                     <div class="servises_title">
-                        Наши услуги
+                        Страница блогов
                     </div>
                     <div class="servises_text">
-                        Комплексный подход к вашему вопросу,своевременная помощь, представление интересов во всех органах и суде.
+                        На этой странице размещениы интересные статьи 
                     </div>
                 </div>
+                <div class="servises_btn">
+                    <a href="{{ path('blog_new') }}">
+                    Добавить
+                    </a>
+                </div>    
             </div>
-            <div class="servises_items elastic">
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
-            <a href="{{ path('service_new') }}" class="default-btn-create_service">
-                Добавить
-            </a>
-            {% endif %}
             {% for label, messages in app.flashes(['success', 'notice']) %}
                 {% for message in messages %}
                     {% if message %}
@@ -30,36 +29,52 @@
                     {% endif %}
                 {% endfor %}
             {% endfor %}
-            <div class="page_news-search">
-                <input type="text" id="elastic" name="filter-contacts" class="" placeholder="Поиск услуг">
+            <div class="page_blog_search">
+                <input type="text" id="elastic" name="filter-contacts" class="" placeholder="Поиск постов">
             </div>
-                {% for service in services %}
-                <div class="servises_item none" data-filter-tags="{{ service.name }}">
-                    <img src="{{ asset('uploads/img/avatars/' ~ service.Avatar) }}" alt="" class="img_servises-1">
+            <div class="servises_items elastic">
+                {% for blog in blogs %}
+                <div class="servises_item none" data-filter-tags="{{ blog.title }}">
+                    <div class="blog_top">
+                    {% if blog.Foto == null %}
+                    <img src="{{ asset('asset/img/blog-icone-anymals-1.webp') }}" alt="" class="img_servises-1">
+                    {% else %}
+                    <img src="{{ asset('uploads/img/galery/' ~ blog.Foto) }}" alt="" class="img_servises-1">
+                    {% endif %}
                     <div class="servises_item-title">
-                        {{ service.name }}
+                        {{ blog.title }}
+                    </div>
+                    </div>
+                    
+                    <div class="servises_item-text">
+                        {{ blog.preview }}{{ blog.createdAt ? blog.createdAt|date('Y-m-d H:i:s') : '' }}
                     </div>
                     <div class="servises_item-text">
-                        {{ service.discription }}
+                        {{ blog.author }}
+                    </div>
+                    <div class="servises_item-text">
+                        <a href="{{ blog.link }}">{{ blog.linltitle }}</a>
                     </div>
                     <div class="servises_item-btn">
-                        <a href="{{ path('service_show', {'id': service.id}) }}" class="servises_item-link">
-                            Подробнее
-                        </a>
-                        <a data-fancybox data-src="#hidden-content" href="javascript:;" class="default-btn">
-                            Заказать
-                        </a>
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
-                        <a href="{{ path('service_edit', {'id': service.id}) }}" class="default-btn">
-                            edit
-                        </a>
-                        {% endif %}
+                        <div class="servises_btn">
+                            <a href="{{ path('blog_show', {'id': blog.id}) }}" class="default-btn">
+                            Открыть
+                            </a>
+                            <a  href="{{ path('blog_edit', {'id': blog.id}) }}" class="default-btn admin">
+                                Редактировать
+                            </a>
+                            {# <a  href="#" class="default-btn admin">
+                                Удалить
+                            </a> #}
+                        </div> 
                     </div>
                 </div>
                 {% endfor %}
+                
             </div>
         </div>
-    </section>   
+    </section>
+    
     <footer class="footer">
         <div class="footer_content">
             <div class="container">
@@ -93,8 +108,7 @@
                 </div>
             </div>
         </div>
-    </footer>
-
+    </footer> 
 <script>
     document.querySelector('#elastic').oninput = function(){
         let val = this.value.trim();
@@ -117,7 +131,7 @@
                 });
         }
     }
-</script>        
+</script>           
 {% endblock %}
 {% block javascripts %}
     {{ include('js.html.twig') }}
