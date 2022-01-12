@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fotoblog{% endblock %}
+
+{% block body %}
+    <h1>Fotoblog</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ fotoblog.id }}</td>
+            </tr>
+            <tr>
+                <th>Foto</th>
+                <td>{{ fotoblog.foto }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ fotoblog.title }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ fotoblog.description }}</td>
+            </tr>
+            <tr>
+                <th>Link</th>
+                <td>{{ fotoblog.link }}</td>
+            </tr>
+            <tr>
+                <th>Created_at</th>
+                <td>{{ fotoblog.createdAt ? fotoblog.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('fotoblog_index') }}">back to list</a>
+
+    <a href="{{ path('fotoblog_edit', {'id': fotoblog.id}) }}">edit</a>
+
+    {{ include('fotoblog/_delete_form.html.twig') }}
+{% endblock %}

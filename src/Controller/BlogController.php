@@ -75,16 +75,9 @@ class BlogController extends AbstractController
     {
         $blog = $doctrine->getRepository(Blog::class)->findOneByIdJoinedToFotoblog($id);
         
-        if($blog->getFotoblog() != null){
-            $fotoblogs = $blog->getFotoblog();
-        }
-        else{
-            $fotoblogs = null;
-        }
-        
         return $this->render('blog/show.html.twig', [
             'blog' => $blog,
-            'fotoblogs' => $fotoblogs,
+            'id' => $id,
         ]);
     }
 
@@ -96,7 +89,9 @@ class BlogController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
+            $this->addFlash(
+                'success',
+                'Вы успешно изменили  пост!'); 
             return $this->redirectToRoute('blog_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -112,6 +107,9 @@ class BlogController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$blog->getId(), $request->request->get('_token'))) {
             $entityManager->remove($blog);
             $entityManager->flush();
+            $this->addFlash(
+                'success',
+                'Вы успешно удалили пост!'); 
         }
 
         return $this->redirectToRoute('blog_index', [], Response::HTTP_SEE_OTHER);

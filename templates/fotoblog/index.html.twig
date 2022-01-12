@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fotoblog index{% endblock %}
+
+{% block body %}
+    <h1>Fotoblog index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Foto</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Link</th>
+                <th>Created_at</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for fotoblog in fotoblogs %}
+            <tr>
+                <td>{{ fotoblog.id }}</td>
+                <td>{{ fotoblog.foto }}</td>
+                <td>{{ fotoblog.title }}</td>
+                <td>{{ fotoblog.description }}</td>
+                <td>{{ fotoblog.link }}</td>
+                <td>{{ fotoblog.createdAt ? fotoblog.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('fotoblog_show', {'id': fotoblog.id}) }}">show</a>
+                    <a href="{{ path('fotoblog_edit', {'id': fotoblog.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('fotoblog_new') }}">Create new</a>
+{% endblock %}

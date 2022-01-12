@@ -25,12 +25,15 @@ class RatingController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine, RatingRepository $ratingRepository): Response
     {
         $localIP = getHostByName(getHostName());
-        if($ip = $ratingRepository->findAllIp()){
+        $rating = $doctrine->getRepository(Rating::class)->findOneBy([
+            'ip' => $localIP
+        ]);
+        if($rating != null){
             $this->addFlash(
                 'success',
                 'Извините! Вы можете дать вашу оценку только один раз.'); 
             return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);    
-        };
+        }
         $value = $request->request->get('ratin');
         $entityManager = $doctrine->getManager();
         $rating = new Rating();

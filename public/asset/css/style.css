@@ -1665,6 +1665,11 @@ form button.default-btn{
 .page_blog #hidden-content-slider-edit .fancybox_content{
     max-width: 500px;
 }
+.rating-area.blog {
+	overflow: hidden;
+	width: 465px;
+	margin: 0px 0px 70px -30px;
+}
 /*============== page add_blog =================== */
 .form.add_blog .form_inner{
     background-image: none;
@@ -1683,6 +1688,17 @@ form button.default-btn{
 .form.add_blog .servises_item-btn{
     position: relative;
     margin-top: 70px;
+}
+button.default-btn.blog{
+    color:#373636;
+    line-height: 24px;
+    letter-spacing: 0.25px;
+    padding: 5px 38px;
+    border: 3px solid#e6e6e6;
+}
+.blog_slider-btn{
+    display: flex;
+    flex-direction: row;
 }
 /*============= page slider =========== */
 .page_slider{

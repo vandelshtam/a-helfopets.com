@@ -89,9 +89,15 @@ class Blog
      */
     private $linkslider;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Ratingblog::class, mappedBy="blog")
+     */
+    private $ratingblog;
+
     public function __construct()
     {
         $this->fotoblog = new ArrayCollection();
+        $this->ratingblog = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -224,7 +230,6 @@ class Blog
 
         return $this;
     }
-
     public function getLinltitle(): ?string
     {
         return $this->linltitle;
@@ -281,6 +286,40 @@ class Blog
     public function setLinkslider(?string $linkslider): self
     {
         $this->linkslider = $linkslider;
+
+        return $this;
+    }
+    public function __toString()
+    {
+      return $this->getTitle();
+    }
+
+    /**
+     * @return Collection|Ratingblog[]
+     */
+    public function getRatingblog(): Collection
+    {
+        return $this->ratingblog;
+    }
+
+    public function addRatingblog(Ratingblog $ratingblog): self
+    {
+        if (!$this->ratingblog->contains($ratingblog)) {
+            $this->ratingblog[] = $ratingblog;
+            $ratingblog->setBlog($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRatingblog(Ratingblog $ratingblog): self
+    {
+        if ($this->ratingblog->removeElement($ratingblog)) {
+            // set the owning side to null (unless already changed)
+            if ($ratingblog->getBlog() === $this) {
+                $ratingblog->setBlog(null);
+            }
+        }
 
         return $this;
     }

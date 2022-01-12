@@ -1,0 +1,37 @@
+{% if form_errors(form) %}
+<div class="my-custom-class-for-errors">
+    {{ form_errors(form) }}
+</div>
+{% endif %}   
+{{ form_start(form) }}
+<div class="form_box-inner blog">
+        <div class="form_box-left">
+            <label for="">
+                {{ form_row(form.title) }}
+            </label>
+            
+            <label for="">
+                {{ form_row(form.foto) }}
+            </label>                        
+        </div>
+        <div class="form_box-right">
+            <label for="">
+                {{ form_row(form.description) }}
+            </label>
+            <label for="">
+                {{ form_row(form.link) }}
+            </label>
+            <label for="">
+                {{ form_row(form.blog) }}
+            </label>
+            <div class="servises_item-btn">
+                <div class="servises_btn">
+                    <a href="{{ path('blog_show', {'id': id}) }}" class="default-btn">
+                    Назад
+                    </a>
+                    <button class="default-btn admin" type="submit">Сохранить</button> 
+                </div> 
+            </div>
+        </div>
+    </div>      
+{{ form_end(form) }}
