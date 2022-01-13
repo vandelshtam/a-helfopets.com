@@ -5,8 +5,11 @@ namespace App\Controller;
 use App\Entity\Blog;
 use App\Form\BlogType;
 use App\Entity\Fotoblog;
+use App\Entity\Ratingblog;
+use App\Entity\FastConsultation;
+use App\Form\FastConsultationType;
 use App\Repository\BlogRepository;
-// use Symfony\Bridge\Doctrine\ManagerRegistry;
+use App\Repository\RatingblogRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,10 +23,15 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class BlogController extends AbstractController
 {
     #[Route('/', name: 'blog_index', methods: ['GET'])]
-    public function index(BlogRepository $blogRepository): Response
+    public function index(Request $request,BlogRepository $blogRepository, ManagerRegistry $doctrine,EntityManagerInterface $entityManager): Response
     {
-        return $this->render('blog/index.html.twig', [
+        $fast_consultation = new FastConsultation();
+        $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
+        $fast_consultation_form->handleRequest($request);
+
+        return $this->renderForm('blog/index.html.twig', [
             'blogs' => $blogRepository->findAll(),
+            'fast_consultation_form' => $fast_consultation_form,
         ]);
     }
 
@@ -49,7 +57,6 @@ class BlogController extends AbstractController
             $titleslider = $form->get('titleslider')->getData();
             $descriptionslider = $form->get('descriptionslider')->getData();
             $linkslider = $form->get('linkslider')->getData();
-            //dd($form->get('titleslider')->getData());
             $fotoblog->setTitle($titleslider);
             $fotoblog->setDescription($descriptionslider);
             $fotoblog->setLink($linkslider);
@@ -64,20 +71,47 @@ class BlogController extends AbstractController
             return $this->redirectToRoute('blog_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        $fast_consultation = new FastConsultation();
+        $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
+        $fast_consultation_form->handleRequest($request);
+
         return $this->renderForm('blog/new.html.twig', [
             'blog' => $blog,
             'form' => $form,
+            'fast_consultation_form' => $fast_consultation_form,
         ]);
     }
 
     #[Route('/{id}', name: 'blog_show', methods: ['GET'])]
-    public function show(Blog $blog,ManagerRegistry $doctrine, int $id): Response
+    public function show(Request $request,Blog $blog,ManagerRegistry $doctrine, int $id,RatingblogRepository $ratingblogRepository): Response
     {
         $blog = $doctrine->getRepository(Blog::class)->findOneByIdJoinedToFotoblog($id);
-        
-        return $this->render('blog/show.html.twig', [
+        $ratingId = $doctrine->getRepository(Ratingblog::class)->findBy([
+            'blog' => $id,    
+        ]);
+        $summ_ratingblog = 0;
+        $ratingblog_count = 0;
+        foreach($ratingId as $elem){
+            $summ_ratingblog += $elem->getRating();
+        }
+        foreach($ratingId as $elem){
+            $ratingblog_count += 1;
+        }
+        if($ratingblog_count != null){
+            $rating_value = round(($summ_ratingblog/$ratingblog_count), 2, PHP_ROUND_HALF_DOWN);
+        }
+        else{
+            $rating_value = 0;
+        }
+        $fast_consultation = new FastConsultation();
+        $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
+        $fast_consultation_form->handleRequest($request);
+
+        return $this->renderForm('blog/show.html.twig', [
             'blog' => $blog,
             'id' => $id,
+            'rating_value' => $rating_value,
+            'fast_consultation_form' => $fast_consultation_form,
         ]);
     }
 
@@ -95,9 +129,14 @@ class BlogController extends AbstractController
             return $this->redirectToRoute('blog_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        $fast_consultation = new FastConsultation();
+        $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
+        $fast_consultation_form->handleRequest($request);
+
         return $this->renderForm('blog/edit.html.twig', [
             'blog' => $blog,
             'form' => $form,
+            'fast_consultation_form' => $fast_consultation_form,
         ]);
     }
 
@@ -111,17 +150,14 @@ class BlogController extends AbstractController
                 'success',
                 'Вы успешно удалили пост!'); 
         }
-
         return $this->redirectToRoute('blog_index', [], Response::HTTP_SEE_OTHER);
     }
 
     private function uploadNewFileName(SluggerInterface $slugger, $imageFile)
     {
-        $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                
+        $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);       
         $safeFilename = $slugger->slug($originalFilename);
-        $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
-                
+        $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();        
         try {
             $imageFile->move(
                 $this->getParameter('galery_directory'),
@@ -131,6 +167,5 @@ class BlogController extends AbstractController
             echo "An error occurred while creating your directory at ";
         }           
         return $newFilename;   
-    }
-    
+    }    
 }

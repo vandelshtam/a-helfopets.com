@@ -18,8 +18,8 @@
             <div class="page_new news_inner">
                 <div href="#" class="page_new news_blog">
                     <div class="page_new news_images">
-                        <img src="{{ asset('uploads/img/' ~ article.AvatarArticle) }}" alt="" class="avatar_new_image">
-                        <div class="page_new news_date">03.04.2021</div>
+                        <img src="{{ asset('uploads/img/avatars/' ~ article.AvatarArticle) }}" alt="" class="avatar_new_image">
+                        <div class="page_new news_date">{{ article.created_at|date('m-d') }}</div>
                     </div>
                     <div class="page_new news_blog-title">
                         {{ article.title }}
@@ -29,7 +29,7 @@
                     </div>
                     {% if article.Foto1 != null %}
                     <div class="page_new-image">
-                        <img src="{{ asset('uploads/img/' ~ article.Foto1) }}" alt="">   
+                        <img src="{{ asset('uploads/img/galery/' ~ article.Foto1) }}" alt="">   
                     </div>
                     <div class="page_new comment-image">{{ article.commentAuxiliaryOne }}</div>
                     {% endif %}
@@ -40,7 +40,7 @@
                     {% endif %}
                     {% if article.Foto2 != null %}
                     <div class="page_new news_image-article">
-                        <img src="{{ asset('uploads/img/' ~ article.Foto2) }}" alt="" class="page_new_foto">
+                        <img src="{{ asset('uploads/img/galery/' ~ article.Foto2) }}" alt="" class="page_new_foto">
                         <div class="page_new comment-image-article">{{ article.commentFoto }}</div>
                     </div>
                     {% endif %}

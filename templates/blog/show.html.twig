@@ -65,20 +65,24 @@
                                     <div class="blog_slider-author">
                                         {{ fotoblog.createdAt ? fotoblog.createdAt|date('Y-m-d H:i:s') : '' }} 
                                     </div> 
+                                    {% if is_granted('ROLE_SUPER_ADMIN') %}
                                     <div class="blog_slider-btn">    
                                         <a href="{{ path('fotoblog_edit', {'id': fotoblog.id}) }}" class="default-btn blog">
                                             Редактировать
                                         </a>
                                         {{ include('fotoblog/_delete_form.html.twig') }}
-                                    </div>            
+                                    </div> 
+                                    {% endif %}           
                             </div>
                             {% endfor %}
                             <div class="blog_slider-item add">
+                                {% if is_granted('ROLE_SUPER_ADMIN') %}
                                 <div class="blog_slider-title add">
                                     <a href="{{ path('fotoblog_new', {'id': blog.id}) }}" class="default-btn admin add">   
                                     Добваить сладер
                                     </a>
-                                </div>      
+                                </div>
+                                {% endif %}      
                             </div>    
                         </div>
                     </div>
@@ -91,21 +95,39 @@
                     <div class="servises_item-text">
                         <a href="{{ blog.link }}">{{ blog.linltitle }}</a>
                     </div>
+                    {# <div class="blog_show-rating blog"> #}
+                        <div class="rating-result blog">
+                        Рейтинг: 
+                        {% if rating_value == 0 %}
+                            <span class=""><span class="active_value"></span></span>
+                        {% else %}
+                            {% for i in range(1, rating_value-0) %}
+                                <span class="active"><span class="active_value">{{ i }}</span></span>    
+                            {% endfor %}
+                        {% endif %}
+                        {# <div class="rating-result blog"> #}
+                            Общая оценка: 
+                            <span class=""><span class="active_value"></span>{{ rating_value }}</span>   
+                        {# </div>          #}
+                        </div>
+                        
+                    {# </div> #}
+                    
                     <div class="about_item-text">
                             Оценить: 
                         </div>
                         <form action="{{ path('ratingblog_new', {'id': blog.id}) }}" method="POST">  
                             <div class="rating-area blog">
                                 <input type="radio" id="star-10" name="rating" value="10">
-                                <label for="star-5" title="Оценка «10»"></label>	
+                                <label for="star-10" title="Оценка «10»"></label>	
                                 <input type="radio" id="star-9" name="rating" value="9">
-                                <label for="star-4" title="Оценка «9»"></label>    
+                                <label for="star-9" title="Оценка «9»"></label>    
                                 <input type="radio" id="star-8" name="rating" value="8">
-                                <label for="star-3" title="Оценка «8»"></label>  
+                                <label for="star-8" title="Оценка «8»"></label>  
                                 <input type="radio" id="star-7" name="rating" value="7">
-                                <label for="star-2" title="Оценка «7»"></label>    
+                                <label for="star-7" title="Оценка «7»"></label>    
                                 <input type="radio" id="star-6" name="rating" value="6">
-                                <label for="star-1" title="Оценка «6»"></label>
+                                <label for="star-6" title="Оценка «6»"></label>
                                 <input type="radio" id="star-5" name="rating" value="5">
                                 <label for="star-5" title="Оценка «5»"></label>	
                                 <input type="radio" id="star-4" name="rating" value="4">
@@ -123,6 +145,7 @@
                             <a href="{{ path('blog_index') }}" class="default-btn">
                                 Назад
                             </a>
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
                             <a href="{{ path('fotoblog_new', {'id': blog.id}) }}" class="default-btn">
                                 Добавить слайдер
                             </a>
@@ -130,6 +153,7 @@
                                 Редактировать
                             </a>
                                 {{ include('blog/_delete_form.html.twig') }}
+                            {% endif %}
                         </div> 
                     </div>
                 </div>    
@@ -170,6 +194,12 @@
             </div>
         </div>
     </footer>
+<div id="hidden-content">
+    {{ form_start(fast_consultation_form) }}
+        {{ form_widget(fast_consultation_form) }}
+        <input type="submit" value="Отправить">
+    {{ form_end(fast_consultation_form) }}
+</div> 
 {% endblock %}
 {% block javascripts %}
     {{ include('js.html.twig') }}

@@ -44,7 +44,7 @@
                                         </div> 
                                         {% if is_granted('ROLE_SUPER_ADMIN') %}
                                             {% if foto.Foto!= null %}
-                                                <a href="{{ path('service_delete_galery', {'id': foto.id}) }}" class="default-btn-galery_service" >
+                                                <a href="{{ path('service_delete_galery', {'id': foto.id}) }}" onclick="return confirm('Are you sure you want to delete this item?');" class="default-btn-galery_service" >
                                                         Удалить фото и комментарий
                                                 </a> 
                                                 <a href="{{ path('service_edition_galery', {'id': foto.id}) }}" class="default-btn-galery_service" >

@@ -47,4 +47,19 @@ class RatingblogRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findAllRatingblog($blog)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT COUNT (r.blog)
+            FROM App\Entity\Ratingblog r
+            WHERE r.blog > :blog'
+        )->setParameter('blog', $blog)
+        ->getResult();
+
+        // returns an array of Product objects
+        return $query;
+    }
 }

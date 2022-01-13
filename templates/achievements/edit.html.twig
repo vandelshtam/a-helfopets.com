@@ -14,10 +14,12 @@
                             При заполнении формы,пожалуйста следуйте правилам публикации статей на сайте и подсказкам системы.
                         </div>
                     </div>
+                    {% if is_granted('ROLE_ADMIN') %}
                     <div class="add_new-form form_box">
                     {{ include('achievements/_form.html.twig', {'button_label': 'Update'}) }}
                     {{ include('achievements/_delete_form.html.twig') }}
-                    </div>   
+                    </div>
+                    {% endif %}   
                 </div>    
         </div>
     </section> 

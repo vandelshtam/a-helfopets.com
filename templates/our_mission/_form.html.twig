@@ -14,8 +14,8 @@
             </label>
             <label for="file-upload" class="add_new custom-file-upload"> 
                 текущая картинка 
-                {% if our_moddion.Img != null %}
-                    <img src="{{ asset('uploads/img/' ~ our_moddion.Img) }}" alt="">
+                {% if our_mission.Img != null %}
+                    <img src="{{ asset('uploads/img/' ~ our_mission.Img) }}" alt="">
                     {% else %}
                     <img src="{{ asset('asset/img/fon-foto-default-3.jpeg') }}" alt="">
                 {% endif %}               
@@ -26,7 +26,9 @@
             <label for="">   
                 {{ form_row(form.text) }}
             </label>
+            {% if is_granted('ROLE_ADMIN') %}
             <button class="default-btn" type="submit">Сохранить</button>
+            {% endif %}
             <a href="{{ path('about_comtroller') }}" class="default-btn">Назад</a>  
         </div>
     </div>    

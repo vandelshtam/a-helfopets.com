@@ -35,7 +35,6 @@ class ArticleController extends AbstractController
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
         
-        //dd($articleRepository->find(id:11)->getCreatedAt());
         return $this->renderForm('article/index.html.twig', [
             'articles' => $articleRepository->findAll(),
             'user' => $user,
@@ -63,49 +62,15 @@ class ArticleController extends AbstractController
             $foto2File = $form->get('foto2')->getData();
             
             if ($avatar_articleFile) {
-                $originalFilename = pathinfo($avatar_articleFile->getClientOriginalName(), PATHINFO_FILENAME);
-                
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$avatar_articleFile->guessExtension();
-                
-                try {
-                    $avatar_articleFile->move(
-                        $this->getParameter('img_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    echo "An error occurred while creating your directory at ";
-                }
+                $newFilename = $this->uploadNewAvatarName($slugger, $avatar_articleFile);
                 $article->setAvatarArticle($newFilename);
             }
             if ($foto1File) {
-                $originalFilename = pathinfo($foto1File->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$foto1File->guessExtension();
-                try {
-                    $foto1File->move(
-                        $this->getParameter('img_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    echo "An error occurred while creating your directory at ";
-                }
-                $article->setFoto1($newFilename);
+                $newFilename1 = $this->uploadNewFileName($slugger, $foto1File);
+                $article->setFoto1($newFilename1);
             }
             if ($foto2File) {
-                
-                $originalFilename2 = pathinfo($foto2File->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename2 = $slugger->slug($originalFilename2);
-                $newFilename2 = $safeFilename2.'-'.uniqid().'.'.$foto2File->guessExtension();
-
-                try {
-                    $foto2File->move(
-                        $this->getParameter('img_directory'),
-                        $newFilename2
-                    );
-                } catch (FileException $e) {
-                    echo "An error occurred while creating your directory at ";
-                }
+                $newFilename2 = $this->uploadNewFileName($slugger, $foto2File);
                 $article->setFoto2($newFilename2);
             }
             $entityManager->persist($article);
@@ -154,70 +119,19 @@ class ArticleController extends AbstractController
         $avatar_articleFile = $form->get('avatar_article')->getData();
         
         if ($form->isSubmitted() && $form->isValid()) {
-            $filesystem = new Filesystem();
             if ($avatar_articleFile) {
-                if($article->getAvatarArticle() != null){
-                    $article->setAvatarArticle(
-                        $path = new File($this->getParameter('img_directory').'/'.$article->getAvatarArticle())
-                    );
-                    $filesystem->remove(['symlink', $path, $article->getAvatarArticle()]);
-                }
-                $originalFilename = pathinfo($avatar_articleFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$avatar_articleFile->guessExtension();
-                
-                try {
-                    $avatar_articleFile->move(
-                        $this->getParameter('img_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    echo "An error occurred while creating your directory at ";
-                }
+                $this -> deleteAvatarFile($article);
+                $newFilename = $this->uploadNewAvatarName($slugger, $avatar_articleFile);
                 $article->setAvatarArticle($newFilename);
             }
             if ($foto1File) {
-                
-                if($article->getFoto1() != null){
-                   $article->setFoto1(
-                    $path1 = new File($this->getParameter('img_directory').'/'.$article->getFoto1())
-                ); 
-                    $filesystem->remove(['symlink', $path1, $article->getFoto1()]);
-                }
-                
-                $originalFilename1 = pathinfo($foto1File->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename1 = $slugger->slug($originalFilename1);
-                $newFilename1 = $safeFilename1.'-'.uniqid().'.'.$foto1File->guessExtension();
-
-                try {
-                    $foto1File->move(
-                        $this->getParameter('img_directory'),
-                        $newFilename1
-                    );
-                } catch (FileException $e) {
-                    echo "An error occurred while creating your directory at ";
-                }
+                $this -> deleteFoto1File($article);
+                $newFilename1 = $this->uploadNewFileName($slugger, $foto1File);
                 $article->setFoto1($newFilename1);
             }
             if ($foto2File) {
-                if($article->getFoto2() != null){
-                $article->setFoto2(
-                    $path2 = new File($this->getParameter('img_directory').'/'.$article->getFoto2())
-                );
-                $filesystem->remove(['symlink', $path2, $article->getFoto2()]);
-                }
-                $originalFilename2 = pathinfo($foto2File->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename2 = $slugger->slug($originalFilename2);
-                $newFilename2 = $safeFilename2.'-'.uniqid().'.'.$foto2File->guessExtension();
-
-                try {
-                    $foto2File->move(
-                        $this->getParameter('img_directory'),
-                        $newFilename2
-                    );
-                } catch (FileException $e) {
-                    echo "An error occurred while creating your directory at ";
-                }
+                $this -> deleteFoto2File($article);
+                $newFilename2 = $this->uploadNewFileName($slugger, $foto2File);
                 $article->setFoto2($newFilename2);
             }
             $entityManager->flush();
@@ -247,5 +161,62 @@ class ArticleController extends AbstractController
         }
 
         return $this->redirectToRoute('article_index', [], Response::HTTP_SEE_OTHER);
+    }
+    private function uploadNewFileName($slugger, $imageFile)
+    {
+        $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);       
+        $safeFilename = $slugger->slug($originalFilename);
+        $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();        
+        try {
+            $imageFile->move(
+                $this->getParameter('galery_directory'),
+                $newFilename
+            );
+        } catch (FileException $e) {
+            echo "An error occurred while creating your directory at ";
+        }           
+        return $newFilename;   
+    }
+    private function uploadNewAvatarName($slugger, $imageFile)
+    {
+        $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);       
+        $safeFilename = $slugger->slug($originalFilename);
+        $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();        
+        try {
+            $imageFile->move(
+                $this->getParameter('avatar_directory'),
+                $newFilename
+            );
+        } catch (FileException $e) {
+            echo "An error occurred while creating your directory at ";
+        }           
+        return $newFilename;   
+    }
+    private function deleteAvatarFile($article){
+        $filesystem = new Filesystem();   
+        if($article->getAvatarArticle() != null){
+            $article->setAvatarArticle(
+                $path = new File($this->getParameter('avatar_directory').'/'.$article->getAvatarArticle())
+            );
+            $filesystem->remove(['symlink', $path, $article->getAvatarArticle()]);
+        }       
+    }
+    private function deleteFoto1File($article){
+        $filesystem = new Filesystem();   
+        if($article->getFoto1() != null){
+            $article->setFoto1(
+             $path1 = new File($this->getParameter('galery_directory').'/'.$article->getFoto1())
+            ); 
+            $filesystem->remove(['symlink', $path1, $article->getFoto1()]);
+        }      
+    }
+    private function deleteFoto2File($article){
+        $filesystem = new Filesystem();   
+        if($article->getFoto2() != null){
+            $article->setFoto2(
+                $path2 = new File($this->getParameter('galery_directory').'/'.$article->getFoto2())
+            );
+            $filesystem->remove(['symlink', $path2, $article->getFoto2()]);
+        }
     }
 }

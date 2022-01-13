@@ -41,6 +41,7 @@ class RatingblogController extends AbstractController
         }
             
         $value = $request->request->get('rating');
+        //dd($value);
         $entityManager = $doctrine->getManager();
         $ratingblog = new Ratingblog();
         $ratingblog->setRating($value);

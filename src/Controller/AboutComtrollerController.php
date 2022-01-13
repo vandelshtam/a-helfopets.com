@@ -2,21 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Rating;
 use App\Entity\Review;
-
-use App\Entity\Fotorev;
-
-use App\Form\RatingType;
-
-
-
-
 use App\Form\ReviewType;
 use App\Entity\Fotoreview;
-
-use App\Entity\OurMission;
-use Doctrine\ORM\Mapping\Id;
 use App\Entity\FastConsultation;
 use App\Form\FastConsultationType;
 use App\Controller\ImageController;
@@ -28,11 +16,12 @@ use App\Repository\OurMissionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\AchievementsRepository;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
@@ -62,58 +51,21 @@ class AboutComtrollerController extends AbstractController
         $fotoreview3 = new Fotoreview;
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form->get('foto')->getData();
-            $image2File = $form->get('foto2')->getData();
-            $image3File = $form->get('foto3')->getData();
+            $imageFile2 = $form->get('foto2')->getData();
+            $imageFile3 = $form->get('foto3')->getData();
             if ($imageFile) {
-                //$imageController = new ImageController;
-                //$newFilename = $imageController->newNameImage($slugger, $imageFile);
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);        
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();  
-                try {
-                    $imageFile->move(
-                        $this->getParameter('img_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    echo "An error occurred while creating your directory at ";
-                }
-                $fotoreview->setFoto($newFilename);    
+                $newFilename = $this->uploadNewFileName($slugger, $imageFile);
+                $fotoreview->setFoto($newFilename);
             }
-            if ($image2File) {
-                $originalFilename2 = pathinfo($image2File->getClientOriginalName(), PATHINFO_FILENAME);
-                
-                $safeFilename2 = $slugger->slug($originalFilename2);
-                $newFilename2 = $safeFilename2.'-'.uniqid().'.'.$image2File->guessExtension();
-                
-                try {
-                    $image2File->move(
-                        $this->getParameter('img_directory'),
-                        $newFilename2
-                    );
-                } catch (FileException $e) {
-                    echo "An error occurred while creating your directory at ";
-                }
+            if ($imageFile2) {
+                $newFilename2 = $this->uploadNewFileName($slugger, $imageFile2);
                 $fotoreview2->setFoto($newFilename2);
-                
             }
-            if ($image3File) {
-                $originalFilename3 = pathinfo($image3File->getClientOriginalName(), PATHINFO_FILENAME);
-                
-                $safeFilename3 = $slugger->slug($originalFilename3);
-                $newFilename3 = $safeFilename3.'-'.uniqid().'.'.$image3File->guessExtension();
-                
-                try {
-                    $image3File->move(
-                        $this->getParameter('img_directory'),
-                        $newFilename3
-                    );
-                } catch (FileException $e) {
-                    echo "An error occurred while creating your directory at ";
-                }
+            if ($imageFile3) {
+                $newFilename3 = $this->uploadNewFileName($slugger, $imageFile3);
                 $fotoreview3->setFoto($newFilename3);
-                
             }
+            
             $review->setIp($localIP);
             $review->addFotoreview($fotoreview);
             $review->addFotoreview($fotoreview2);
@@ -136,7 +88,13 @@ class AboutComtrollerController extends AbstractController
         foreach($rating_all as $elem){
             $summ_rating += $elem->getGrade();
         }
-        $rating_value = round(($summ_rating/$rating), 0, PHP_ROUND_HALF_DOWN);
+        if($rating == null){
+            $rating_value = 0;
+        }
+        else{
+            $rating_value = round(($summ_rating/$rating), 0, PHP_ROUND_HALF_DOWN);
+        }
+        
         
         return $this->renderForm('about_comtroller/index.html.twig', [
             'controller_name' => 'AboutComtrollerController',
@@ -150,5 +108,21 @@ class AboutComtrollerController extends AbstractController
             'reviews' => $reviews,
             'ip' => $localIP,
         ]);
+    }
+
+    private function uploadNewFileName(SluggerInterface $slugger, $imageFile)
+    {
+        $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);       
+        $safeFilename = $slugger->slug($originalFilename);
+        $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();        
+        try {
+            $imageFile->move(
+                $this->getParameter('galery_directory'),
+                $newFilename
+            );
+        } catch (FileException $e) {
+            echo "An error occurred while creating your directory at ";
+        }           
+        return $newFilename;   
     }
 }

@@ -16,11 +16,19 @@
                     </div>
                     <div class="form_box">
                         {{ include('blog/_form.html.twig', {'button_label': 'Update'}) }}
-                        {{ include('blog/_delete_form.html.twig') }}   
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        {{ include('blog/_delete_form.html.twig') }}
+                        {% endif %}   
                     </div>   
                 </div>    
         </div>
 </section>
+<div id="hidden-content">
+    {{ form_start(fast_consultation_form) }}
+        {{ form_widget(fast_consultation_form) }}
+        <input type="submit" value="Отправить">
+    {{ form_end(fast_consultation_form) }}
+</div> 
 {% endblock %}
 {% block javascripts %}
     {{ include('js.html.twig') }}

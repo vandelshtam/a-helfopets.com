@@ -30,7 +30,9 @@
                  {{ form_row(form.text) }}
             </label>
             <a href="{{ path('about_comtroller') }}" class="default-btn">Назад</a>
+            {% if is_granted('ROLE_ADMIN') %}
             <button class="default-btn" type="submit">Сохранить</button>
+            {% endif %}
         </div>
     </div>    
 {{ form_end(form) }}     

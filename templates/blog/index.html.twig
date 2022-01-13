@@ -11,14 +11,16 @@
                         Страница блогов
                     </div>
                     <div class="servises_text">
-                        На этой странице размещениы интересные статьи 
+                        На этой странице размещениы интересные статьи авторизованных пользователей
                     </div>
                 </div>
+                {% if is_granted('ROLE_ADMIN') %}
                 <div class="servises_btn">
                     <a href="{{ path('blog_new') }}">
                     Добавить
                     </a>
-                </div>    
+                </div>
+                {% endif %}    
             </div>
             {% for label, messages in app.flashes(['success', 'notice']) %}
                 {% for message in messages %}
@@ -45,7 +47,6 @@
                         {{ blog.title }}
                     </div>
                     </div>
-                    
                     <div class="servises_item-text">
                         {{ blog.preview }}{{ blog.createdAt ? blog.createdAt|date('Y-m-d H:i:s') : '' }}
                     </div>
@@ -60,17 +61,15 @@
                             <a href="{{ path('blog_show', {'id': blog.id}) }}" class="default-btn">
                             Открыть
                             </a>
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
                             <a  href="{{ path('blog_edit', {'id': blog.id}) }}" class="default-btn admin">
                                 Редактировать
                             </a>
-                            {# <a  href="#" class="default-btn admin">
-                                Удалить
-                            </a> #}
+                            {% endif %}
                         </div> 
                     </div>
                 </div>
-                {% endfor %}
-                
+                {% endfor %}    
             </div>
         </div>
     </section>
@@ -108,7 +107,13 @@
                 </div>
             </div>
         </div>
-    </footer> 
+    </footer>
+<div id="hidden-content">
+    {{ form_start(fast_consultation_form) }}
+        {{ form_widget(fast_consultation_form) }}
+        <input type="submit" value="Отправить">
+    {{ form_end(fast_consultation_form) }}
+</div> 
 <script>
     document.querySelector('#elastic').oninput = function(){
         let val = this.value.trim();

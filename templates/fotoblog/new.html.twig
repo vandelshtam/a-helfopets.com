@@ -5,7 +5,6 @@
 {% block body %}
 <section class="form add_blog">
         <div class="container">
-            
                 <div class="form_content">
                     <div class="form_title-box">
                         <div class="form_title">
@@ -21,6 +20,12 @@
                 </div>    
         </div>
 </section>
+<div id="hidden-content">
+    {{ form_start(fast_consultation_form) }}
+        {{ form_widget(fast_consultation_form) }}
+        <input type="submit" value="Отправить">
+    {{ form_end(fast_consultation_form) }}
+</div> 
 <a href="{{ path('fotoblog_index') }}">back to list</a>
 {% endblock %}
 {% block javascripts %}

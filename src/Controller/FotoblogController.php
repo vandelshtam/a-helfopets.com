@@ -2,9 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Blog;
 use App\Entity\Fotoblog;
 use App\Form\FotoblogType;
+use App\Entity\FastConsultation;
+use App\Form\FastConsultationType;
 use App\Repository\FotoblogRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -46,17 +47,22 @@ class FotoblogController extends AbstractController
                 'Вы успешно создали новый слайд к посту!'); 
             return $this->redirectToRoute('blog_show', ['id'=> $id], Response::HTTP_SEE_OTHER);
         }
+        $fast_consultation = new FastConsultation();
+        $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
+        $fast_consultation_form->handleRequest($request);
 
         return $this->renderForm('fotoblog/new.html.twig', [
             'fotoblog' => $fotoblog,
             'form' => $form,
             'id' => $id,
+            'fast_consultation_form' => $fast_consultation_form,
         ]);
     }
 
     #[Route('/{id}', name: 'fotoblog_show', methods: ['GET'])]
     public function show(Fotoblog $fotoblog): Response
     {
+        
         return $this->render('fotoblog/show.html.twig', [
             'fotoblog' => $fotoblog,
         ]);
@@ -80,11 +86,15 @@ class FotoblogController extends AbstractController
                 'Вы успешно изменили слайдер  поста!'); 
             return $this->redirectToRoute('blog_show', ['id'=> $blog_id], Response::HTTP_SEE_OTHER);
         }
+        $fast_consultation = new FastConsultation();
+        $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
+        $fast_consultation_form->handleRequest($request);
 
         return $this->renderForm('fotoblog/edit.html.twig', [
             'fotoblog' => $fotoblog,
             'form' => $form,
             'id' => $blog_id,
+            'fast_consultation_form' => $fast_consultation_form,
         ]);
     }
 

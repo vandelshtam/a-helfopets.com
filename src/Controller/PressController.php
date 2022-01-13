@@ -47,22 +47,9 @@ class PressController extends AbstractController
             $imageFile = $form->get('img')->getData();
             
             if ($imageFile) {
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
-                
-                try {
-                    $imageFile->move(
-                        $this->getParameter('img_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    echo "An error occurred while creating your directory at ";
-                }
+                $newFilename = $this->uploadNewFileName($slugger, $imageFile);
                 $press->setImg($newFilename);
             }
-
             $entityManager->persist($press);
             $entityManager->flush();
             $this->addFlash(
@@ -151,4 +138,19 @@ class PressController extends AbstractController
 
         return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);
     }
+    private function uploadNewFileName(SluggerInterface $slugger, $imageFile)
+    {
+        $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);       
+        $safeFilename = $slugger->slug($originalFilename);
+        $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();        
+        try {
+            $imageFile->move(
+                $this->getParameter('galery_directory'),
+                $newFilename
+            );
+        } catch (FileException $e) {
+            echo "An error occurred while creating your directory at ";
+        }           
+        return $newFilename;   
+    }    
 }

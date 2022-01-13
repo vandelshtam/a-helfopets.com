@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\OurMission;
 use App\Form\OurMissionType;
-use App\Service\FileUploader;
 use App\Entity\FastConsultation;
 use App\Form\FastConsultationType;
 use App\Repository\OurMissionRepository;
@@ -15,7 +14,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
@@ -52,22 +50,9 @@ class OurMissionController extends AbstractController
             $imageFile = $form->get('img')->getData();
             
             if ($imageFile) {
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
-                
-                try {
-                    $imageFile->move(
-                        $this->getParameter('img_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    echo "An error occurred while creating your directory at ";
-                }
+                $newFilename = $this->uploadNewFileName($slugger, $imageFile);
                 $ourMission->setImg($newFilename);
             }
-
             $entityManager->persist($ourMission);
             $entityManager->flush();
             $this->addFlash(
@@ -110,26 +95,10 @@ class OurMissionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form->get('img')->getData();
-            $filesystem = new Filesystem();
+            
             if ($imageFile) {
-                if($ourMission->getImg() != null){
-                    $ourMission->setImg(
-                        $path = new File($this->getParameter('img_directory').'/'.$ourMission->getImg())
-                    );
-                    $filesystem->remove(['symlink', $path, $ourMission->getImg()]);
-                }
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
-                
-                try {
-                    $imageFile->move(
-                        $this->getParameter('img_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    echo "An error occurred while creating your directory at ";
-                }
+                $this->deleteImageFile($ourMission);
+                $newFilename = $this->uploadNewFileName($slugger, $imageFile);
                 $ourMission->setImg($newFilename);
             }
             $entityManager->flush();
@@ -159,5 +128,29 @@ class OurMissionController extends AbstractController
         }
         
         return $this->redirectToRoute('our_mission_index', [], Response::HTTP_SEE_OTHER);
+    }
+    private function uploadNewFileName($slugger, $imageFile)
+    {
+        $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);       
+        $safeFilename = $slugger->slug($originalFilename);
+        $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();        
+        try {
+            $imageFile->move(
+                $this->getParameter('img_directory'),
+                $newFilename
+            );
+        } catch (FileException $e) {
+            echo "An error occurred while creating your directory at ";
+        }           
+        return $newFilename;   
+    }
+    private function deleteImageFile($ourMission){
+        $filesystem = new Filesystem();
+        if($ourMission->getImg() != null){
+            $ourMission->setImg(
+                $path = new File($this->getParameter('img_directory').'/'.$ourMission->getImg())
+            );
+            $filesystem->remove(['symlink', $path, $ourMission->getImg()]);
+        }
     }
 }

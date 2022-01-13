@@ -79,7 +79,7 @@
                     <div id="link" class="none" data-filter-tags="{{ article.title }}">
                         <a id="c_1" href="{{ path('article_show', {'id': article.id}) }}" class="page news_blog" >
                             <div class="news_images">
-                                <img class="avatar_new_image" src="{{ asset('uploads/img/' ~ article.AvatarArticle) }}" alt="">
+                                <img class="avatar_new_image" src="{{ asset('uploads/img/avatars/' ~ article.AvatarArticle) }}" alt="">
                             <div class="news_date">{{ article.created_at|date('m-d') }}</div>
                             </div>
                             <div class="news_blog-title">

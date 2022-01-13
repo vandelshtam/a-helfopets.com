@@ -58,12 +58,7 @@
                                 <a  href="{{ path('our_mission_edit', {'id': our_mission.id}) }}" class="default-btn-about admin">
                                     Редактировать
                                 </a>
-                                {% endif %}  
-                                {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                <a  href="#" class="default-btn-about admin">
-                                    Удалить
-                                </a> 
-                                {% endif %}   
+                                {% endif %}    
                             </div>
                         {% endif %}                                    
                     </div> 
@@ -108,10 +103,7 @@
                             <div class="about_item-btn">
                                 <a  href="{{ path('achievements_edit', {'id': achievement.id}) }}" class="default-btn-about admin">
                                     Редактировать
-                                </a>
-                                <a  href="#">
-                                    {{ include('achievements/_delete_form.html.twig') }} 
-                                </a>       
+                                </a>  
                             </div>
                         {% endif %}
                     </div>
@@ -177,6 +169,7 @@
                                     По словам местных жителей, которые приводит ИА AmurMedia, животное было ранено в области шеи. Они не исключили, что лосенок забрел на сельскую базу, где его покусали собаки.
                                     Об инциденте руководство школы рассказало главе местной администрации и участковому уполномоченному полиции. Дальнейшая судьба животного неизвестна.
                                 </div>
+                                    {% if is_granted('ROLE_ADMIN') %}
                                     <div class="about_slider_btn">Управлять слайдером
                                         <a  data-fancybox data-src="#hidden-content-slider-edit" href="javascript:;" class="default-btn-about">
                                             Редактировать
@@ -184,14 +177,17 @@
                                         <a  href="#" class="default-btn-about">
                                             Удалить
                                         </a>
-                                    </div>         
+                                    </div> 
+                                    {% endif %}        
                             </div>   
                             <div class="about_slider-item add">
+                                {% if is_granted('ROLE_ADMIN') %}
                                 <div class="about_slider-title add">
                                     <a  href="{{ path('press_new') }}" class="default-btn-about admin">  
                                     Добваить сладер
                                     </a>
-                                </div>      
+                                </div>
+                                {% endif %}      
                             </div>
                         </div>
                     </div>
