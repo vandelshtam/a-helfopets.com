@@ -15,8 +15,6 @@ ul,li{
     margin: 0 auto;
     padding: 0 15px;
 }
-
-
 body{
     font-family: 'PT Serif', serif;
     /*font-family: 'Roboto', sans-serif;*/
@@ -118,8 +116,7 @@ header{
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    min-height: 500px;
-    
+    min-height: 500px;    
 }
 .slider_item-content{
     text-align: center;
@@ -143,7 +140,6 @@ header{
     color: #d3d2d2;
     margin-bottom: 50px;
 }
-
 .default-btn{
     display: inline-block;
     font-size: 14px;
@@ -897,7 +893,6 @@ form .default-btn:hover{
     position: relative;
     outline: none;
 }
-
 /* ======= page_new ========== */
 .page_new .news_inner{
     display: block;
@@ -1668,7 +1663,13 @@ form button.default-btn{
 .rating-area.blog {
 	overflow: hidden;
 	width: 465px;
-	margin: 0px 0px 70px -30px;
+	margin: 0px 0px 70px -20px;
+}
+blog_show-rating.blog{
+    display: inline-block;
+    flex-direction: row;
+    max-width: 1140px;
+    width: 100%;
 }
 /*============== page add_blog =================== */
 .form.add_blog .form_inner{
@@ -1995,7 +1996,7 @@ button.default-btn.blog{
     background-size: cover;
     width: 40px;
     height: 40px;
-    border-radius: 100%;    
+    /* border-radius: 100%;     */
 }
 #instagram{
     background-image: url(../img/instagram-2.png);
@@ -2330,6 +2331,10 @@ button.default-btn.blog{
 	width: 265px;
     margin: 0px 0px 30px 30px;
 }
+.rating-result {
+	width: 865px;
+    margin: 0px 0px 30px 30px;
+}
 .rating-result span {
 	padding: 0;
 	font-size: 32px;
@@ -2386,7 +2391,7 @@ button.default-btn.blog{
 .rate-area > label:active {
 	position: relative;
 }
-/*-===========================*/
+/*======== About ===================*/
 .about_item.reviews .form_box-inner{
     flex-direction: column;
     align-items: center;
