@@ -26,9 +26,10 @@ class ConsultationType extends AbstractType
             ->add('name',TextType::class)
             ->add('category', ChoiceType::class, [
                 'choices'  => [
-                    '+79957771830' => '+791739390104',
-                    '+791739390104' => '+791739390104',
-                    '+79957771831' => "+79957771831",
+                    'Кошки' => 1,
+                    'Собаки' => 2,
+                    'Птицы' => 3,
+                    'Другие животные' => 4,
                 ]
             ])
             ->add('message',TextareaType::class)

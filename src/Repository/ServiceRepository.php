@@ -36,8 +36,6 @@ class ServiceRepository extends ServiceEntityRepository
     }
     */
 
-
-
     public function findOneByIdJoinedToCategory(int $serviceId): ?Service
     {
         $entityManager = $this->getEntityManager();
@@ -50,5 +48,17 @@ class ServiceRepository extends ServiceEntityRepository
         )->setParameter('id', $serviceId);
 
         return $query->getOneOrNullResult();
+    }
+
+    public function findByExampleField()
+    {
+        return $this->createQueryBuilder('p')
+           // ->andWhere('a.exampleField = :val')
+            //->setParameter('val', $value)
+            ->orderBy('p.id', 'ASC')
+            ->setMaxResults(3)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

@@ -81,7 +81,6 @@ class AboutComtrollerController extends AbstractController
                 'Спасибо за отзыв!'); 
             return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);
         }
-
         $rating_all = $ratingRepository->findAll();
         $rating = $ratingRepository->findAllRating();
         $summ_rating = 0;
@@ -94,8 +93,6 @@ class AboutComtrollerController extends AbstractController
         else{
             $rating_value = round(($summ_rating/$rating), 0, PHP_ROUND_HALF_DOWN);
         }
-        
-        
         return $this->renderForm('about_comtroller/index.html.twig', [
             'controller_name' => 'AboutComtrollerController',
             'fast_consultation' => $fast_consultation,

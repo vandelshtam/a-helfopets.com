@@ -42,19 +42,7 @@ class AchievementsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form->get('img')->getData();
             if ($imageFile) {
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
-                
-                try {
-                    $imageFile->move(
-                        $this->getParameter('img_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    echo "An error occurred while creating your directory at ";
-                }
+                $newFilename = $this -> uploadNewFileName($slugger, $imageFile);
                 $achievement->setImg($newFilename);
             }
 
@@ -94,32 +82,15 @@ class AchievementsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form->get('img')->getData();
-            $filesystem = new Filesystem();
             if ($imageFile) {
-                if($achievement->getImg() != null){
-                    $achievement->setImg(
-                        $path = new File($this->getParameter('img_directory').'/'.$achievement->getImg())
-                    );
-                    $filesystem->remove(['symlink', $path, $achievement->getImg()]);
-                }
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
-                
-                try {
-                    $imageFile->move(
-                        $this->getParameter('img_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    echo "An error occurred while creating your directory at ";
-                }
+                $this -> deleteImageFile($achievement);
+                $newFilename = $this -> uploadNewFileName($slugger, $imageFile);
                 $achievement->setImg($newFilename);
             }
             $entityManager->flush();
             $this->addFlash(
-                        'success',
-                        'Вы успешно отредактировали новую запись в  блоке номер 2 на странице "О нас"'); 
+                    'success',
+                    'Вы успешно отредактировали новую запись в  блоке номер 2 на странице "О нас"'); 
             return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);
         }
         
@@ -135,6 +106,7 @@ class AchievementsController extends AbstractController
     public function delete(Request $request, Achievements $achievement, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$achievement->getId(), $request->request->get('_token'))) {
+            $this -> deleteImageFile($achievement);
             $entityManager->remove($achievement);
             $entityManager->flush();
             $this->addFlash(
@@ -143,4 +115,29 @@ class AchievementsController extends AbstractController
         }
         return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);
     }
+
+    private function uploadNewFileName($slugger, $imageFile)
+    {
+        $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);       
+        $safeFilename = $slugger->slug($originalFilename);
+        $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();       
+        try {
+            $imageFile->move(
+                        $this->getParameter('img_directory'),
+                $newFilename
+            );
+        } catch (FileException $e) {
+            echo "An error occurred while creating your directory at ";
+        }
+        return $newFilename;   
+    }
+    private function deleteImageFile($achievement){
+        $filesystem = new Filesystem();
+        if($achievement->getImg() != null){
+            $achievement->setImg(
+                $path = new File($this->getParameter('img_directory').'/'.$achievement->getImg())
+            );
+            $filesystem->remove(['symlink', $path, $achievement->getImg()]);
+        }
+    }    
 }

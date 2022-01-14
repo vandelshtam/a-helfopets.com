@@ -12,8 +12,10 @@ use App\Repository\BlogRepository;
 use App\Repository\RatingblogRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -83,7 +85,7 @@ class BlogController extends AbstractController
     }
 
     #[Route('/{id}', name: 'blog_show', methods: ['GET'])]
-    public function show(Request $request,Blog $blog,ManagerRegistry $doctrine, int $id,RatingblogRepository $ratingblogRepository): Response
+    public function show(Request $request,Blog $blog,ManagerRegistry $doctrine, int $id, RatingblogRepository $ratingblogRepository): Response
     {
         $blog = $doctrine->getRepository(Blog::class)->findOneByIdJoinedToFotoblog($id);
         $ratingId = $doctrine->getRepository(Ratingblog::class)->findBy([
@@ -122,6 +124,7 @@ class BlogController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this -> deleteImageFile($blog);
             $entityManager->flush();
             $this->addFlash(
                 'success',
@@ -141,9 +144,13 @@ class BlogController extends AbstractController
     }
 
     #[Route('/{id}', name: 'blog_delete', methods: ['POST'])]
-    public function delete(Request $request, Blog $blog, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Blog $blog, EntityManagerInterface $entityManager,int $id, ManagerRegistry $doctrine): Response
     {
         if ($this->isCsrfTokenValid('delete'.$blog->getId(), $request->request->get('_token'))) {
+            $fotoblogs = $blog -> getFotoblog();
+            $ratingblogs = $blog -> getRatingblog();
+            $this -> deleteAllGaleryFileFotoblog($fotoblogs,$entityManager);
+            $this -> deleteImageFile($blog);
             $entityManager->remove($blog);
             $entityManager->flush();
             $this->addFlash(
@@ -153,7 +160,7 @@ class BlogController extends AbstractController
         return $this->redirectToRoute('blog_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    private function uploadNewFileName(SluggerInterface $slugger, $imageFile)
+    private function uploadNewFileName($slugger, $imageFile)
     {
         $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);       
         $safeFilename = $slugger->slug($originalFilename);
@@ -167,5 +174,28 @@ class BlogController extends AbstractController
             echo "An error occurred while creating your directory at ";
         }           
         return $newFilename;   
-    }    
+    } 
+    
+    private function deleteImageFile($blog){
+        $filesystem = new Filesystem();
+        if($blog->getFoto() != null){
+            $blog->setFoto(
+                $path = new File($this->getParameter('galery_directory').'/'.$blog->getFoto())
+            );
+            $filesystem->remove(['symlink', $path, $blog->getFoto()]);
+        }
+    }
+
+    private function deleteAllGaleryFileFotoblog($fotoblogs,$entityManager){
+        $filesystem = new Filesystem();
+        foreach ($fotoblogs as $fotoblogFoto){
+            if($fotoblogFoto->getFoto() != null){
+                $fotoblogFoto->setFoto(
+                    $path_galery = new File($this->getParameter('galery_directory').'/'.$fotoblogFoto->getFoto())
+                );
+                $filesystem->remove(['symlink', $path_galery, $fotoblogFoto->getFoto()]);
+            }
+            $entityManager->remove($fotoblogFoto);
+        }
+    }
 }

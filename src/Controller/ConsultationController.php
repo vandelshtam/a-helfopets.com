@@ -30,17 +30,11 @@ class ConsultationController extends AbstractController
     #[Route('/new', name: 'consultation_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer, ArticleRepository $articleRepository): Response
     {
-        // creates a task object and initializes some data for this example
         $consultation = new Consultation();
-        //dd($consultation->getName());
-        
         $form = $this->createForm(ConsultationType::class, $consultation);
         $form->handleRequest($request);
 
-        //$form = $this->createForm(TaskType::class, $consult);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            //dd($consultation->getName());
             $entityManager->persist($consultation);
             $entityManager->flush();
             
@@ -83,9 +77,6 @@ class ConsultationController extends AbstractController
 
             return $this->redirectToRoute('consultation_index', [], Response::HTTP_SEE_OTHER);
         }
-
-        
-
         return $this->renderForm('consultation/new.html.twig', [
             'consultation' => $consultation,
             'articles' => $articleRepository->findAll(),

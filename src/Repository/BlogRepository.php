@@ -61,4 +61,29 @@ class BlogRepository extends ServiceEntityRepository
 
         return $query->getOneOrNullResult();
     }
+    public function findOneByIdJoinedToRatingblog(int $blogId): ?Blog
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT p, c
+            FROM App\Entity\Blog p
+            INNER JOIN p.ratingblog c
+            WHERE p.id = :id'
+        )->setParameter('id', $blogId);
+
+        return $query->getOneOrNullResult();
+    }
+
+    public function findByExampleField()
+    {
+        return $this->createQueryBuilder('p')
+           // ->andWhere('a.exampleField = :val')
+            //->setParameter('val', $value)
+            ->orderBy('p.id', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

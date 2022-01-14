@@ -1993,7 +1993,7 @@ button.default-btn.blog{
 #vk{
     background-repeat: no-repeat;
     background-position: center;
-    background-size: cover;
+    background-size: 145%;
     width: 40px;
     height: 40px;
     /* border-radius: 100%;     */

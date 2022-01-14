@@ -23,7 +23,7 @@ class Consultation
     private $name;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer", length=50, nullable=true)
      */
     private $phone;
 

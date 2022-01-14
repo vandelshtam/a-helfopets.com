@@ -92,8 +92,7 @@ class ArticleController extends AbstractController
 
     #[Route('/{id}', name: 'article_show', methods: ['GET'])]
     public function show(Article $article,Request $request,MailerInterface $mailer): Response
-    {
-        
+    {   
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
@@ -153,13 +152,15 @@ class ArticleController extends AbstractController
     public function delete(Request $request, Article $article, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
+            $this -> deleteAvatarFile($article);
+            $this -> deleteFoto1File($article);
+            $this -> deleteFoto2File($article);
             $entityManager->remove($article);
             $entityManager->flush();
             $this->addFlash(
                 'success',
                 'Вы успешно удалили новостную статью!'); 
         }
-
         return $this->redirectToRoute('article_index', [], Response::HTTP_SEE_OTHER);
     }
     private function uploadNewFileName($slugger, $imageFile)

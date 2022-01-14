@@ -53,16 +53,17 @@
                 </div>    
             </div>
             <div class="servises_items">
+                {% for service in services %}
                 <div class="servises_item">
-                    <img src="{{ asset('asset/img/about-mol.png') }}" alt="" class="img_servises-1">
+                    <img src="{{ asset('uploads/img/avatars/' ~ service.Avatar) }}" alt="" class="img_servises-1">
                     <div class="about_item-title">
-                        Банкротство и ликвидация
+                        {{ service.name }}
                     </div>
                     <div class="servises_item-text">
-                        Полное прекращение существования юридического лица с сохранением легальности предыдущей  деятельности
+                        {{ service.discription }}
                     </div>
                     <div class="servises_item-btn">
-                        <a href="#" class="servises_item-link">
+                        <a href="{{ path('service_show', {'id': service.id}) }}" class="servises_item-link">
                             Подробнее
                         </a>
                         <a data-fancybox data-src="#hidden-content" href="javascript:;" class="default-btn">
@@ -70,7 +71,8 @@
                         </a>
                     </div>
                 </div>
-                <div class="servises_item">
+                {% endfor %}
+                {# <div class="servises_item">
                     <img src="{{ asset('asset/img/about-2.png') }}" alt="" class="img_servises-2">
                     <div class="servises_item-title">
                         Адвокатское сопровождение
@@ -86,8 +88,8 @@
                             Заказать
                         </a>
                     </div>
-                </div>
-                <div class="servises_item">
+                </div> #}
+                {# <div class="servises_item">
                     <img src="img/icone-portf-1.png" alt="" class="img_servises-3">
                     <div class="servises_item-title">
                         Налоговый аудит
@@ -103,7 +105,7 @@
                             Заказать
                         </a>
                     </div>
-                </div>
+                </div> #}
             </div>
         </div>
     </section>
@@ -117,7 +119,7 @@
                     Компания специализируется на оказании юридических услуг. Компания специализируется на оказании юридических услуг.
                     Компания специализируется на оказании юридических услуг. Компания специализируется на оказании юридических услуг.
                 </div>
-                <a  href="#" class="about_btn default-btn">
+                <a  href="{{ path('about_comtroller') }}" class="about_btn default-btn">
                     Узнать больше
                 </a>
             </div>
@@ -199,104 +201,37 @@
             <div class="news_inner">
                 <div class="news_slider">
                     <div class="news_slider-inner">
+                    {% for blog in blogs %}
                         <div class="news_slider-item">
-                        {% if article != null %}
-                        <a href="{{ path('article_show', {'id': article[1].id}) }}">
-                        {% else %}
-                        <a href="#">
-                        {% endif %}
+                        <a href="{{ path('blog_show', {'id': blog.id}) }}">
                             <div class="news_slider-title">
-                                Право.ru: законодательство, судебная система, новости и ...
+                                {{ blog.title }}
                             </div>
                             <div class="news_slider-text">
-                                Депутаты Госдумы на пленарном заседании 7 декабря приняли во втором чтении законопроект о регулировании дистанционного участия в судебном процессе. Поправки вносятся в Арбитражный процессуальный кодекс, Гражданский процессуальный кодекс, Кодекс административного судопроизводства и корреспондирующие нормативные акты.
-                                Документ разрешает направлять исковые заявления, жалобы, представления и тому подобное в электронном виде с помощью портала «Госуслуги», системы электронного документооборота либо системы, которую определит Верховный суд или Суддеп. Такие документы достаточно будет подписать простой электронной подписью, если процессуальное законодательство не требует иного, за исключением системы электронного документооборота — в ней всегда потребуется усиленная квалифицированная подпись.
+                                {{ blog.preview }}
                             </div>
                             <div class="news_slider-author">
-                                Анастасия Синченкова
+                                {{ blog.author }}
                             </div>
                         </a>
                         </div>
-                        <div class="news_slider-item">
-                            <div class="news_slider-title">
-                                Право.ru: законодательство, судебная система, новости и ...
-                            </div>
-                            <div class="news_slider-text">
-                                Депутаты Госдумы на пленарном заседании 7 декабря приняли во втором чтении законопроект о регулировании дистанционного участия в судебном процессе. Поправки вносятся в Арбитражный процессуальный кодекс, Гражданский процессуальный кодекс, Кодекс административного судопроизводства и корреспондирующие нормативные акты.
-                                Документ разрешает направлять исковые заявления, жалобы, представления и тому подобное в электронном виде с помощью портала «Госуслуги», системы электронного документооборота либо системы, которую определит Верховный суд или Суддеп. Такие документы достаточно будет подписать простой электронной подписью, если процессуальное законодательство не требует иного, за исключением системы электронного документооборота — в ней всегда потребуется усиленная квалифицированная подпись.
-                            </div>
-                            <div class="news_slider-author">
-                                Анастасия Синченкова
-                            </div>
-                        </div>
-                        <div class="news_slider-item">
-                            <div class="news_slider-title">
-                                Право.ru: законодательство, судебная система, новости и ...
-                            </div>
-                            <div class="news_slider-text">
-                                Депутаты Госдумы на пленарном заседании 7 декабря приняли во втором чтении законопроект о регулировании дистанционного участия в судебном процессе. Поправки вносятся в Арбитражный процессуальный кодекс, Гражданский процессуальный кодекс, Кодекс административного судопроизводства и корреспондирующие нормативные акты.
-                                Документ разрешает направлять исковые заявления, жалобы, представления и тому подобное в электронном виде с помощью портала «Госуслуги», системы электронного документооборота либо системы, которую определит Верховный суд или Суддеп. Такие документы достаточно будет подписать простой электронной подписью, если процессуальное законодательство не требует иного, за исключением системы электронного документооборота — в ней всегда потребуется усиленная квалифицированная подпись.
-                            </div>
-                            <div class="news_slider-author">
-                                Анастасия Синченкова
-                            </div>
-                        </div>
+                    {% endfor %}    
                     </div>
                 </div>
-                {% if article != null %}
-                <a href="{{ path('article_show', {'id': article[1].id}) }}" class="news_blog">
+                {% for article in articles %}
+                <a href="{{ path('article_show', {'id': article.id}) }}" class="news_blog">
                     <div class="news_images">
-                        <img src="{{ asset('uploads/img/' ~ article[1].AvatarArticle) }}" alt="" class="avatar_new_image">
-                        <div class="news_date">{{ article[1].created_at|date('d-m') }}</div>
+                        <img src="{{ asset('uploads/img/avatars/' ~ article.AvatarArticle) }}" alt="" class="avatar_new_image">
+                        <div class="news_date">{{ article.created_at|date('d-m') }}</div>
                     </div>
                     <div class="news_blog-title">
-                        {{ article[1].title }}
+                        {{ article.title }}
                     </div>
                     <div class="news_blog-text">
-                        {{ article[1].preview }}
+                        {{ article.preview }}
                     </div>
                 </a>
-                {% else %}
-                <a href="#" class="news_blog">
-                    <div class="news_images">
-                        <img src="asset/img/news_1.jpeg" alt="" class="avatar_new_image">
-                        <div class="news_date">21.12</div>
-                    </div>
-                    <div class="news_blog-title">
-                        Заголовок
-                    </div>
-                    <div class="news_blog-text">
-                        У вас еще нет статей
-                    </div>
-                </a>
-                {% endif %}
-                {% if article != null  %}
-                <a href="{{ path('article_show', {'id': article[0].id}) }}" class="news_blog">
-                    <div class="news_images">
-                        <img src="{{ asset('uploads/img/' ~ article[0].AvatarArticle) }}" alt="" class="avatar_new_image">
-                        <div class="news_date">{{ article[0].created_at|date('d-m') }}</div>
-                    </div>
-                    <div class="news_blog-title">
-                        {{ article[0].title }}
-                    </div>
-                    <div class="news_blog-text">
-                        {{ article[0].preview }}
-                    </div>
-                </a>
-                {% else %}
-                <a href="#" class="news_blog">
-                    <div class="news_images">
-                        <img src="asset/img/news_1.jpeg" alt="" class="avatar_new_image">
-                        <div class="news_date">21.12</div>
-                    </div>
-                    <div class="news_blog-title">
-                        Заголовок
-                    </div>
-                    <div class="news_blog-text">
-                        У вас еще нет статей
-                    </div>
-                </a>
-                {% endif %}
+                {% endfor %}
             </div>
         </div>
     </section>
@@ -344,6 +279,12 @@
             </div>
         </div>
     </footer>
+<div id="hidden-content">
+    {{ form_start(fast_consultation_form) }}
+        {{ form_widget(fast_consultation_form) }}
+        <input type="submit" value="Отправить">
+    {{ form_end(fast_consultation_form) }}
+</div>
 {% endblock %}
 
 {% block javascripts %}

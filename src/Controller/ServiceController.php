@@ -273,8 +273,7 @@ class ServiceController extends AbstractController
          $services = $category->getServices();
          foreach($services as $service){
              $service_id = $service->getId();
-        }
-       
+        }       
         if ($form->isSubmitted() && $form->isValid()) {
             $fotoFile = $form->get('foto')->getData();
             $comment = $form->get('comment')->getData();

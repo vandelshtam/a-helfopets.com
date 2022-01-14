@@ -15,6 +15,13 @@
                     </div>
                 </div>
             </div>
+            {% for label, messages in app.flashes(['success', 'notice']) %}
+                {% for message in messages %}
+                <div class="flash-{{ label }} notice_message">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endfor %}
             <div class="contacts_items">
                 <div class="contacts_item">
                     <div class="contact_top">
@@ -69,12 +76,14 @@
                     </div>
                     <div class="contacts_item-btn">
                         <div class="contacts_btn">
-                            <a href="#" class="default-btn-contacts">
+                            <a href="{{ path('home') }}" class="default-btn-contacts">
                                 На главную
                             </a>
+                            {% if is_granted('ROLE_ADMIN') %}
                             <a  href="#" class="default-btn-contacts admin">
                                 Редактировать
                             </a>
+                            {% endif %}
                         </div> 
                     </div>
                 </div>    
@@ -90,4 +99,18 @@
             </div>
         </div>
     </footer>
+{% if form_errors(fast_consultation_form) %}
+    <div class="my-custom-class-for-errors">
+        {{ form_errors(fast_consultation_form) }}
+    </div>
+{% endif %}
+<div id="hidden-content">
+    {{ form_start(fast_consultation_form) }}
+        {{ form_widget(fast_consultation_form) }}
+        <input type="submit" value="Отправить">
+    {{ form_end(fast_consultation_form) }}
+</div>
+{% endblock %}
+{% block javascripts %}
+    {{ include('js.html.twig') }}
 {% endblock %}
