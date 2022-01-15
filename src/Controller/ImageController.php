@@ -36,4 +36,19 @@ class ImageController extends AbstractController
         }
         return $newFilename;
     }
+    public function uploadNewFileName(SluggerInterface $slugger, $imageFile,$nameDirectiry)
+    {
+        $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);       
+        $safeFilename = $slugger->slug($originalFilename);
+        $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();        
+        try {
+            $imageFile->move(
+                $this->getParameter($nameDirectiry),
+                $newFilename
+            );
+        } catch (FileException $e) {
+            echo "An error occurred while creating your directory at ";
+        }           
+        return $newFilename;   
+    }
 }

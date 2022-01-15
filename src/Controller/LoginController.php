@@ -15,9 +15,7 @@ class LoginController extends AbstractController
     #[Route('/login', name: 'login')]
     public function index(AuthenticationUtils $authenticationUtils,Request $request): Response
     {
-            // get the login error if there is one
             $error = $authenticationUtils->getLastAuthenticationError();
-            // last username entered by the user
             $lastUsername = $authenticationUtils->getLastUsername();
 
             $fast_consultation = new FastConsultation();
@@ -32,6 +30,6 @@ class LoginController extends AbstractController
                   ]);
             $this->addFlash(
                     'notice',
-                    'You success are logged!');         
+                    'Вы успешно вошли в систему!');         
     }
 }

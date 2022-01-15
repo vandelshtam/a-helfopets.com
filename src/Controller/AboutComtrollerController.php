@@ -54,19 +54,23 @@ class AboutComtrollerController extends AbstractController
             $imageFile2 = $form->get('foto2')->getData();
             $imageFile3 = $form->get('foto3')->getData();
             if ($imageFile) {
-                $newFilename = $this->uploadNewFileName($slugger, $imageFile);
+                $nameDirectiry = 'img_directory';
+                $newFilename = $imageController->uploadNewFileName($slugger, $imageFile,$nameDirectiry);
                 $fotoreview->setFoto($newFilename);
             }
             if ($imageFile2) {
-                $newFilename2 = $this->uploadNewFileName($slugger, $imageFile2);
+                $nameDirectiry = 'img_directory';
+                $newFilename2 = $imageController->uploadNewFileName($slugger, $imageFile2,$nameDirectiry);
                 $fotoreview2->setFoto($newFilename2);
             }
             if ($imageFile3) {
-                $newFilename3 = $this->uploadNewFileName($slugger, $imageFile3);
+                $nameDirectiry = 'img_directory';
+                $newFilename3 = $imageController->uploadNewFileName($slugger, $imageFile3,$nameDirectiry);
                 $fotoreview3->setFoto($newFilename3);
             }
             
             $review->setIp($localIP);
+            
             $review->addFotoreview($fotoreview);
             $review->addFotoreview($fotoreview2);
             $review->addFotoreview($fotoreview3);
@@ -105,21 +109,5 @@ class AboutComtrollerController extends AbstractController
             'reviews' => $reviews,
             'ip' => $localIP,
         ]);
-    }
-
-    private function uploadNewFileName(SluggerInterface $slugger, $imageFile)
-    {
-        $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);       
-        $safeFilename = $slugger->slug($originalFilename);
-        $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();        
-        try {
-            $imageFile->move(
-                $this->getParameter('galery_directory'),
-                $newFilename
-            );
-        } catch (FileException $e) {
-            echo "An error occurred while creating your directory at ";
-        }           
-        return $newFilename;   
     }
 }

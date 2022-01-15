@@ -6,6 +6,7 @@ use App\Entity\Achievements;
 use App\Form\AchievementsType;
 use App\Entity\FastConsultation;
 use App\Form\FastConsultationType;
+use App\Controller\ImageController;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\AchievementsRepository;
 use Symfony\Component\Filesystem\Filesystem;
@@ -29,7 +30,7 @@ class AchievementsController extends AbstractController
     }
 
     #[Route('/new', name: 'achievements_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager,SluggerInterface $slugger): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,SluggerInterface $slugger,ImageController $imageController): Response
     {
         $achievement = new Achievements();
         $form = $this->createForm(AchievementsType::class, $achievement);
@@ -42,7 +43,8 @@ class AchievementsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form->get('img')->getData();
             if ($imageFile) {
-                $newFilename = $this -> uploadNewFileName($slugger, $imageFile);
+                $nameDirectiry = 'img_directory';
+                $newFilename = $imageController->uploadNewFileName($slugger, $imageFile,$nameDirectiry);
                 $achievement->setImg($newFilename);
             }
 
@@ -71,7 +73,7 @@ class AchievementsController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'achievements_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Achievements $achievement, EntityManagerInterface $entityManager,SluggerInterface $slugger): Response
+    public function edit(Request $request, Achievements $achievement, EntityManagerInterface $entityManager,SluggerInterface $slugger,ImageController $imageController): Response
     {
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
@@ -84,7 +86,8 @@ class AchievementsController extends AbstractController
             $imageFile = $form->get('img')->getData();
             if ($imageFile) {
                 $this -> deleteImageFile($achievement);
-                $newFilename = $this -> uploadNewFileName($slugger, $imageFile);
+                $nameDirectiry = 'img_directory';
+                $newFilename = $imageController->uploadNewFileName($slugger, $imageFile,$nameDirectiry);
                 $achievement->setImg($newFilename);
             }
             $entityManager->flush();
@@ -114,22 +117,6 @@ class AchievementsController extends AbstractController
                 'Вы успешно удалили запись из  блока номер 2 на странице "О нас"'); 
         }
         return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);
-    }
-
-    private function uploadNewFileName($slugger, $imageFile)
-    {
-        $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);       
-        $safeFilename = $slugger->slug($originalFilename);
-        $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();       
-        try {
-            $imageFile->move(
-                        $this->getParameter('img_directory'),
-                $newFilename
-            );
-        } catch (FileException $e) {
-            echo "An error occurred while creating your directory at ";
-        }
-        return $newFilename;   
     }
     private function deleteImageFile($achievement){
         $filesystem = new Filesystem();

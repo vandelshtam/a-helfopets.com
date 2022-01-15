@@ -36,15 +36,27 @@ class FotoblogRepository extends ServiceEntityRepository
     }
     */
 
-    /*
+    
     public function findOneBySomeField($value): ?Fotoblog
     {
         return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
+            ->andWhere('f.id = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
+
+    // public function findByExampleField()
+    // {
+    //     return $this->createQueryBuilder('f')
+    //        // ->andWhere('a.exampleField = :val')
+    //         //->setParameter('val', $value)
+    //         ->orderBy('f.id', 'ASC')
+    //         ->setMaxResults(1)
+    //         ->getQuery()
+    //         ->getResult()
+    //     ;
+    // }
+    
 }

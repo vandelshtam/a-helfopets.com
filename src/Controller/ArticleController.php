@@ -7,6 +7,7 @@ use App\Form\ArticleType;
 use App\Service\FileUploader;
 use App\Entity\FastConsultation;
 use App\Form\FastConsultationType;
+use App\Controller\ImageController;
 use App\Repository\SliderRepository;
 use App\Repository\ArticleRepository;
 use Symfony\Component\Filesystem\Path;
@@ -44,7 +45,7 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/new', name: 'article_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager,SluggerInterface $slugger): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,SluggerInterface $slugger,ImageController $imageController): Response
     {
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
@@ -62,15 +63,18 @@ class ArticleController extends AbstractController
             $foto2File = $form->get('foto2')->getData();
             
             if ($avatar_articleFile) {
-                $newFilename = $this->uploadNewAvatarName($slugger, $avatar_articleFile);
+                $nameDirectiry = 'avatar_directory';
+                $newFilename = $imageController->uploadNewFileName($slugger,$avatar_articleFile,$nameDirectiry);
                 $article->setAvatarArticle($newFilename);
             }
             if ($foto1File) {
-                $newFilename1 = $this->uploadNewFileName($slugger, $foto1File);
+                $nameDirectiry = 'galery_directory';
+                $newFilename1 = $imageController->uploadNewFileName($slugger,$foto1File,$nameDirectiry);
                 $article->setFoto1($newFilename1);
             }
             if ($foto2File) {
-                $newFilename2 = $this->uploadNewFileName($slugger, $foto2File);
+                $nameDirectiry = 'galery_directory';
+                $newFilename2 = $imageController->uploadNewFileName($slugger,$foto2File,$nameDirectiry);
                 $article->setFoto2($newFilename2);
             }
             $entityManager->persist($article);
@@ -104,7 +108,7 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'article_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Article $article, EntityManagerInterface $entityManager,SluggerInterface $slugger): Response
+    public function edit(Request $request, Article $article, EntityManagerInterface $entityManager,SluggerInterface $slugger,ImageController $imageController): Response
     {
         $user = $this->getUser();
         $fast_consultation = new FastConsultation();
@@ -120,17 +124,20 @@ class ArticleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($avatar_articleFile) {
                 $this -> deleteAvatarFile($article);
-                $newFilename = $this->uploadNewAvatarName($slugger, $avatar_articleFile);
+                $nameDirectiry = 'avatar_directory';
+                $newFilename = $imageController->uploadNewFileName($slugger,$avatar_articleFile,$nameDirectiry);
                 $article->setAvatarArticle($newFilename);
             }
             if ($foto1File) {
                 $this -> deleteFoto1File($article);
-                $newFilename1 = $this->uploadNewFileName($slugger, $foto1File);
+                $nameDirectiry = 'galery_directory';
+                $newFilename1 = $imageController->uploadNewFileName($slugger,$foto1File,$nameDirectiry);
                 $article->setFoto1($newFilename1);
             }
             if ($foto2File) {
                 $this -> deleteFoto2File($article);
-                $newFilename2 = $this->uploadNewFileName($slugger, $foto2File);
+                $nameDirectiry = 'galery_directory';
+                $newFilename2 = $imageController->uploadNewFileName($slugger,$foto2File,$nameDirectiry);
                 $article->setFoto2($newFilename2);
             }
             $entityManager->flush();
@@ -162,36 +169,6 @@ class ArticleController extends AbstractController
                 'Вы успешно удалили новостную статью!'); 
         }
         return $this->redirectToRoute('article_index', [], Response::HTTP_SEE_OTHER);
-    }
-    private function uploadNewFileName($slugger, $imageFile)
-    {
-        $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);       
-        $safeFilename = $slugger->slug($originalFilename);
-        $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();        
-        try {
-            $imageFile->move(
-                $this->getParameter('galery_directory'),
-                $newFilename
-            );
-        } catch (FileException $e) {
-            echo "An error occurred while creating your directory at ";
-        }           
-        return $newFilename;   
-    }
-    private function uploadNewAvatarName($slugger, $imageFile)
-    {
-        $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);       
-        $safeFilename = $slugger->slug($originalFilename);
-        $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();        
-        try {
-            $imageFile->move(
-                $this->getParameter('avatar_directory'),
-                $newFilename
-            );
-        } catch (FileException $e) {
-            echo "An error occurred while creating your directory at ";
-        }           
-        return $newFilename;   
     }
     private function deleteAvatarFile($article){
         $filesystem = new Filesystem();   

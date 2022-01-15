@@ -9,6 +9,7 @@ use App\Entity\Ratingblog;
 use App\Entity\FastConsultation;
 use App\Form\FastConsultationType;
 use App\Repository\BlogRepository;
+use App\Controller\ImageController;
 use App\Repository\RatingblogRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -38,7 +39,7 @@ class BlogController extends AbstractController
     }
 
     #[Route('/new', name: 'blog_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager,SluggerInterface $slugger, ManagerRegistry $doctrine): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,SluggerInterface $slugger, ManagerRegistry $doctrine,ImageController $imageController): Response
     {
         $fotoblog = new Fotoblog();
         $blog = new Blog();
@@ -49,11 +50,13 @@ class BlogController extends AbstractController
             $imageFile = $form->get('foto')->getData();
             $imageFile2 = $form->get('foto2')->getData();
             if ($imageFile) {
-                $newFilename = $this->uploadNewFileName($slugger, $imageFile);
+                $nameDirectiry = 'galery_directory';
+                $newFilename = $imageController->uploadNewFileName($slugger,$$imageFile,$nameDirectiry);
                 $blog->setFoto($newFilename);
             }
             if ($imageFile2) {
-                $newFilename2 = $this->uploadNewFileName($slugger, $imageFile2);
+                $nameDirectiry = 'galery_directory';
+                $newFilename2 = $imageController->uploadNewFileName($slugger,$imageFile2,$nameDirectiry);
                 $fotoblog->setFoto($newFilename2);
             }
             $titleslider = $form->get('titleslider')->getData();
@@ -118,24 +121,40 @@ class BlogController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'blog_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Blog $blog, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Blog $blog, EntityManagerInterface $entityManager,ImageController $imageController,SluggerInterface $slugger,ManagerRegistry $doctrine, int $id,): Response
     {
+        $blog = $doctrine->getRepository(Blog::class)->findOneByIdJoinedToFotoblog($id);
+        $fotoblog_id = [];
+        foreach($blog->getFotoblog() as $fotoblog){
+            $fotoblog_id[] = $fotoblog->getId(); 
+        }
+        $fotoblog = $doctrine->getRepository(Fotoblog::class)->findOneBySomeField($fotoblog_id[0]);
         $form = $this->createForm(BlogType::class, $blog);
         $form->handleRequest($request);
-
+        $imageFile = $form->get('foto')->getData();
+        $imageFile2 = $form->get('foto2')->getData();
         if ($form->isSubmitted() && $form->isValid()) {
-            $this -> deleteImageFile($blog);
+            if ($imageFile) {
+                $this -> deleteImageFile($blog);
+                $nameDirectiry = 'galery_directory';
+                $newFilename = $imageController->uploadNewFileName($slugger,$imageFile,$nameDirectiry);
+                $blog->setFoto($newFilename);
+            }
+            if ($imageFile2) {
+                $this -> deleteImageFile($fotoblog);
+                $nameDirectiry = 'galery_directory';
+                $newFilename2 = $imageController->uploadNewFileName($slugger,$imageFile2,$nameDirectiry);
+                $fotoblog->setFoto($newFilename2);
+            }       
             $entityManager->flush();
             $this->addFlash(
                 'success',
                 'Вы успешно изменили  пост!'); 
-            return $this->redirectToRoute('blog_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('blog_show', ['id' => $id], Response::HTTP_SEE_OTHER);
         }
-
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
-
         return $this->renderForm('blog/edit.html.twig', [
             'blog' => $blog,
             'form' => $form,
@@ -159,33 +178,16 @@ class BlogController extends AbstractController
         }
         return $this->redirectToRoute('blog_index', [], Response::HTTP_SEE_OTHER);
     }
-
-    private function uploadNewFileName($slugger, $imageFile)
-    {
-        $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);       
-        $safeFilename = $slugger->slug($originalFilename);
-        $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();        
-        try {
-            $imageFile->move(
-                $this->getParameter('galery_directory'),
-                $newFilename
-            );
-        } catch (FileException $e) {
-            echo "An error occurred while creating your directory at ";
-        }           
-        return $newFilename;   
-    } 
-    
-    private function deleteImageFile($blog){
+   
+    private function deleteImageFile($fotoblog){
         $filesystem = new Filesystem();
-        if($blog->getFoto() != null){
-            $blog->setFoto(
-                $path = new File($this->getParameter('galery_directory').'/'.$blog->getFoto())
+        if($fotoblog->getFoto() != null){
+            $fotoblog->setFoto(
+                $path = new File($this->getParameter('galery_directory').'/'.$fotoblog->getFoto())
             );
-            $filesystem->remove(['symlink', $path, $blog->getFoto()]);
+            $filesystem->remove(['symlink', $path, $fotoblog->getFoto()]);
         }
     }
-
     private function deleteAllGaleryFileFotoblog($fotoblogs,$entityManager){
         $filesystem = new Filesystem();
         foreach ($fotoblogs as $fotoblogFoto){
