@@ -62,21 +62,18 @@ class ArticleController extends AbstractController
             $foto1File = $form->get('foto1')->getData();
             $foto2File = $form->get('foto2')->getData();
             
-            if ($avatar_articleFile) {
-                $nameDirectiry = 'avatar_directory';
-                $newFilename = $imageController->uploadNewFileName($slugger,$avatar_articleFile,$nameDirectiry);
-                $article->setAvatarArticle($newFilename);
-            }
-            if ($foto1File) {
-                $nameDirectiry = 'galery_directory';
-                $newFilename1 = $imageController->uploadNewFileName($slugger,$foto1File,$nameDirectiry);
-                $article->setFoto1($newFilename1);
-            }
-            if ($foto2File) {
-                $nameDirectiry = 'galery_directory';
-                $newFilename2 = $imageController->uploadNewFileName($slugger,$foto2File,$nameDirectiry);
-                $article->setFoto2($newFilename2);
-            }
+            $nameDirectiry = 'avatar_directory';
+            $setImageFile = 'setAvatarArticle';
+            $this->uploadsImageFile($slugger,$avatar_articleFile,$nameDirectiry,$imageController,$article,$setImageFile);
+                
+            $nameDirectiry = 'galery_directory';
+            $setImageFile = 'setFoto1';
+            $this->uploadsImageFile($slugger,$foto1File,$nameDirectiry,$imageController,$article,$setImageFile);    
+            
+            $nameDirectiry = 'galery_directory';
+            $setImageFile = 'setFoto2';
+            $this->uploadsImageFile($slugger,$foto2File,$nameDirectiry,$imageController,$article,$setImageFile); 
+
             $entityManager->persist($article);
             $entityManager->flush();
             $this->addFlash(
@@ -122,24 +119,25 @@ class ArticleController extends AbstractController
         $avatar_articleFile = $form->get('avatar_article')->getData();
         
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($avatar_articleFile) {
-                $this -> deleteAvatarFile($article);
-                $nameDirectiry = 'avatar_directory';
-                $newFilename = $imageController->uploadNewFileName($slugger,$avatar_articleFile,$nameDirectiry);
-                $article->setAvatarArticle($newFilename);
-            }
-            if ($foto1File) {
-                $this -> deleteFoto1File($article);
-                $nameDirectiry = 'galery_directory';
-                $newFilename1 = $imageController->uploadNewFileName($slugger,$foto1File,$nameDirectiry);
-                $article->setFoto1($newFilename1);
-            }
-            if ($foto2File) {
-                $this -> deleteFoto2File($article);
-                $nameDirectiry = 'galery_directory';
-                $newFilename2 = $imageController->uploadNewFileName($slugger,$foto2File,$nameDirectiry);
-                $article->setFoto2($newFilename2);
-            }
+            
+            $getImageFile = 'getAvatarArticle';
+            $setImageFile = 'setAvatarArticle';
+            $nameDirectiry = 'avatar_directory';
+            $this->deleteFiles($avatar_articleFile,$article,$getImageFile,$setImageFile,$nameDirectiry,$imageController);
+            $this->uploadsImageFile($slugger,$avatar_articleFile,$nameDirectiry,$imageController,$article,$setImageFile);
+            
+            $getImageFile = 'getFoto1';
+            $setImageFile = 'setFoto1';
+            $nameDirectiry = 'galery_directory';
+            $this->deleteFiles($foto1File,$article,$getImageFile,$setImageFile,$nameDirectiry,$imageController);
+            $this->uploadsImageFile($slugger,$foto1File,$nameDirectiry,$imageController,$article,$setImageFile);
+                
+            $getImageFile = 'getFoto2';
+            $setImageFile = 'setFoto2';
+            $nameDirectiry = 'galery_directory';
+            $this->deleteFiles($foto2File,$article,$getImageFile,$setImageFile,$nameDirectiry,$imageController);
+            $this->uploadsImageFile($slugger,$foto2File,$nameDirectiry,$imageController,$article,$setImageFile);    
+               
             $entityManager->flush();
             $this->addFlash(
                 'success',
@@ -156,12 +154,24 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/{id}', name: 'article_delete', methods: ['POST'])]
-    public function delete(Request $request, Article $article, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Article $article, EntityManagerInterface $entityManager,ImageController $imageController): Response
     {
         if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
-            $this -> deleteAvatarFile($article);
-            $this -> deleteFoto1File($article);
-            $this -> deleteFoto2File($article);
+            $getImageFile = 'getAvatarArticle';
+            $setImageFile = 'setAvatarArticle';
+            $nameDirectiry = 'avatar_directory';
+            $this -> deleteImgFiles($article,$getImageFile,$setImageFile,$nameDirectiry,$imageController);
+
+            $getImageFile = 'getFoto1';
+            $setImageFile = 'setFoto1';
+            $nameDirectiry = 'galery_directory';
+            $this -> deleteImgFiles($article,$getImageFile,$setImageFile,$nameDirectiry,$imageController);
+
+            $getImageFile = 'getFoto2';
+            $setImageFile = 'setFoto2';
+            $nameDirectiry = 'galery_directory';
+            $this -> deleteImgFiles($article,$getImageFile,$setImageFile,$nameDirectiry,$imageController);
+
             $entityManager->remove($article);
             $entityManager->flush();
             $this->addFlash(
@@ -170,31 +180,18 @@ class ArticleController extends AbstractController
         }
         return $this->redirectToRoute('article_index', [], Response::HTTP_SEE_OTHER);
     }
-    private function deleteAvatarFile($article){
-        $filesystem = new Filesystem();   
-        if($article->getAvatarArticle() != null){
-            $article->setAvatarArticle(
-                $path = new File($this->getParameter('avatar_directory').'/'.$article->getAvatarArticle())
-            );
-            $filesystem->remove(['symlink', $path, $article->getAvatarArticle()]);
-        }       
-    }
-    private function deleteFoto1File($article){
-        $filesystem = new Filesystem();   
-        if($article->getFoto1() != null){
-            $article->setFoto1(
-             $path1 = new File($this->getParameter('galery_directory').'/'.$article->getFoto1())
-            ); 
-            $filesystem->remove(['symlink', $path1, $article->getFoto1()]);
-        }      
-    }
-    private function deleteFoto2File($article){
-        $filesystem = new Filesystem();   
-        if($article->getFoto2() != null){
-            $article->setFoto2(
-                $path2 = new File($this->getParameter('galery_directory').'/'.$article->getFoto2())
-            );
-            $filesystem->remove(['symlink', $path2, $article->getFoto2()]);
+    private function uploadsImageFile($slugger,$imageFile,$nameDirectiry,$imageController,$article,$setImageFile){
+        if ($imageFile) {
+            $newFilename = $imageController->uploadNewFileName($slugger,$imageFile,$nameDirectiry);
+            $article->$setImageFile($newFilename);
         }
     }
+    private function deleteFiles($imageFile,$nameObject,$getImageFile,$setImageFile,$nameDirectiry,$imageController){
+        if ($imageFile){
+            $imageController->deleteImageFile($nameObject,$getImageFile,$setImageFile,$nameDirectiry);
+        }
+    }
+    private function deleteImgFiles($nameObject,$getImageFile,$setImageFile,$nameDirectiry,$imageController){
+            $imageController->deleteImageFile($nameObject,$getImageFile,$setImageFile,$nameDirectiry);
+    } 
 }

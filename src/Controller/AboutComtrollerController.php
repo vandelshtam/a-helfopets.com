@@ -40,7 +40,6 @@ class AboutComtrollerController extends AbstractController
         foreach($reviews_all as $elem){   
             $reviews[] = $doctrine->getRepository(Review::class)->findOneByIdJoinedToFotoreview($elem->getId());
         }
-        
 	    $localIP = getHostByName(getHostName());
 
         $review = new Review();
@@ -53,22 +52,16 @@ class AboutComtrollerController extends AbstractController
             $imageFile = $form->get('foto')->getData();
             $imageFile2 = $form->get('foto2')->getData();
             $imageFile3 = $form->get('foto3')->getData();
-            if ($imageFile) {
-                $nameDirectiry = 'img_directory';
-                $newFilename = $imageController->uploadNewFileName($slugger, $imageFile,$nameDirectiry);
-                $fotoreview->setFoto($newFilename);
-            }
-            if ($imageFile2) {
-                $nameDirectiry = 'img_directory';
-                $newFilename2 = $imageController->uploadNewFileName($slugger, $imageFile2,$nameDirectiry);
-                $fotoreview2->setFoto($newFilename2);
-            }
-            if ($imageFile3) {
-                $nameDirectiry = 'img_directory';
-                $newFilename3 = $imageController->uploadNewFileName($slugger, $imageFile3,$nameDirectiry);
-                $fotoreview3->setFoto($newFilename3);
-            }
             
+            $nameDirectiry = 'img_directory';
+            $this->uploadsImageFile($slugger,$imageFile,$nameDirectiry,$imageController,$fotoreview);
+            
+            $nameDirectiry = 'img_directory';
+            $this->uploadsImageFile($slugger,$imageFile2,$nameDirectiry,$imageController,$fotoreview);
+                
+            $nameDirectiry = 'img_directory';
+            $this->uploadsImageFile($slugger,$imageFile3,$nameDirectiry,$imageController,$fotoreview);
+                
             $review->setIp($localIP);
             
             $review->addFotoreview($fotoreview);
@@ -87,16 +80,7 @@ class AboutComtrollerController extends AbstractController
         }
         $rating_all = $ratingRepository->findAll();
         $rating = $ratingRepository->findAllRating();
-        $summ_rating = 0;
-        foreach($rating_all as $elem){
-            $summ_rating += $elem->getGrade();
-        }
-        if($rating == null){
-            $rating_value = 0;
-        }
-        else{
-            $rating_value = round(($summ_rating/$rating), 0, PHP_ROUND_HALF_DOWN);
-        }
+        $rating_value = $this->ratingAbout($rating_all,$rating);
         return $this->renderForm('about_comtroller/index.html.twig', [
             'controller_name' => 'AboutComtrollerController',
             'fast_consultation' => $fast_consultation,
@@ -109,5 +93,26 @@ class AboutComtrollerController extends AbstractController
             'reviews' => $reviews,
             'ip' => $localIP,
         ]);
+    }
+
+    private function ratingAbout($rating_all,$rating){
+        $summ_rating = 0;
+        foreach($rating_all as $elem){
+            $summ_rating += $elem->getGrade();
+        }
+        if($rating == null){
+            $rating_value = 0;
+        }
+        else{
+            $rating_value = round(($summ_rating/$rating), 0, PHP_ROUND_HALF_DOWN);
+        }
+        return $rating_value;
+    }
+    
+    private function uploadsImageFile($slugger,$imageFile,$nameDirectiry,$imageController,$fotoreview){
+        if ($imageFile) {
+            $newFilename = $imageController->uploadNewFileName($slugger, $imageFile,$nameDirectiry);
+            $fotoreview->setFoto($newFilename);
+        }
     }
 }

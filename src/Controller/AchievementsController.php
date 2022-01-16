@@ -42,12 +42,10 @@ class AchievementsController extends AbstractController
                 
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form->get('img')->getData();
-            if ($imageFile) {
-                $nameDirectiry = 'img_directory';
-                $newFilename = $imageController->uploadNewFileName($slugger, $imageFile,$nameDirectiry);
-                $achievement->setImg($newFilename);
-            }
-
+            
+            $nameDirectiry = 'img_directory';
+            $this->uploadsImageFile($slugger,$imageFile,$nameDirectiry,$imageController,$achievement);
+        
             $entityManager->persist($achievement);
             $entityManager->flush();
             $this->addFlash(
@@ -84,12 +82,12 @@ class AchievementsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form->get('img')->getData();
-            if ($imageFile) {
-                $this -> deleteImageFile($achievement);
-                $nameDirectiry = 'img_directory';
-                $newFilename = $imageController->uploadNewFileName($slugger, $imageFile,$nameDirectiry);
-                $achievement->setImg($newFilename);
-            }
+            $getImageFile = 'getImg';
+            $setImageFile = 'setImg';
+            $nameDirectiry = 'img_directory';
+            $this -> deleteImageFiles($imageFile,$achievement,$getImageFile,$setImageFile,$nameDirectiry,$imageController);
+            $this->uploadsImageFile($slugger,$imageFile,$nameDirectiry,$imageController,$achievement);
+            
             $entityManager->flush();
             $this->addFlash(
                     'success',
@@ -106,10 +104,13 @@ class AchievementsController extends AbstractController
     }
 
     #[Route('/{id}', name: 'achievements_delete', methods: ['POST'])]
-    public function delete(Request $request, Achievements $achievement, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Achievements $achievement, EntityManagerInterface $entityManager,ImageController $imageController): Response
     {
         if ($this->isCsrfTokenValid('delete'.$achievement->getId(), $request->request->get('_token'))) {
-            $this -> deleteImageFile($achievement);
+            $getImageFile = 'getImg';
+            $setImageFile = 'setImg';
+            $nameDirectiry = 'img_directory';
+            $this->deleteFiles($achievement,$getImageFile,$setImageFile,$nameDirectiry,$imageController);
             $entityManager->remove($achievement);
             $entityManager->flush();
             $this->addFlash(
@@ -118,13 +119,18 @@ class AchievementsController extends AbstractController
         }
         return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);
     }
-    private function deleteImageFile($achievement){
-        $filesystem = new Filesystem();
-        if($achievement->getImg() != null){
-            $achievement->setImg(
-                $path = new File($this->getParameter('img_directory').'/'.$achievement->getImg())
-            );
-            $filesystem->remove(['symlink', $path, $achievement->getImg()]);
+    private function uploadsImageFile($slugger,$imageFile,$nameDirectiry,$imageController,$achievement){
+        if ($imageFile) {
+            $newFilename = $imageController->uploadNewFileName($slugger, $imageFile,$nameDirectiry);
+            $achievement->setImg($newFilename);
         }
-    }    
+    }
+    private function deleteImageFiles($imageFile,$nameObject,$getImageFile,$setImageFile,$nameDirectiry,$imageController){
+        if ($imageFile){
+            $imageController->deleteImageFile($nameObject,$getImageFile,$setImageFile,$nameDirectiry);
+        }
+    } 
+    private function deleteFiles($nameObject,$getImageFile,$setImageFile,$nameDirectiry,$imageController){
+            $imageController->deleteImageFile($nameObject,$getImageFile,$setImageFile,$nameDirectiry);
+    }       
 }

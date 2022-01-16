@@ -49,16 +49,15 @@ class BlogController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form->get('foto')->getData();
             $imageFile2 = $form->get('foto2')->getData();
-            if ($imageFile) {
-                $nameDirectiry = 'galery_directory';
-                $newFilename = $imageController->uploadNewFileName($slugger,$$imageFile,$nameDirectiry);
-                $blog->setFoto($newFilename);
-            }
-            if ($imageFile2) {
-                $nameDirectiry = 'galery_directory';
-                $newFilename2 = $imageController->uploadNewFileName($slugger,$imageFile2,$nameDirectiry);
-                $fotoblog->setFoto($newFilename2);
-            }
+
+            $setImageFile = 'setFoto';
+            $nameDirectiry = 'galery_directory';
+            $this->uploadsImageFile($slugger,$imageFile,$nameDirectiry,$imageController,$blog,$setImageFile);
+            
+            $setImageFile2 = 'setFoto';
+            $nameDirectiry2 = 'galery_directory';
+            $this->uploadsImageFile($slugger,$imageFile2,$nameDirectiry2,$imageController,$fotoblog,$setImageFile2);
+
             $titleslider = $form->get('titleslider')->getData();
             $descriptionslider = $form->get('descriptionslider')->getData();
             $linkslider = $form->get('linkslider')->getData();
@@ -94,20 +93,8 @@ class BlogController extends AbstractController
         $ratingId = $doctrine->getRepository(Ratingblog::class)->findBy([
             'blog' => $id,    
         ]);
-        $summ_ratingblog = 0;
-        $ratingblog_count = 0;
-        foreach($ratingId as $elem){
-            $summ_ratingblog += $elem->getRating();
-        }
-        foreach($ratingId as $elem){
-            $ratingblog_count += 1;
-        }
-        if($ratingblog_count != null){
-            $rating_value = round(($summ_ratingblog/$ratingblog_count), 2, PHP_ROUND_HALF_DOWN);
-        }
-        else{
-            $rating_value = 0;
-        }
+        $rating_value = $this -> ratingBlog($ratingId);
+        
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
@@ -134,18 +121,18 @@ class BlogController extends AbstractController
         $imageFile = $form->get('foto')->getData();
         $imageFile2 = $form->get('foto2')->getData();
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($imageFile) {
-                $this -> deleteImageFile($blog);
-                $nameDirectiry = 'galery_directory';
-                $newFilename = $imageController->uploadNewFileName($slugger,$imageFile,$nameDirectiry);
-                $blog->setFoto($newFilename);
-            }
-            if ($imageFile2) {
-                $this -> deleteImageFile($fotoblog);
-                $nameDirectiry = 'galery_directory';
-                $newFilename2 = $imageController->uploadNewFileName($slugger,$imageFile2,$nameDirectiry);
-                $fotoblog->setFoto($newFilename2);
-            }       
+            $getImageFile = 'getFoto';
+            $setImageFile = 'setFoto';
+            $nameDirectiry = 'galery_directory';
+            $this->deleteFiles($imageFile,$blog,$getImageFile,$setImageFile,$nameDirectiry,$imageController);
+            $this->uploadsImageFile($slugger,$imageFile,$nameDirectiry,$imageController,$blog,$setImageFile);
+
+            $getImageFile2 = 'getFoto';
+            $setImageFile2 = 'setFoto';
+            $nameDirectiry2 = 'galery_directory';
+            $this->deleteFiles($imageFile2,$fotoblog,$getImageFile2,$setImageFile2,$nameDirectiry2,$imageController);
+            $this->uploadsImageFile($slugger,$imageFile2,$nameDirectiry2,$imageController,$fotoblog,$setImageFile2);
+
             $entityManager->flush();
             $this->addFlash(
                 'success',
@@ -163,13 +150,17 @@ class BlogController extends AbstractController
     }
 
     #[Route('/{id}', name: 'blog_delete', methods: ['POST'])]
-    public function delete(Request $request, Blog $blog, EntityManagerInterface $entityManager,int $id, ManagerRegistry $doctrine): Response
+    public function delete(Request $request, Blog $blog, EntityManagerInterface $entityManager,int $id, ManagerRegistry $doctrine,ImageController $imageController): Response
     {
         if ($this->isCsrfTokenValid('delete'.$blog->getId(), $request->request->get('_token'))) {
+    
             $fotoblogs = $blog -> getFotoblog();
             $ratingblogs = $blog -> getRatingblog();
             $this -> deleteAllGaleryFileFotoblog($fotoblogs,$entityManager);
-            $this -> deleteImageFile($blog);
+            $getImageFile = 'getFoto';
+            $setImageFile = 'setFoto';
+            $nameDirectiry = 'galery_directory';
+            $this->deleteImgFiles($blog,$getImageFile,$setImageFile,$nameDirectiry,$imageController);
             $entityManager->remove($blog);
             $entityManager->flush();
             $this->addFlash(
@@ -179,15 +170,6 @@ class BlogController extends AbstractController
         return $this->redirectToRoute('blog_index', [], Response::HTTP_SEE_OTHER);
     }
    
-    private function deleteImageFile($fotoblog){
-        $filesystem = new Filesystem();
-        if($fotoblog->getFoto() != null){
-            $fotoblog->setFoto(
-                $path = new File($this->getParameter('galery_directory').'/'.$fotoblog->getFoto())
-            );
-            $filesystem->remove(['symlink', $path, $fotoblog->getFoto()]);
-        }
-    }
     private function deleteAllGaleryFileFotoblog($fotoblogs,$entityManager){
         $filesystem = new Filesystem();
         foreach ($fotoblogs as $fotoblogFoto){
@@ -200,4 +182,36 @@ class BlogController extends AbstractController
             $entityManager->remove($fotoblogFoto);
         }
     }
+
+    private function ratingBlog($ratingId){
+        $summ_ratingblog = 0;
+        $ratingblog_count = 0;
+        foreach($ratingId as $elem){
+            $summ_ratingblog += $elem->getRating();
+        }
+        foreach($ratingId as $elem){
+            $ratingblog_count += 1;
+        }
+        if($ratingblog_count != null){
+            $rating_value = round(($summ_ratingblog/$ratingblog_count), 2, PHP_ROUND_HALF_DOWN);
+        }
+        else{
+            $rating_value = 0;
+        }
+        return $rating_value;
+    }
+    private function uploadsImageFile($slugger,$imageFile,$nameDirectiry,$imageController,$article,$setImageFile){
+        if ($imageFile) {
+            $newFilename = $imageController->uploadNewFileName($slugger,$imageFile,$nameDirectiry);
+            $article->$setImageFile($newFilename);
+        }
+    }
+    private function deleteFiles($imageFile,$nameObject,$getImageFile,$setImageFile,$nameDirectiry,$imageController){
+        if ($imageFile){
+            $imageController->deleteImageFile($nameObject,$getImageFile,$setImageFile,$nameDirectiry);
+        }
+    }
+    private function deleteImgFiles($nameObject,$getImageFile,$setImageFile,$nameDirectiry,$imageController){
+            $imageController->deleteImageFile($nameObject,$getImageFile,$setImageFile,$nameDirectiry);
+    } 
 }
