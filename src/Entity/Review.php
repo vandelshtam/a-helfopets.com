@@ -54,6 +54,11 @@ class Review
      */
     private $ip;
 
+    /**
+     * @ORM\Column(type="integer", length=255, nullable=true)
+     */
+    private $banned;
+
     public function __construct()
     {
         $this->fotoreview = new ArrayCollection();
@@ -181,6 +186,18 @@ class Review
     public function setIp(?string $ip): self
     {
         $this->ip = $ip;
+
+        return $this;
+    }
+
+    public function getBanned(): ?string
+    {
+        return $this->banned;
+    }
+
+    public function setBanned(?string $banned): self
+    {
+        $this->banned = $banned;
 
         return $this;
     }

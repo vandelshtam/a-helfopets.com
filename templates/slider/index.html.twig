@@ -20,7 +20,15 @@
                         </a>
                     </div>
             </div>
-            
+            {% for label, messages in app.flashes(['success', 'notice']) %}
+                {% for message in messages %}
+                    {% if message %}
+                        <div class="flash-{{ label }} notice_message">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
             <div class="page news_inner elastic" id="">
                 {% for slider in sliders %}
                 <a id="c_1" href="{{ path('slider_show', {'id': slider.id}) }}" class="page news_blog none" data-filter-tags="{{ slider.serviceName }}">
@@ -83,14 +91,12 @@
         </div>
     </footer>
 
-    <div id="hidden-content">
-        <form action="">
-            <input type="text" placeholder="Ваше имя">
-            <input type="text" placeholder="Ваш телефон">
-            <input type="submit" value="Отправить">
-
-        </form>
-    </div>
+<div id="hidden-content">
+    {{ form_start(fast_consultation_form) }}
+        {{ form_widget(fast_consultation_form) }}
+        <input type="submit" value="Отправить">
+    {{ form_end(fast_consultation_form) }}
+</div>
 {% endblock %}
 
 {% block javascripts %}

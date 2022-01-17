@@ -10,11 +10,14 @@ use App\Entity\FastConsultation;
 use App\Form\FastConsultationType;
 use App\Repository\BlogRepository;
 use App\Controller\ImageController;
+use App\Controller\MailerController;
 use App\Repository\RatingblogRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
+use App\Controller\FastConsultationController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,12 +29,17 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class BlogController extends AbstractController
 {
     #[Route('/', name: 'blog_index', methods: ['GET'])]
-    public function index(Request $request,BlogRepository $blogRepository, ManagerRegistry $doctrine,EntityManagerInterface $entityManager): Response
+    public function index(Request $request,BlogRepository $blogRepository, ManagerRegistry $doctrine,EntityManagerInterface $entityManager,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
 
+        if ($fast_consultation_form->isSubmitted() && $fast_consultation_form->isValid()) {
+            $textSendMail = $mailerController->textFastConsultationMail($fast_consultation);
+            $fast_consultation_meil -> fastSendMeil($request,$mailer,$fast_consultation,$mailerController,$entityManager,$textSendMail); 
+            return $this->redirectToRoute('blog_index', [], Response::HTTP_SEE_OTHER);
+        }
         return $this->renderForm('blog/index.html.twig', [
             'blogs' => $blogRepository->findAll(),
             'fast_consultation_form' => $fast_consultation_form,
@@ -39,7 +47,7 @@ class BlogController extends AbstractController
     }
 
     #[Route('/new', name: 'blog_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager,SluggerInterface $slugger, ManagerRegistry $doctrine,ImageController $imageController): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,SluggerInterface $slugger, ManagerRegistry $doctrine,ImageController $imageController,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
         $fotoblog = new Fotoblog();
         $blog = new Blog();
@@ -78,6 +86,11 @@ class BlogController extends AbstractController
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
+        if ($fast_consultation_form->isSubmitted() && $fast_consultation_form->isValid()) {
+            $textSendMail = $mailerController->textFastConsultationMail($fast_consultation);
+            $fast_consultation_meil -> fastSendMeil($request,$mailer,$fast_consultation,$mailerController,$entityManager,$textSendMail); 
+            return $this->redirectToRoute('blog_new', [], Response::HTTP_SEE_OTHER);
+        }
 
         return $this->renderForm('blog/new.html.twig', [
             'blog' => $blog,
@@ -87,18 +100,24 @@ class BlogController extends AbstractController
     }
 
     #[Route('/{id}', name: 'blog_show', methods: ['GET'])]
-    public function show(Request $request,Blog $blog,ManagerRegistry $doctrine, int $id, RatingblogRepository $ratingblogRepository): Response
+    public function show(Request $request,EntityManagerInterface $entityManager,Blog $blog,ManagerRegistry $doctrine, int $id, RatingblogRepository $ratingblogRepository,RatingblogController $ratingBlog,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
         $blog = $doctrine->getRepository(Blog::class)->findOneByIdJoinedToFotoblog($id);
         $ratingId = $doctrine->getRepository(Ratingblog::class)->findBy([
             'blog' => $id,    
         ]);
-        $rating_value = $this -> ratingBlog($ratingId);
+        $ratingSummBlog = $ratingBlog->ratingSummBlog($ratingId);
+        $ratingCountBlog = $ratingBlog->ratingCountBlog($ratingId);
+        $rating_value = $ratingBlog -> ratingBlog($ratingSummBlog,$ratingCountBlog);
         
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
-
+        if ($fast_consultation_form->isSubmitted() && $fast_consultation_form->isValid()) {
+            $textSendMail = $mailerController->textFastConsultationMail($fast_consultation);
+            $fast_consultation_meil -> fastSendMeil($request,$mailer,$fast_consultation,$mailerController,$entityManager,$textSendMail); 
+            return $this->redirectToRoute('blog_show', ['id' => $id], Response::HTTP_SEE_OTHER);
+        }
         return $this->renderForm('blog/show.html.twig', [
             'blog' => $blog,
             'id' => $id,
@@ -108,7 +127,7 @@ class BlogController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'blog_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Blog $blog, EntityManagerInterface $entityManager,ImageController $imageController,SluggerInterface $slugger,ManagerRegistry $doctrine, int $id,): Response
+    public function edit(Request $request, Blog $blog, EntityManagerInterface $entityManager,ImageController $imageController,SluggerInterface $slugger,ManagerRegistry $doctrine, int $id,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
         $blog = $doctrine->getRepository(Blog::class)->findOneByIdJoinedToFotoblog($id);
         $fotoblog_id = [];
@@ -142,6 +161,11 @@ class BlogController extends AbstractController
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
+        if ($fast_consultation_form->isSubmitted() && $fast_consultation_form->isValid()) {
+            $textSendMail = $mailerController->textFastConsultationMail($fast_consultation);
+            $fast_consultation_meil -> fastSendMeil($request,$mailer,$fast_consultation,$mailerController,$entityManager,$textSendMail); 
+            return $this->redirectToRoute('blog_edit', ['id' => $id], Response::HTTP_SEE_OTHER);
+        }
         return $this->renderForm('blog/edit.html.twig', [
             'blog' => $blog,
             'form' => $form,
@@ -181,24 +205,6 @@ class BlogController extends AbstractController
             }
             $entityManager->remove($fotoblogFoto);
         }
-    }
-
-    private function ratingBlog($ratingId){
-        $summ_ratingblog = 0;
-        $ratingblog_count = 0;
-        foreach($ratingId as $elem){
-            $summ_ratingblog += $elem->getRating();
-        }
-        foreach($ratingId as $elem){
-            $ratingblog_count += 1;
-        }
-        if($ratingblog_count != null){
-            $rating_value = round(($summ_ratingblog/$ratingblog_count), 2, PHP_ROUND_HALF_DOWN);
-        }
-        else{
-            $rating_value = 0;
-        }
-        return $rating_value;
     }
     private function uploadsImageFile($slugger,$imageFile,$nameDirectiry,$imageController,$article,$setImageFile){
         if ($imageFile) {

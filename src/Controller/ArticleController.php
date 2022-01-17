@@ -8,6 +8,7 @@ use App\Service\FileUploader;
 use App\Entity\FastConsultation;
 use App\Form\FastConsultationType;
 use App\Controller\ImageController;
+use App\Controller\MailerController;
 use App\Repository\SliderRepository;
 use App\Repository\ArticleRepository;
 use Symfony\Component\Filesystem\Path;
@@ -15,6 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
+use App\Controller\FastConsultationController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,12 +31,17 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class ArticleController extends AbstractController
 {
     #[Route('/', name: 'article_index', methods: ['GET'])]
-    public function index(ArticleRepository $articleRepository,Request $request, EntityManagerInterface $entityManager): Response
+    public function index(ArticleRepository $articleRepository,Request $request, EntityManagerInterface $entityManager,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
         $user = $this->getUser();
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
+        if ($fast_consultation_form->isSubmitted() && $fast_consultation_form->isValid()) {
+            $textSendMail = $mailerController->textFastConsultationMail($fast_consultation);
+            $fast_consultation_meil -> fastSendMeil($request,$mailer,$fast_consultation,$mailerController,$entityManager,$textSendMail); 
+            return $this->redirectToRoute('article_index', [], Response::HTTP_SEE_OTHER);
+        }
         
         return $this->renderForm('article/index.html.twig', [
             'articles' => $articleRepository->findAll(),
@@ -45,7 +52,7 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/new', name: 'article_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager,SluggerInterface $slugger,ImageController $imageController): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,SluggerInterface $slugger,ImageController $imageController,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
@@ -54,8 +61,12 @@ class ArticleController extends AbstractController
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
+        if ($fast_consultation_form->isSubmitted() && $fast_consultation_form->isValid()) {
+            $textSendMail = $mailerController->textFastConsultationMail($fast_consultation);
+            $fast_consultation_meil -> fastSendMeil($request,$mailer,$fast_consultation,$mailerController,$entityManager,$textSendMail); 
+            return $this->redirectToRoute('article_new', [], Response::HTTP_SEE_OTHER);
+        }
         
-
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $avatar_articleFile */
             $avatar_articleFile = $form->get('avatar_article')->getData();
@@ -92,11 +103,16 @@ class ArticleController extends AbstractController
 
 
     #[Route('/{id}', name: 'article_show', methods: ['GET'])]
-    public function show(Article $article,Request $request,MailerInterface $mailer): Response
+    public function show(Article $article,Request $request,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer, int $id): Response
     {   
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
+        if ($fast_consultation_form->isSubmitted() && $fast_consultation_form->isValid()) {
+            $textSendMail = $mailerController->textFastConsultationMail($fast_consultation);
+            $fast_consultation_meil -> fastSendMeil($request,$mailer,$fast_consultation,$mailerController,$entityManager,$textSendMail); 
+            return $this->redirectToRoute('article_show', ['id' => $id], Response::HTTP_SEE_OTHER);
+        }
         return $this->renderForm('article/show.html.twig', [
             'article' => $article,
             'fast_consultation' => $fast_consultation,
@@ -105,12 +121,17 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'article_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Article $article, EntityManagerInterface $entityManager,SluggerInterface $slugger,ImageController $imageController): Response
+    public function edit(Request $request, Article $article, EntityManagerInterface $entityManager,SluggerInterface $slugger,ImageController $imageController,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
         $user = $this->getUser();
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
+        if ($fast_consultation_form->isSubmitted() && $fast_consultation_form->isValid()) {
+            $textSendMail = $mailerController->textFastConsultationMail($fast_consultation);
+            $fast_consultation_meil -> fastSendMeil($request,$mailer,$fast_consultation,$mailerController,$entityManager,$textSendMail); 
+            return $this->redirectToRoute('article_show', ['id' => $id], Response::HTTP_SEE_OTHER);
+        }
 
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);

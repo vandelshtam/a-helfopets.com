@@ -55,4 +55,27 @@ class RatingblogController extends AbstractController
             'Спасибо за вашу оценку'); 
         return $this->redirectToRoute('blog_show', ['id' => $id], Response::HTTP_SEE_OTHER);    
     }
+    public function ratingSummBlog($ratingId){
+        $summ_ratingblog = 0;
+        foreach($ratingId as $elem){
+            $summ_ratingblog += $elem->getRating();
+        }
+        return $summ_ratingblog;
+    }
+    public function ratingCountBlog($ratingId){
+        $ratingblog_count = 0;
+        foreach($ratingId as $elem){
+            $ratingblog_count += 1;
+        }
+        return $ratingblog_count;
+    }
+    public function ratingBlog($ratingSumm, $ratingCount){
+        if($ratingCount != null){
+            $rating_value = round(($ratingSumm/$ratingCount), 2, PHP_ROUND_HALF_DOWN);
+        }
+        else{
+            $rating_value = 0;
+        }
+        return $rating_value;
+    }
 }

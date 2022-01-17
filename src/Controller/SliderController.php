@@ -7,10 +7,12 @@ use App\Form\SliderType;
 use App\Entity\FastConsultation;
 use Symfony\Component\Mime\Email;
 use App\Form\FastConsultationType;
+use App\Controller\MailerController;
 use App\Repository\SliderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
+use App\Controller\FastConsultationController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,20 +22,18 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 class SliderController extends AbstractController
 {
 
-    #[Route('/', name: 'slider_index', methods: ['GET'])]
-    public function index(SliderRepository $sliderRepository,Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
+    #[Route('/', name: 'slider_index', methods: ['GET','POST'])]
+    public function index(SliderRepository $sliderRepository,Request $request, EntityManagerInterface $entityManager, MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
-        
-
         if ($fast_consultation_form->isSubmitted() && $fast_consultation_form->isValid()) {
-            $entityManager->persist($fast_consultation);
-            $entityManager->flush();
-            $this->fast_message($fast_consultation, $mailer);
+            $textSendMail = $mailerController->textFastConsultationMail($fast_consultation);
+            $fast_consultation_meil -> fastSendMeil($request,$mailer,$fast_consultation,$mailerController,$entityManager,$textSendMail); 
+            return $this->redirectToRoute('slider_index', [], Response::HTTP_SEE_OTHER);
         }
-
+        
         return $this->renderForm('slider/index.html.twig', [
             'sliders' => $sliderRepository->findAll(),
             'fast_consultation' => $fast_consultation,
@@ -42,7 +42,7 @@ class SliderController extends AbstractController
     }
 
     #[Route('/new', name: 'slider_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager,MailerInterface $mailer): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
         $slider = new Slider();
         $form = $this->createForm(SliderType::class, $slider);
@@ -51,14 +51,12 @@ class SliderController extends AbstractController
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
-        
-
         if ($fast_consultation_form->isSubmitted() && $fast_consultation_form->isValid()) {
-            $entityManager->persist($fast_consultation);
-            $entityManager->flush();
-            $this->fast_message($fast_consultation, $mailer);
+            $textSendMail = $mailerController->textFastConsultationMail($fast_consultation);
+            $fast_consultation_meil -> fastSendMeil($request,$mailer,$fast_consultation,$mailerController,$entityManager,$textSendMail); 
+            return $this->redirectToRoute('slider_new', [], Response::HTTP_SEE_OTHER);
         }
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($slider);
             $entityManager->flush();
@@ -75,17 +73,15 @@ class SliderController extends AbstractController
     }
 
     #[Route('/{id}', name: 'slider_show', methods: ['GET'])]
-    public function show(Slider $slider,Request $request, EntityManagerInterface $entityManager,MailerInterface $mailer): Response
+    public function show(Slider $slider,Request $request, EntityManagerInterface $entityManager,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer, int $id): Response
     {
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
-        
-
         if ($fast_consultation_form->isSubmitted() && $fast_consultation_form->isValid()) {
-            $entityManager->persist($fast_consultation);
-            $entityManager->flush();
-            $this->fast_message($fast_consultation, $mailer);
+            $textSendMail = $mailerController->textFastConsultationMail($fast_consultation);
+            $fast_consultation_meil -> fastSendMeil($request,$mailer,$fast_consultation,$mailerController,$entityManager,$textSendMail); 
+            return $this->redirectToRoute('slider_show', ['id' => $id], Response::HTTP_SEE_OTHER);
         }
         
         return $this->renderForm('slider/show.html.twig', [
@@ -96,7 +92,7 @@ class SliderController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'slider_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Slider $slider, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
+    public function edit(Request $request, Slider $slider, EntityManagerInterface $entityManager, MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer, int $id): Response
     {
         $form = $this->createForm(SliderType::class, $slider);
         $form->handleRequest($request);
@@ -104,12 +100,10 @@ class SliderController extends AbstractController
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
-        
-
         if ($fast_consultation_form->isSubmitted() && $fast_consultation_form->isValid()) {
-            $entityManager->persist($fast_consultation);
-            $entityManager->flush();
-            $this->fast_message($fast_consultation, $mailer);
+            $textSendMail = $mailerController->textFastConsultationMail($fast_consultation);
+            $fast_consultation_meil -> fastSendMeil($request,$mailer,$fast_consultation,$mailerController,$entityManager,$textSendMail); 
+            return $this->redirectToRoute('slider_edit', ['id' => $id], Response::HTTP_SEE_OTHER);
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -137,32 +131,32 @@ class SliderController extends AbstractController
         return $this->redirectToRoute('slider_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    private function fast_message($fast_consultation,$mailer)
-    {
-            //dd($fast_consultation);
+//     private function fast_message($fast_consultation,$mailer)
+//     {
+//             //dd($fast_consultation);
            
-            $email = (new Email())
-            ->from('hello@example.com')
-            ->to('you@example.com')
-            //->cc('cc@example.com')
-            //->bcc('bcc@example.com')
-            //->replyTo('fabien@example.com')
-            //->priority(Email::PRIORITY_HIGH)
-            ->subject('Time for Symfony Mailer!')
-            ->text($fast_consultation->getName())
-            ->html('<h1>Здравствуйте, я  {{ '.$fast_consultation->getName().' }} пожалуйста проконсультируйте меня !</h1>
-            <p>
-                Прошу связаться со мной по номеру телефона {{ '.$fast_consultation->getPhone().' }} 
-            </p>')
-            ;
-            try {
-                $mailer->send($email);
-            } catch (TransportExceptionInterface $e) {
-                // some error prevented the email sending; display an
-                // error message or try to resend the message
-            }       
-            return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
+//             $email = (new Email())
+//             ->from('hello@example.com')
+//             ->to('you@example.com')
+//             //->cc('cc@example.com')
+//             //->bcc('bcc@example.com')
+//             //->replyTo('fabien@example.com')
+//             //->priority(Email::PRIORITY_HIGH)
+//             ->subject('Time for Symfony Mailer!')
+//             ->text($fast_consultation->getName())
+//             ->html('<h1>Здравствуйте, я  {{ '.$fast_consultation->getName().' }} пожалуйста проконсультируйте меня !</h1>
+//             <p>
+//                 Прошу связаться со мной по номеру телефона {{ '.$fast_consultation->getPhone().' }} 
+//             </p>')
+//             ;
+//             try {
+//                 $mailer->send($email);
+//             } catch (TransportExceptionInterface $e) {
+//                 // some error prevented the email sending; display an
+//                 // error message or try to resend the message
+//             }       
+//             return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
        
         
-    }
+//     }
 }

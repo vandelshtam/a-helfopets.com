@@ -9,6 +9,8 @@ use App\Entity\FastConsultation;
 use App\Form\FastConsultationType;
 use App\Controller\ImageController;
 use App\Repository\PressRepository;
+use App\Controller\MailerController;
+use App\Controller\RatingController;
 use App\Repository\RatingRepository;
 use App\Repository\ReviewRepository;
 use App\Repository\FotoreviewRepository;
@@ -18,6 +20,8 @@ use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\AchievementsRepository;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
+use App\Controller\FastConsultationController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,14 +32,18 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class AboutComtrollerController extends AbstractController
 {
     #[Route('/about/comtroller', name: 'about_comtroller')]
-    public function index(Request $request,OurMissionRepository $ourMissionRepository,FotoreviewRepository $fotoreviewRepository, AchievementsRepository $achievementsRepository,PressRepository $pressRepository,RatingRepository $ratingRepository, ManagerRegistry $doctrine, EntityManagerInterface $entityManager,SluggerInterface $slugger,ReviewRepository $reviewRepository, ImageController $imageController): Response
+    public function index(Request $request,OurMissionRepository $ourMissionRepository,FotoreviewRepository $fotoreviewRepository, AchievementsRepository $achievementsRepository,PressRepository $pressRepository,RatingRepository $ratingRepository, ManagerRegistry $doctrine, EntityManagerInterface $entityManager,SluggerInterface $slugger,ReviewRepository $reviewRepository, ImageController $imageController,RatingController $ratingController,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
+        if ($fast_consultation_form->isSubmitted() && $fast_consultation_form->isValid()) {
+            $textSendMail = $mailerController->textFastConsultationMail($fast_consultation);
+            $fast_consultation_meil -> fastSendMeil($request,$mailer,$fast_consultation,$mailerController,$entityManager,$textSendMail); 
+            return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);
+        }
 
         $reviews_all = $reviewRepository->findAll();
-        
         $reviews = [];
         foreach($reviews_all as $elem){   
             $reviews[] = $doctrine->getRepository(Review::class)->findOneByIdJoinedToFotoreview($elem->getId());
@@ -67,6 +75,7 @@ class AboutComtrollerController extends AbstractController
             $review->addFotoreview($fotoreview);
             $review->addFotoreview($fotoreview2);
             $review->addFotoreview($fotoreview3);
+            // $review->setReview(0);
             $entityManager = $doctrine->getManager();
             $entityManager->persist($fotoreview);
             $entityManager->persist($fotoreview2);
@@ -78,11 +87,10 @@ class AboutComtrollerController extends AbstractController
                 'Спасибо за отзыв!'); 
             return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);
         }
-        $rating_all = $ratingRepository->findAll();
         $rating = $ratingRepository->findAllRating();
-        $rating_value = $this->ratingAbout($rating_all,$rating);
+        $ratingSumm = $ratingController->ratingSumm($ratingRepository);
+        $rating_value = $ratingController->rating($ratingSumm,$rating);
         return $this->renderForm('about_comtroller/index.html.twig', [
-            'controller_name' => 'AboutComtrollerController',
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
             'our_missions' => $ourMissionRepository->findAll(),
@@ -95,20 +103,6 @@ class AboutComtrollerController extends AbstractController
         ]);
     }
 
-    private function ratingAbout($rating_all,$rating){
-        $summ_rating = 0;
-        foreach($rating_all as $elem){
-            $summ_rating += $elem->getGrade();
-        }
-        if($rating == null){
-            $rating_value = 0;
-        }
-        else{
-            $rating_value = round(($summ_rating/$rating), 0, PHP_ROUND_HALF_DOWN);
-        }
-        return $rating_value;
-    }
-    
     private function uploadsImageFile($slugger,$imageFile,$nameDirectiry,$imageController,$fotoreview){
         if ($imageFile) {
             $newFilename = $imageController->uploadNewFileName($slugger, $imageFile,$nameDirectiry);

@@ -7,6 +7,7 @@ use App\Form\FotoblogType;
 use App\Entity\FastConsultation;
 use Symfony\Component\Mime\Email;
 use App\Form\FastConsultationType;
+use App\Controller\ImageController;
 use App\Repository\FotoblogRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -31,7 +32,7 @@ class FotoblogController extends AbstractController
     }
 
     #[Route('/new/{id}', name: 'fotoblog_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager,ManagerRegistry $doctrine, int $id,SluggerInterface $slugger,MailerInterface $mailer): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,ManagerRegistry $doctrine, int $id,SluggerInterface $slugger,MailerInterface $mailer,ImageController $imageController): Response
     {
         $fotoblog = new Fotoblog();
         $form = $this->createForm(FotoblogType::class, $fotoblog);
@@ -39,10 +40,10 @@ class FotoblogController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form->get('foto')->getData();
-            if ($imageFile) {
-                $newFilename = $this->uploadNewFileName($slugger, $imageFile);
-                $fotoblog->setFoto($newFilename);
-            }
+            $setImageFile = 'setFoto';
+            $nameDirectiry = 'galery_directory';
+            $this->uploadsImageFile($slugger,$imageFile,$nameDirectiry,$imageController,$fotoblog,$setImageFile);
+            
             $entityManager->persist($fotoblog);
             $entityManager->flush();
             $this->addFlash(
@@ -76,17 +77,18 @@ class FotoblogController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'fotoblog_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Fotoblog $fotoblog, EntityManagerInterface $entityManager,SluggerInterface $slugger,MailerInterface $mailer): Response
+    public function edit(Request $request, Fotoblog $fotoblog, EntityManagerInterface $entityManager,SluggerInterface $slugger,MailerInterface $mailer,ImageController $imageController): Response
     {
         $form = $this->createForm(FotoblogType::class, $fotoblog);
         $form->handleRequest($request);
         $blog_id = $fotoblog->getBlog()->getId();
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form->get('foto')->getData();
-            if ($imageFile) {
-                $newFilename = $this->uploadNewFileName($slugger, $imageFile);
-                $fotoblog->setFoto($newFilename);
-            }
+            $getImageFile = 'getFoto';
+            $setImageFile = 'setFoto';
+            $nameDirectiry = 'galery_directory';
+            $this->deleteFiles($imageFile,$fotoblog,$getImageFile,$setImageFile,$nameDirectiry,$imageController);
+            $this->uploadsImageFile($slugger,$imageFile,$nameDirectiry,$imageController,$fotoblog,$setImageFile);
             $entityManager->flush();
             $this->addFlash(
                 'success',
@@ -110,10 +112,14 @@ class FotoblogController extends AbstractController
     }
 
     #[Route('/{id}', name: 'fotoblog_delete', methods: ['POST'])]
-    public function delete(Request $request, Fotoblog $fotoblog, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Fotoblog $fotoblog, EntityManagerInterface $entityManager,ImageController $imageController): Response
     {
         $blog_id = $fotoblog->getBlog()->getId();
         if ($this->isCsrfTokenValid('delete'.$fotoblog->getId(), $request->request->get('_token'))) {
+            $getImageFile = 'getFoto';
+            $setImageFile = 'setFoto';
+            $nameDirectiry = 'galery_directory';
+            $this->deleteImgFiles($fotoblog,$getImageFile,$setImageFile,$nameDirectiry,$imageController);
             $entityManager->remove($fotoblog);
             $entityManager->flush();
             $this->addFlash(
@@ -123,43 +129,18 @@ class FotoblogController extends AbstractController
         return $this->redirectToRoute('blog_show', ['id'=> $blog_id], Response::HTTP_SEE_OTHER);
     }
 
-    private function uploadNewFileName(SluggerInterface $slugger, $imageFile)
-    {
-        $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);       
-        $safeFilename = $slugger->slug($originalFilename);
-        $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();       
-        try {
-            $imageFile->move(
-                $this->getParameter('galery_directory'),
-                $newFilename
-            );
-        } catch (FileException $e) {
-            echo "An error occurred while creating your directory at ";
-        }           
-        return $newFilename;   
+    private function uploadsImageFile($slugger,$imageFile,$nameDirectiry,$imageController,$article,$setImageFile){
+        if ($imageFile) {
+            $newFilename = $imageController->uploadNewFileName($slugger,$imageFile,$nameDirectiry);
+            $article->$setImageFile($newFilename);
+        }
     }
-
-    private function fast_consultation($request, $entityManager,$mailer,$fast_consultation){
-        $entityManager->persist($fast_consultation);
-               $entityManager->flush();
-               $email = (new Email())
-               ->from('hello@example.com')
-               ->to('you@example.com')
-               ->subject('Time for Symfony Mailer!')
-               ->text($fast_consultation->getName())
-               ->html(
-               '<h1>Здравствуйте, я '.$fast_consultation->getName().' пожалуйста проконсультируйте меня!</h1>
-               <p>Прошу связаться со мной по номеру телефона '.$fast_consultation->getPhone().'</p>'
-               );
-               try {
-                   $mailer->send($email);
-                   $this->addFlash(
-                    'success',
-                    'Вы успешно отправлили заявку, скоро мы с вами свяжемся!');    
-               } catch (TransportExceptionInterface $e) {
-                   $this->addFlash(
-                       'success',
-                       'Не удалось отправить заявку, пожалуйста попробуйте еще раз'); 
-               }              
+    private function deleteFiles($imageFile,$nameObject,$getImageFile,$setImageFile,$nameDirectiry,$imageController){
+        if ($imageFile){
+            $imageController->deleteImageFile($nameObject,$getImageFile,$setImageFile,$nameDirectiry);
+        }
     }
+    private function deleteImgFiles($nameObject,$getImageFile,$setImageFile,$nameDirectiry,$imageController){
+            $imageController->deleteImageFile($nameObject,$getImageFile,$setImageFile,$nameDirectiry);
+    } 
 }

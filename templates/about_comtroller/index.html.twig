@@ -259,156 +259,181 @@
                     <!--отзывы-->
                     <div class="page_reviews">
                         {% for review in reviews %}
-                        {% if review.ip != ip %}
-                        <div class="rewiews_block">
-                            {% if review.answerId != null %}
-                            <a id="c_1" href="#" class="page news_blog none answer" data-filter-tags="black">
-                                <div class="page news_images">
-                                    <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
-                                    {# <div class="news_date">{{ review.createdAt|date('m-d') }}</div>     #}
-                                </div>
-                                <div class="news_blog-title answer">
-                                 Ответ на сообщение:
-                                </div>
-                                <div class="news_blog-title">
-                                {% for answer in review.answer %}
-                                    {{ answer.name|default('undefined') }}
-                                {% endfor %} 
-                                </div>
-                                <div class="news_blog-text">
-                                {% for answer in review.answer %}
-                                    {{ answer.text }}
-                                {% endfor %} 
-                                </div>   
-                            </a>
-                            {% endif %}
-                            <a id="c_1" href="#" class="page news_blog none" data-filter-tags="black">
-                                <div class="page news_images">
-                                    <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
-                                    <div class="news_date">{{ review.createdAt|date('m-d') }}</div>    
-                                </div>
-                                <div class="news_blog-title">
-                                    {{ review.name|default('undefined') }} 
-                                </div>
-                                <div class="news_blog-text">
-                                    {{ review.text }}
-                                </div>   
-                            </a>
-                            {% for foto in review.fotoreview %}
-                            {# {% if fotoreview_foto != null %} #}
-                            <div class="img_about rewiews">
-                                    <img src="{{ asset('uploads/img/' ~ foto.Foto) }}" alt="">
-                            </div>
-                            {# {% endif %} #}
-                            {% endfor %}
-                            <div class="about_item-btn">
-                                    <a  href="#" onclick="showStuff('answer{{ review.id }}'); return false;" class="default-btn-about admin" >
-                                        Ответить
-                                    </a>
-                                    {% if is_granted('ROLE_ADMIN') %}
-                                    <a  href="#" class="default-btn-about admin">
-                                        Заблокировать
-                                    </a>
-                                    <a  href="#" class="default-btn-about admin">
-                                        Удалить
-                                    </a> 
-                                    {% endif %}   
-                            </div>
-                            <form action="{{ path('review_new') }}"  id="answer{{ review.id }}" class="hidden_form" method="post" enctype="multipart/form-data">    
-                                <div class="form_box-inner">
-                                    <div class="form_box-left" required>
-                                        <input type="hidden"  name="answer_id" value="{{ review.id }}" >
-                                        <input type="hidden"  name="answer_name" value="{{ review.name }}" >
-                                        <input type="hidden"  name="answer_text" value="{{ review.text }}" >
-                                        <input type="text" name="name" placeholder="Ваше имя">
-                                        <textarea type="textarea" name="text" placeholder="Ваш отзыв"></textarea>
-                                        <button class="default-btn">
-                                            Отправить
-                                        </button>
-                                        <a href="#" class="default-btn-about admin" onclick="showClose('answer{{ review.id }}'); return false;">
-                                            Скрыть
-                                        </a>      
+                            {% if review.banned == null %}
+                                {% if review.ip != ip %}
+                                    <div class="rewiews_block">
+                                        {% if review.answerId != null %}
+                                        <a id="c_1" href="#" class="page news_blog none answer" data-filter-tags="black">
+                                            <div class="page news_images">
+                                                <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
+                                                {# <div class="news_date">{{ review.createdAt|date('m-d') }}</div>     #}
+                                            </div>
+                                            <div class="news_blog-title answer">
+                                            Ответ на сообщение:
+                                            </div>
+                                            <div class="news_blog-title">
+                                            {% for answer in review.answer %}
+                                                {{ answer.name|default('undefined') }}
+                                            {% endfor %} 
+                                            </div>
+                                            <div class="news_blog-text">
+                                            {% for answer in review.answer %}
+                                                {{ answer.text }}
+                                            {% endfor %} 
+                                            </div>   
+                                        </a>
+                                        {% endif %}
+                                        <a id="c_1" href="#" class="page news_blog none" data-filter-tags="black">
+                                            <div class="page news_images">
+                                                <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
+                                                <div class="news_date">{{ review.createdAt|date('m-d') }}</div>    
+                                            </div>
+                                            <div class="news_blog-title">
+                                                {{ review.name|default('undefined') }} 
+                                            </div>
+                                            <div class="news_blog-text">
+                                                {{ review.text }}
+                                            </div>   
+                                        </a>
+                                        {% for foto in review.fotoreview %}
+                                        {# {% if fotoreview_foto != null %} #}
+                                        <div class="img_about rewiews">
+                                                <img src="{{ asset('uploads/img/' ~ foto.Foto) }}" alt="">
+                                        </div>
+                                        {# {% endif %} #}
+                                        {% endfor %}
+                                        <div class="about_item-btn">
+                                                <a  href="#" onclick="showStuff('answer{{ review.id }}'); return false;" class="default-btn-about admin" >
+                                                    Ответить
+                                                </a>
+                                                {% if is_granted('ROLE_ADMIN') %}
+                                                <a  href="{{ path('edit_banned_toggle', {'id': review.id}) }}" class="default-btn-about admin">
+                                                    Заблокировать
+                                                </a>
+                                                    {{ include('review/_delete_form.html.twig') }}
+                                                {% endif %}   
+                                        </div>
+                                        <form action="{{ path('review_new') }}"  id="answer{{ review.id }}" class="hidden_form" method="post" enctype="multipart/form-data">    
+                                            <div class="form_box-inner">
+                                                <div class="form_box-left" required>
+                                                    <input type="hidden"  name="answer_id" value="{{ review.id }}" >
+                                                    <input type="hidden"  name="answer_name" value="{{ review.name }}" >
+                                                    <input type="hidden"  name="answer_text" value="{{ review.text }}" >
+                                                    <input type="text" name="name" placeholder="Ваше имя">
+                                                    <textarea type="textarea" name="text" placeholder="Ваш отзыв"></textarea>
+                                                    <button class="default-btn">
+                                                        Отправить
+                                                    </button>
+                                                    <a href="#" class="default-btn-about admin" onclick="showClose('answer{{ review.id }}'); return false;">
+                                                        Скрыть
+                                                    </a>      
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
-                                </div>
-                            </form>
-                        </div>
-                        {% endif %}
-                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                        {% if review.ip == ip %}
-                        <div class="rewiews_block rewiews_user">
-                            {% if review.answerId != null %}
-                            <a id="c_1" href="#" class="page news_blog none answer" data-filter-tags="black">
-                                <div class="page news_images">
-                                    <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
-                                    {# <div class="news_date">03.04.2021</div>     #}
-                                </div>
-                                <div class="news_blog-title answer">
-                                    Ответ на сообщение
-                                </div>
-                                <div class="news_blog-title">
-                                {% for answer in review.answer %}
-                                    {{ answer.name|default('undefined') }}
-                                {% endfor %}  
-                                </div>
-                                <div class="news_blog-text">
-                                {% for answer in review.answer %}
-                                    {{ answer.text }}
-                                {% endfor %} 
-                                </div>   
-                            </a>
+                                {% endif %}
+                                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                    {% if review.ip == ip %}
+                                        <div class="rewiews_block rewiews_user">
+                                            {% if review.answerId != null %}
+                                            <a id="c_1" href="#" class="page news_blog none answer" data-filter-tags="black">
+                                                <div class="page news_images">
+                                                    <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
+                                                    {# <div class="news_date">03.04.2021</div>     #}
+                                                </div>
+                                                <div class="news_blog-title answer">
+                                                    Ответ на сообщение
+                                                </div>
+                                                <div class="news_blog-title">
+                                                {% for answer in review.answer %}
+                                                    {{ answer.name|default('undefined') }}
+                                                {% endfor %}  
+                                                </div>
+                                                <div class="news_blog-text">
+                                                {% for answer in review.answer %}
+                                                    {{ answer.text }}
+                                                {% endfor %} 
+                                                </div>   
+                                            </a>
+                                            {% endif %}
+                                            <a id="c_1" href="#" class="page news_blog none" data-filter-tags="black">
+                                                <div class="page news_images">
+                                                    <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
+                                                    <div class="news_date">{{ review.createdAt|date('m-d') }}</div>    
+                                                </div>
+                                                <div class="news_blog-title">
+                                                    {{ review.name|default('undefined') }}  
+                                                </div>
+                                                <div class="news_blog-text">
+                                                    {{ review.text }} 
+                                                </div>   
+                                            </a>
+                                            {% for foto in review.fotoreview %}
+                                            {# {% if fotoreview_foto != null %} #}
+                                            <div class="img_about rewiews">
+                                                    <img src="{{ asset('uploads/img/' ~ foto.Foto) }}" alt="">
+                                            </div>
+                                            {# {% endif %} #}
+                                            {% endfor %}
+                                            <div class="about_item-btn">
+                                                    <a  href="#" onclick="showStuff('answer{{ review.id }}'); return false;" class="default-btn-about admin" >
+                                                        Ответить
+                                                    </a>
+                                                    {% if is_granted('ROLE_ADMIN') %}
+                                                    <a  href="{{ path('edit_banned_toggle', {'id': review.id}) }}" class="default-btn-about admin">
+                                                        Заблокировать
+                                                    </a>
+                                                        {{ include('review/_delete_form.html.twig') }}
+                                                    {% endif %}   
+                                            </div>
+                                            <form action="{{ path('review_new') }}"  id="answer{{ review.id }}" class="hidden_form" method="post" enctype="multipart/form-data">    
+                                                <div class="form_box-inner">
+                                                    <div class="form_box-left" required>
+                                                        <input type="hidden"  name="answer_id" value="{{ review.id }}" >
+                                                        <input type="hidden"  name="answer_name" value="{{ review.name }}" >
+                                                        <input type="hidden"  name="answer_text" value="{{ review.text }}" >
+                                                        <input type="text" name="name" placeholder="Ваше имя">
+                                                        <textarea type="textarea" name="text" placeholder="Ваш отзыв"></textarea>
+                                                        <button class="default-btn">
+                                                            Отправить
+                                                        </button>
+                                                        <a  href="#" class="default-btn-about admin" onclick="showClose('answer{{ review.id }}'); return false;">
+                                                            Скрыть
+                                                        </a>      
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    {% endif %} 
+                                {% endif %}
                             {% endif %}
-                            <a id="c_1" href="#" class="page news_blog none" data-filter-tags="black">
-                                <div class="page news_images">
-                                    <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
-                                    <div class="news_date">{{ review.createdAt|date('m-d') }}</div>    
-                                </div>
-                                <div class="news_blog-title">
-                                    {{ review.name|default('undefined') }}  
-                                </div>
-                                <div class="news_blog-text">
-                                    {{ review.text }} 
-                                </div>   
-                            </a>
-                            {% for foto in review.fotoreview %}
-                            {# {% if fotoreview_foto != null %} #}
-                            <div class="img_about rewiews">
-                                    <img src="{{ asset('uploads/img/' ~ foto.Foto) }}" alt="">
-                            </div>
-                            {# {% endif %} #}
-                            {% endfor %}
-                            <div class="about_item-btn">
-                                    <a  href="#" onclick="showStuff('answer{{ review.id }}'); return false;" class="default-btn-about admin" >
-                                        Ответить
-                                    </a>
-                                    {% if is_granted('ROLE_ADMIN') %}
-                                    <a  href="#" class="default-btn-about admin">
-                                        Заблокировать
-                                    </a>
-                                    <a  href="#" class="default-btn-about admin">
-                                        Удалить
-                                    </a> 
-                                    {% endif %}   
-                            </div>
-                            <form action="{{ path('review_new') }}"  id="answer{{ review.id }}" class="hidden_form" method="post" enctype="multipart/form-data">    
-                                <div class="form_box-inner">
-                                    <div class="form_box-left" required>
-                                        <input type="hidden"  name="answer_id" value="{{ review.id }}" >
-                                        <input type="hidden"  name="answer_name" value="{{ review.name }}" >
-                                        <input type="hidden"  name="answer_text" value="{{ review.text }}" >
-                                        <input type="text" name="name" placeholder="Ваше имя">
-                                        <textarea type="textarea" name="text" placeholder="Ваш отзыв"></textarea>
-                                        <button class="default-btn">
-                                            Отправить
-                                        </button>
-                                        <a  href="#" class="default-btn-about admin" onclick="showClose('answer{{ review.id }}'); return false;">
-                                            Скрыть
-                                        </a>      
+                            {% if review.banned == 1 %}
+                            <div class="rewiews_block">           
+                                <a id="c_1" href="#" class="page news_blog none" data-filter-tags="black">
+                                    <div class="page news_images">
+                                        <img src="{{ asset('asset/img/icone-reviews-1.png') }}" alt="">
+                                        <div class="news_date">{{ review.createdAt|date('m-d') }}</div>    
                                     </div>
+                                    <div class="news_blog-title">
+                                        {{ review.name|default('undefined') }} 
+                                    </div>
+                                    <div class="news_blog-text">
+                                        Отзыв заблокирован из-за нарушения правил пользования сайтом
+                                    </div>   
+                                </a>       
+                                <div class="img_about rewiews">
+                                        <img src="{{ asset('asset/img/icone-reviews-2.png') }}" alt="">
+                                </div>       
+                                <div class="about_item-btn">
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                        <a  href="{{ path('edit_banned_toggle', {'id': review.id}) }}" class="default-btn-about admin">
+                                            Разблокировать
+                                        </a>
+                                            {{ include('review/_delete_form.html.twig') }}
+                                        {% endif %}   
                                 </div>
-                            </form>
-                        </div>
-                        {% endif %} 
-                        {% endif %}
+                            </div>
+                            {% endif %}
                         {% endfor %}          
             </div>
             {% if is_granted('ROLE_SUPER_ADMIN') %}

@@ -40,11 +40,9 @@ class ImageController extends AbstractController
     }
     public function uploadNewFileName(SluggerInterface $slugger, $imageFile,$nameDirectiry)
     {
-        $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME); 
-        //dd($originalFilename);      
+        $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);    
         $safeFilename = $slugger->slug($originalFilename);
-        $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension(); 
-        //dd($newFilename);       
+        $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();   
         try {
             $imageFile->move(
                 $this->getParameter($nameDirectiry),
@@ -56,7 +54,7 @@ class ImageController extends AbstractController
         return $newFilename;   
     }
     public function deleteImageFile($nameObject,$getImageFile,$setImageFile,$nameDirectiry){
-        $filesystem = new Filesystem();   
+        $filesystem = new Filesystem(); 
         if($nameObject->$getImageFile() != null){
             $nameObject->$setImageFile(
              $path1 = new File($this->getParameter($nameDirectiry).'/'.$nameObject->$getImageFile())

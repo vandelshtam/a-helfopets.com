@@ -7,10 +7,13 @@ use App\Form\AchievementsType;
 use App\Entity\FastConsultation;
 use App\Form\FastConsultationType;
 use App\Controller\ImageController;
+use App\Controller\MailerController;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\AchievementsRepository;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
+use App\Controller\FastConsultationController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,7 +33,7 @@ class AchievementsController extends AbstractController
     }
 
     #[Route('/new', name: 'achievements_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager,SluggerInterface $slugger,ImageController $imageController): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,SluggerInterface $slugger,ImageController $imageController,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
         $achievement = new Achievements();
         $form = $this->createForm(AchievementsType::class, $achievement);
@@ -39,7 +42,11 @@ class AchievementsController extends AbstractController
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
-                
+        if ($fast_consultation_form->isSubmitted() && $fast_consultation_form->isValid()) {
+            $textSendMail = $mailerController->textFastConsultationMail($fast_consultation);
+            $fast_consultation_meil -> fastSendMeil($request,$mailer,$fast_consultation,$mailerController,$entityManager,$textSendMail); 
+            return $this->redirectToRoute('achievements_new', [], Response::HTTP_SEE_OTHER);
+        }        
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form->get('img')->getData();
             
@@ -71,12 +78,17 @@ class AchievementsController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'achievements_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Achievements $achievement, EntityManagerInterface $entityManager,SluggerInterface $slugger,ImageController $imageController): Response
+    public function edit(Request $request, Achievements $achievement, EntityManagerInterface $entityManager,SluggerInterface $slugger,ImageController $imageController,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
-
+        if ($fast_consultation_form->isSubmitted() && $fast_consultation_form->isValid()) {
+            $textSendMail = $mailerController->textFastConsultationMail($fast_consultation);
+            $fast_consultation_meil -> fastSendMeil($request,$mailer,$fast_consultation,$mailerController,$entityManager,$textSendMail); 
+            return $this->redirectToRoute('achievements_new', [], Response::HTTP_SEE_OTHER);
+        }
+         
         $form = $this->createForm(AchievementsType::class, $achievement);
         $form->handleRequest($request);
 

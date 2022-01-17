@@ -73,13 +73,11 @@ class ReviewController extends AbstractController
     {
         $form = $this->createForm(ReviewType::class, $review);
         $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('review_index', [], Response::HTTP_SEE_OTHER);
+         if ($form->isSubmitted() && $form->isValid()) {
+             $entityManager->flush();
+        
+            return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);
         }
-
         return $this->renderForm('review/edit.html.twig', [
             'review' => $review,
             'form' => $form,
@@ -93,7 +91,31 @@ class ReviewController extends AbstractController
             $entityManager->remove($review);
             $entityManager->flush();
         }
-
-        return $this->redirectToRoute('review_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);
+    }
+    #[Route('/{id}/bannedToggle', name: 'edit_banned_toggle', methods: ['GET', 'POST'])]
+    public function bannedToggle(Request $request, Review $review, EntityManagerInterface $entityManager,int $id,ReviewRepository $reviewRepository): Response
+    {
+        $banned = $reviewRepository->find($id)->getBanned();
+        if($banned == 1){
+            $value = 0;
+        }
+        else{
+            $value = 1;
+        }      
+        $review->setBanned($value);
+        $entityManager->persist($review);
+        $entityManager->flush();
+        if($value == 1){
+            $this->addFlash(
+                'success',
+                'Отзыв заблокирован!'); 
+        }
+        else{
+            $this->addFlash(
+                'success',
+                'Отзыв разблокирован!'); 
+        }
+        return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);
     }
 }
