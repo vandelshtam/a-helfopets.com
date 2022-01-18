@@ -37,13 +37,10 @@
 
     <a href="{{ path('our_mission_new') }}">Create new</a>
 
-    <div id="hidden-content">
-        <form action="">
-            <input type="text" placeholder="Ваше имя">
-            <input type="text" placeholder="Ваш телефон">
-            <input type="submit" value="Отправить">
-        </form>
-    </div>
+    
+{% endblock %}
+{% block footer %}
+    {{ include('footer.html.twig') }}
 {% endblock %}
 {% block javascripts %}
     {{ include('js.html.twig') }}

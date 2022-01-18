@@ -174,10 +174,16 @@ class BlogController extends AbstractController
     }
 
     #[Route('/{id}', name: 'blog_delete', methods: ['POST'])]
-    public function delete(Request $request, Blog $blog, EntityManagerInterface $entityManager,int $id, ManagerRegistry $doctrine,ImageController $imageController): Response
+    public function delete(Request $request, Blog $blog, ManagerRegistry $doctrine, EntityManagerInterface $entityManager,int $id,ImageController $imageController): Response
     {
         if ($this->isCsrfTokenValid('delete'.$blog->getId(), $request->request->get('_token'))) {
-    
+            $blog_count = $doctrine->getRepository(Blog::class)->countFindAllBlog();
+            if($blog_count <= 2){
+                $this->addFlash(
+                    'success',
+                    'Вы не можете удалить пост, должно остаться не менее 2-х постов!'); 
+                return $this->redirectToRoute('blog_show',['id' => $id], Response::HTTP_SEE_OTHER);
+            }
             $fotoblogs = $blog -> getFotoblog();
             $ratingblogs = $blog -> getRatingblog();
             $this -> deleteAllGaleryFileFotoblog($fotoblogs,$entityManager);

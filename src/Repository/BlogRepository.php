@@ -86,4 +86,17 @@ class BlogRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function countFindAllBlog()
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT COUNT (b.id)
+            FROM App\Entity\Blog b'
+        )->getSingleScalarResult();
+
+        // returns an array of Product objects
+        return $query;
+    }
 }

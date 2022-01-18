@@ -47,4 +47,17 @@ class AchievementsRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function countFindAllAchievements()
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT COUNT (a.id)
+            FROM App\Entity\Achievements a'
+        )->getSingleScalarResult();
+
+        // returns an array of Product objects
+        return $query;
+    }
 }

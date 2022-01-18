@@ -33,6 +33,8 @@
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         <span>login:{{ app.user.email }}</span>
                         <a class="header_email" href="{{ path('app_logout') }}">Выйти</a>
+                        {% else %}
+                        <a class="header_email" href="{{ path('login') }}">Войти</a>
                         {% endif %}
                         <a data-fancybox data-src="#hidden-content" href="javascript:;" class="header_btn">Бесплатная консультация</a>    
                     </div>
@@ -66,16 +68,19 @@
         {% block body %}
         
         {% endblock %}
+        {% block footer %}
         
-        {# <div id="hidden-content">
-            {{ form_start(fast_consultation_form) }}
-                {{ form_widget(fast_consultation_form) }}
-                <input type="submit" value="Отправить">
-            {{ form_end(fast_consultation_form) }}
-        </div> #}
-
+        {% endblock %}
+        {% block fast_consultation %}
+            {% if form_errors(fast_consultation_form) %}
+                <div class="my-custom-class-for-errors">
+                    {{ form_errors(fast_consultation_form) }}
+                </div>
+            {% endif %}
+            {{ include('fast_consultation.html.twig') }}
+        {% endblock %}
         {% block javascripts %}
-            
+            {{ include('js.html.twig') }}
         {% endblock %}
     </body>
 </html>

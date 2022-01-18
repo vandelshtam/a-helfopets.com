@@ -32,7 +32,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class ServiceController extends AbstractController
 {
     #[Route('/', name: 'service_index', methods: ['GET'])]
-    public function index(ServiceRepository $serviceRepository,Request $request,ImageController $imageController, MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
+    public function index(ServiceRepository $serviceRepository,Request $request, EntityManagerInterface $entityManager,ImageController $imageController, MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
 
         $fast_consultation = new FastConsultation();
@@ -44,7 +44,7 @@ class ServiceController extends AbstractController
             return $this->redirectToRoute('service_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('service/index.html.twig', [
+        return $this->renderForm('service/index.html.twig', [
             'services' => $serviceRepository->findAll(),
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
@@ -213,6 +213,13 @@ class ServiceController extends AbstractController
     public function delete(Request $request, Service $service,  EntityManagerInterface $entityManager, int $id, ManagerRegistry $doctrine,ImageController $imageController): Response
     {
         if ($this->isCsrfTokenValid('delete'.$service->getId(), $request->request->get('_token'))) {
+            $service_count = $doctrine->getRepository(Service::class)->countFindAllService();
+            if($service_count <= 3){
+                $this->addFlash(
+                    'success',
+                    'Вы не можете удалить услугу, должно остаться не менее 3-х видов услуг!'); 
+                return $this->redirectToRoute('service_show',['id' => $id], Response::HTTP_SEE_OTHER);
+            }
             $getImageFile = 'getAvatar';
             $setImageFile = 'setAvatar';
             $nameDirectiry = 'avatar_directory';

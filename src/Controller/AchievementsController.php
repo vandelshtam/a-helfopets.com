@@ -9,6 +9,7 @@ use App\Form\FastConsultationType;
 use App\Controller\ImageController;
 use App\Controller\MailerController;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\AchievementsRepository;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -116,9 +117,16 @@ class AchievementsController extends AbstractController
     }
 
     #[Route('/{id}', name: 'achievements_delete', methods: ['POST'])]
-    public function delete(Request $request, Achievements $achievement, EntityManagerInterface $entityManager,ImageController $imageController): Response
+    public function delete(Request $request, Achievements $achievement,ManagerRegistry $doctrine, EntityManagerInterface $entityManager,ImageController $imageController): Response
     {
         if ($this->isCsrfTokenValid('delete'.$achievement->getId(), $request->request->get('_token'))) {
+            $achievements_count = $doctrine->getRepository(Achievements::class)->countFindAllAchievements();
+            if($achievements_count <= 1){
+                $this->addFlash(
+                    'success',
+                    'Вы не можете удалить карточку, должно остаться не менее одной карточки в разделе!'); 
+                return $this->redirectToRoute('about_comtroller',[], Response::HTTP_SEE_OTHER);
+            }
             $getImageFile = 'getImg';
             $setImageFile = 'setImg';
             $nameDirectiry = 'img_directory';

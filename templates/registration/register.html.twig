@@ -19,7 +19,9 @@
         <button type="submit" class="btn">Register</button>
     {{ form_end(registrationForm) }}
 {% endblock %}
-
+{% block footer %}
+    {{ include('footer.html.twig') }}
+{% endblock %}
 {% block javascripts %}
     {{ include('js.html.twig') }}
 {% endblock %}

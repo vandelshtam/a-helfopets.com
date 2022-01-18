@@ -13,6 +13,7 @@ use App\Repository\SliderRepository;
 use App\Repository\ArticleRepository;
 use Symfony\Component\Filesystem\Path;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
@@ -103,7 +104,7 @@ class ArticleController extends AbstractController
 
 
     #[Route('/{id}', name: 'article_show', methods: ['GET'])]
-    public function show(Article $article,Request $request,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer, int $id): Response
+    public function show(Article $article,Request $request,ManagerRegistry $doctrine,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer, int $id): Response
     {   
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
@@ -175,9 +176,18 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/{id}', name: 'article_delete', methods: ['POST'])]
-    public function delete(Request $request, Article $article, EntityManagerInterface $entityManager,ImageController $imageController): Response
+    public function delete(Request $request, Article $article,ManagerRegistry $doctrine, EntityManagerInterface $entityManager,ImageController $imageController, int $id): Response
     {
         if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
+
+            $sarticle_count = $doctrine->getRepository(Article::class)->countFindAllArticle();
+            if($sarticle_count <= 2){
+                $this->addFlash(
+                    'success',
+                    'Вы не можете удалить статью, должно остаться не менее 2-х видов новостных статей!'); 
+                return $this->redirectToRoute('article_show',['id' => $id], Response::HTTP_SEE_OTHER);
+            }
+
             $getImageFile = 'getAvatarArticle';
             $setImageFile = 'setAvatarArticle';
             $nameDirectiry = 'avatar_directory';

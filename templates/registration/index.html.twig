@@ -18,7 +18,9 @@
     </ul>
 </div>
 {% endblock %}
-
+{% block footer %}
+    {{ include('footer.html.twig') }}
+{% endblock %}
 {% block javascripts %}
     {{ include('js.html.twig') }}
 {% endblock %}

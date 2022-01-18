@@ -99,17 +99,6 @@
             </div>
         </div>
     </footer>
-{% if form_errors(fast_consultation_form) %}
-    <div class="my-custom-class-for-errors">
-        {{ form_errors(fast_consultation_form) }}
-    </div>
-{% endif %}
-<div id="hidden-content">
-    {{ form_start(fast_consultation_form) }}
-        {{ form_widget(fast_consultation_form) }}
-        <input type="submit" value="Отправить">
-    {{ form_end(fast_consultation_form) }}
-</div>
 {% endblock %}
 {% block javascripts %}
     {{ include('js.html.twig') }}

@@ -61,4 +61,17 @@ class ServiceRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function countFindAllService()
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT COUNT (s.id)
+            FROM App\Entity\Service s'
+        )->getSingleScalarResult();
+
+        // returns an array of Product objects
+        return $query;
+    }
 }

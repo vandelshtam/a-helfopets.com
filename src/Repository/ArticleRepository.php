@@ -47,4 +47,17 @@ class ArticleRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function countFindAllArticle()
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT COUNT (a.id)
+            FROM App\Entity\Article a'
+        )->getSingleScalarResult();
+
+        // returns an array of Product objects
+        return $query;
+    }
 }
