@@ -152,7 +152,13 @@ header{
     border-right-width: 20px;
     position: relative;
     outline: none;
+    margin-top: 5px;
 }
+/*=======*/
+/* .default-btn:hover{
+    border: 1px solid#ad800d;
+    border-right-width: 20px;
+} */
 .default-btn::after{
     content: "\f105";
     font-family: 'icomoon';
@@ -305,7 +311,7 @@ header{
     margin-right: 60px;
 }
 .about{
-    background-image: url(../img/about-fon-1.jpg);
+    background-image: url(../img/about-fon-4.jpeg);
     background-color: #000;
     background-size: cover;
     background-position: center;
@@ -329,17 +335,152 @@ header{
     margin-bottom: 30px;
     letter-spacing: 0.1px;
     line-height: 24px;
-    color: #d3d2d2;
+    /* color: #d3d2d2; */
+    color:white;
 }
 .about_btn.default-btn::after{
-    color: #000;
+    color:white;
 }
-.about_btn:hover{
-    color: rgb(156, 36, 6);
-    background-color: #ffc222;
-    opacity: 75%;
-}
+/* .about_btn:hover{
+    border: 1px solid#ad800d;
+    border-right-width: 20px;  
+} */
 .form{
+    padding: 30px;
+}
+.form_inner{
+    padding-bottom: 40px;
+    background-image: url(../img/form_fon_1.jpeg);
+    min-height: 610px;
+    background-repeat: no-repeat;
+    background-position: bottom right;
+}
+.form_box{
+    max-width: 700px;
+    padding-top: 45px;
+}
+.form_box-inner{
+    flex-direction: row;
+    display: flex;
+    justify-content: space-between;
+}
+.form_box-left{
+    max-width: 250px;
+    width: 100%;
+}
+.form_box-right{
+    max-width: 400px;
+    width: 100%;
+}
+.form_box-inner label,
+.form_box-inner input,
+.form_box-inner textarea{
+    display: block;
+    width: 100%;
+}
+.form_box-inner label{
+    line-height: 36px;
+    color: #282828;
+    font-family: 'Roboto', sans-serif;
+}
+.form_box-inner input{
+    margin-bottom: 8px;
+    outline: none;
+    height: 40px;
+    border: 1px solid#e6e6e6;
+    padding: 0px 10px;
+}
+.form_box-inner select{
+    outline: none;
+    height: 40px;
+    border: 1px solid#e6e6e6;
+    padding-left: 17px;
+}
+.form_box-inner .jq-selectbox.jqselect{
+    display: block;
+    width: 100%;
+}
+.form_box-inner .jq-selectbox__select{
+    height: 40px;
+    border: 1px solid#e6e6e6;
+    background-color: transparent;
+    border-radius: 0;
+    padding-left: 17px;    
+}
+.form_box-inner .jq-selectbox__trigger-arrow::before{
+    content: "\f105";
+    font-family: 'icomoon';
+    position: absolute;
+    top:0;
+    right: 17px;
+    transform: rotate(90deg);
+}
+.form_box-inner .jq-selectbox__dropdown {
+	width: 100%;
+	margin: 2px 0 0;
+	padding: 0;
+	border: 1px solid #e6e6e6;
+	background: #FFF;
+	box-shadow: 0 2px 10px rgba(0,0,0,.2);
+}
+.form_box-inner .jq-selectbox li {
+	min-height: 18px;
+	padding: 5px 17px 6px;
+	color: #231F20;
+}
+.form_box-inner .jq-selectbox li.selected {
+	background-color: #A3ABB1;
+	color: #FFF;
+}
+.form_box-inner .jq-selectbox li:hover {
+	background-color: #08C;
+	color: #FFF;
+}
+.form_box-inner .jq-selectbox li.disabled {
+	color: #AAA;
+}
+.form_box-inner .jq-selectbox li.disabled:hover {
+	background: none;
+}
+.form_box-inner .jq-selectbox li.optgroup {
+	font-weight: bold;
+}
+.form_box-inner .jq-selectbox li.optgroup:hover {
+	background: none;
+	color: #231F20;
+	cursor: default;
+}
+.form_box-inner .jq-selectbox li.option {
+	padding-left: 25px;
+}
+.form_box-inner textarea{
+    outline: none;
+    height: 208px;
+    border: 1px solid#e6e6e6;
+    padding: 10px;
+    resize: none;
+    margin-bottom: 40px;
+}
+.form_box-inner button{
+    background-color: transparent;
+    color:#282828;
+    float: right;
+}
+.form_box-inner button:hover{
+    display: inline-block;
+    font-size: 14px;
+    line-height: 24px;
+    color:#282828;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+    padding: 8px 30px 8px 24px;
+    border: 1px solid#ad800d;
+    border-right-width: 20px;
+    position: relative;
+    outline: none;
+}
+/*==============================*/
+/* .form{
     padding: 30px;
     margin-bottom: 60px;
 }
@@ -486,10 +627,10 @@ div#consultation{
     border-right-width: 20px;
     position: relative;
     outline: none;
-}
+} */
 .advantages{
     padding: 55px 0px 40px;
-    background-image: url(../img/advantages_fon_2.jpg);
+    background-image: url(../img/anymals-fon-10.jpeg);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -517,7 +658,8 @@ div#consultation{
 .advantages__text{
     line-height: 24px;
     letter-spacing: 0.1px;
-    color: #d3d2d2;
+    /*color: #d3d2d2;*/
+    color: white;
 }
 .advantages__title::before{
     content: "";
@@ -881,7 +1023,7 @@ form .default-btn:hover{
     position: relative;
     outline: none;
 }
-.page_news a.default-btn:hover{
+/* .page_news a.default-btn:hover{
     display: inline-block;
     font-size: 14px;
     line-height: 24px;
@@ -892,7 +1034,7 @@ form .default-btn:hover{
     border-right-width: 20px;
     position: relative;
     outline: none;
-}
+} */
 /* ======= page_new ========== */
 .page_new .news_inner{
     display: block;
@@ -986,7 +1128,7 @@ img.page_new_foto{
     color: #373636;
     margin: 5px;
 }
-.page_new a.default-btn:hover{
+/* .page_new a.default-btn:hover{
     display: inline-block;
     font-size: 14px;
     line-height: 24px;
@@ -998,12 +1140,11 @@ img.page_new_foto{
     border-right-width: 20px;
     position: relative;
     outline: none;
-}
-form button.default-btn{
-    color: #ce0700;
+} */
+/* form button.default-btn{
     background-color:#fff;
     margin: 5px;
-}
+} */
 /*  ========= add.new ========== */
 .add_new-form{
     padding: 30px;
@@ -1142,12 +1283,8 @@ form button.default-btn{
 .page_servises .servises_item-btn{ 
     position: relative;
     margin-top: 30px;
-    /*
-    max-width: 1140px;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center; */
+    display: inline-block;
+    justify-content: flex-start;
 }
 .page_servises .img_servises-1{
     width: 10%;
@@ -1181,9 +1318,11 @@ form button.default-btn{
     border: 1px solid#ad800d;
     border-right-width: 20px;
 }
-.page_servises .default-btn:hover{
+/*===============*/
+.page_servises .default-btn.service:hover{
     border: 1px solid#ad800d;
     border-right-width: 20px;
+    background-color: red;
 }
 /*===========page service =============*/
 .page_servise .servises_item{
@@ -1216,6 +1355,7 @@ form button.default-btn{
 .page_servise .slider_text{
     color: rgb(141, 141, 141);
     margin-top: 0px;
+    overflow-wrap: break-word
 } 
 .page_servise .default-btn-galery_service{
     color:#282828;
@@ -1251,9 +1391,10 @@ form button.default-btn{
     transform: translateY(-50%);
     right: -12px;
 }
-.page_servise .default-btn:hover{
+.default-btn:hover{
     border: 1px solid#be960f;
     border-right-width: 20px;
+    background-color: none;
 }
 .page_servise .default-btn{
     margin: 5px;
@@ -1273,6 +1414,7 @@ form button.default-btn{
     max-width: 1100px;
     margin: 5px;
     text-indent: 30px;
+    overflow-wrap: break-word;
 }
 .page_servise .form_box-inner{
     margin-bottom: 20px;
@@ -1297,8 +1439,8 @@ form button.default-btn{
     width:100%;
     height: 500px;   
 }
-#telegram{
-    background-image: url(../img/telegram.jpeg);
+/* #telegram{
+    background-image: url(../img/telegramm-grey-cube-2.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -1307,8 +1449,8 @@ form button.default-btn{
     border-radius: 100%;     
 }
 #telegram:hover{
-    background-image: url(../img/telegramcolor.jpeg);   
-}
+    background-image: url(../img/telegramm-color-cube-2.png);   
+} */
 /* ==========   page_blogs ============== */
 .page_blogs{
     padding: 50px 0px 30px;
@@ -1428,10 +1570,10 @@ form button.default-btn{
     background-color: #ff5622;
     color: white;
 }
-.servises_item-btn .default-btn:hover,
+/* .servises_item-btn .default-btn:hover,
 .form.add_blog .servises_item-btn .default-btn:hover{
     background-color: #ffc222;
-}
+} */
 /*   ============   page_blog ============== */
 .page_blog{
     padding: 50px 0px 30px;
@@ -2030,16 +2172,16 @@ button.default-btn.blog{
     background-image: url(../img/scool-color-1.png);
 } 
 #telegram{
-    background-image: url(../img/telegram-logo.png);
+    background-image: url(../img/telegramm-grey-cube-1.webp);
 }
 #telegram:hover{
-    background-image: url(../img/telega-color-2.jpeg);     
+    background-image: url(../img/telegramm-color-cube-2.png);     
 }
 #whatts{
-    background-image: url(../img/whatts-grey-1.png);
+    background-image: url(../img/whatts-app-grey-cube-1.jpeg);
 }
 #whatts:hover{
-    background-image: url(../img/whatts-color-1.png);    
+    background-image: url(../img/whatts-app-color-cube-1.jpeg);    
 }
 /* ========= page about ================ */
 .about_slider-inner .default-btn.admin{
@@ -2149,7 +2291,7 @@ button.default-btn.blog{
     margin-bottom: 20px;
 }
 .about_item-btn{
-    display: inline-block;
+    display: inline-flex;
     position: relative;
     padding: 5px;
 }
@@ -2180,6 +2322,7 @@ button.default-btn.blog{
     border-right-width: 20px;
     position: relative;
     outline: none;
+    margin: 2px;
 }
 .default-btn-about::after,
 .default-btn-about.admin::after{
@@ -2223,7 +2366,7 @@ button.default-btn.blog{
     left: 0;
     top:11px;
 }
-.about_title{
+.about_title.page{
     font-size: 24px;
     line-height: 24px;
     font-weight: 500;
@@ -2300,7 +2443,7 @@ button.default-btn.blog{
 .about_item.reviews .img_about img{
     max-width: 100px;
 }
-.about_text{   
+.about_text.page{   
     color:#212020;   
 }
 .about_slider_press.page.news_images{
@@ -2396,8 +2539,7 @@ button.default-btn.blog{
     flex-direction: column;
     align-items: center;
     margin-top: 30px;
-    height: 350px;
-    margin-bottom: 190px;
+    margin-bottom: 5px;
 }
 .about_item.reviews .form_box-left{
     max-width: 500px;
@@ -2417,8 +2559,11 @@ button.default-btn.blog{
     display: block;
     background-color: #f7e2ae;
     margin:5px;
-    max-width: 98%;
+    /* max-width: 98%; */
     box-shadow: 0 2px 10px rgba(0,0,0,.2);
+}
+.rewiews_block .page.news_blog.none{   
+    max-width: 98%;
 }
 .rewiews_user .page.news_blog.none{
     background-color: #f0f7ae;    
@@ -2447,8 +2592,9 @@ button.default-btn.blog{
     justify-content: flex-start;
     background-color: #ebe8e3;
     padding: 30px;
-    max-height: 650px;
+    max-height: 1650px;
     overflow: auto;
+    margin-top: 70px;
 }
 .page_about .news_date{
     width: 55px;

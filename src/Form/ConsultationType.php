@@ -21,9 +21,18 @@ class ConsultationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email',TextType::class)
-            ->add('phone',TextType::class)
-            ->add('name',TextType::class)
+            ->add('email',TextType::class, [
+                'label' => 'Ваш email',
+                'required' => true,  
+            ])
+            ->add('phone',TextType::class, [
+                'label' => 'Ваш номер телефона',
+                'required' => true,  
+            ])
+            ->add('name',TextType::class, [
+                'label' => 'Ваше имя',
+                'required' => true,  
+            ])
             ->add('category', ChoiceType::class, [
                 'choices'  => [
                     'Кошки' => 1,
@@ -32,7 +41,10 @@ class ConsultationType extends AbstractType
                     'Другие животные' => 4,
                 ]
             ])
-            ->add('message',TextareaType::class)
+            ->add('message',TextareaType::class, [
+                'label' => 'Ваше сообщение',
+                'required' => true,  
+            ])
             ;
         
     }

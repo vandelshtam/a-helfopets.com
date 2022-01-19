@@ -30,7 +30,7 @@ class PressController extends AbstractController
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
 
-        return $this->render('press/index.html.twig', [
+        return $this->renderForm('press/index.html.twig', [
             'presses' => $pressRepository->findAll(),
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
@@ -114,7 +114,7 @@ class PressController extends AbstractController
             $this->addFlash(
                 'success',
                 'Вы успешно отредактировали слайдер в  блоке "пресса о нас" на странице "О нас"'); 
-            return $this->redirectToRoute('press_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('press/edit.html.twig', [
@@ -138,6 +138,7 @@ class PressController extends AbstractController
             $this->addFlash(
                 'success',
                 'Вы успешно удалили информацию из  блока "пресса о нас" на странице "О нас"'); 
+            return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);    
         }
 
         return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);

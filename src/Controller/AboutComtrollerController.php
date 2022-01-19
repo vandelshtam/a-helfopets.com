@@ -57,6 +57,7 @@ class AboutComtrollerController extends AbstractController
         $fotoreview2 = new Fotoreview;
         $fotoreview3 = new Fotoreview;
         if ($form->isSubmitted() && $form->isValid()) {
+            //dd('проверка');
             $imageFile = $form->get('foto')->getData();
             $imageFile2 = $form->get('foto2')->getData();
             $imageFile3 = $form->get('foto3')->getData();
@@ -65,10 +66,10 @@ class AboutComtrollerController extends AbstractController
             $this->uploadsImageFile($slugger,$imageFile,$nameDirectiry,$imageController,$fotoreview);
             
             $nameDirectiry = 'img_directory';
-            $this->uploadsImageFile($slugger,$imageFile2,$nameDirectiry,$imageController,$fotoreview);
+            $this->uploadsImageFile($slugger,$imageFile2,$nameDirectiry,$imageController,$fotoreview2);
                 
             $nameDirectiry = 'img_directory';
-            $this->uploadsImageFile($slugger,$imageFile3,$nameDirectiry,$imageController,$fotoreview);
+            $this->uploadsImageFile($slugger,$imageFile3,$nameDirectiry,$imageController,$fotoreview3);
                 
             $review->setIp($localIP);
             

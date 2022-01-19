@@ -90,6 +90,9 @@ class ReviewController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$review->getId(), $request->request->get('_token'))) {
             $entityManager->remove($review);
             $entityManager->flush();
+            $this->addFlash(
+                'success',
+                'Отзыв удален'); 
         }
         return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);
     }

@@ -97,14 +97,14 @@
                     </div>
                     </div>
                     <div class="servises_item-btn">
-                        <a href="{{ path('service_index') }}" class="default-btn">
+                        <a href="{{ path('service_index') }}" class="default-btn service">
                             Назад
                         </a>
-                        <a data-fancybox data-src="#hidden-content" href="javascript:;" class="default-btn">
+                        <a data-fancybox data-src="#hidden-content" href="javascript:;" class="default-btn service">
                             Заказать услугу
                         </a>
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
-                        <a href="{{ path('service_edit', {'id': service.id}) }}" class="default-btn">
+                        <a href="{{ path('service_edit', {'id': service.id}) }}" class="default-btn service">
                             Редактировать
                         </a>
                         {{ include('service/_delete_form.html.twig') }}

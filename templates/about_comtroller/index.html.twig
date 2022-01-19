@@ -27,7 +27,7 @@
             <div class="about_items">
                 {% for our_mission in our_missions %}
                     <div class="about_item">                
-                        <div class="about_title">
+                        <div class="about_title page">
                             {{ our_mission.name }}
                         </div>
                         <div class="about_top">
@@ -66,7 +66,7 @@
             </div>
             <div class="about_items">
                 <div class="about_item">
-                    <div class="about_title">
+                    <div class="about_title page">
                         Наша работа, награды, достижения
                         {% if is_granted('ROLE_ADMIN') %}
                         <a  href="{{ path('achievements_new') }}" class="default-btn-about admin">
@@ -112,7 +112,7 @@
             </div>
             <div class="about_items">
                 <div class="about_item press">
-                    <div class="about_title">
+                    <div class="about_title page">
                         Пресса о нас
                     </div>
                     <div class="about_top">
@@ -145,6 +145,9 @@
                                     {{ press.text }}
                                 </div> 
                                 <div class="about_slider-title">
+                                    Источник: {{ press.created_at|date('d-m-Y') }}
+                                </div>
+                                <div class="about_slider-title">
                                     Дата: {{ press.created_at|date('d-m-Y') }}
                                 </div>
                                 {% if is_granted('ROLE_ADMIN') %}
@@ -159,27 +162,6 @@
                                 {% endif %}     
                             </div>
                             {% endfor %} 
-                            <div class="about_slider-item">    
-                                <a href="#" class="about_img"><img src="{{ asset('asset/img/fon-foto-default-2.jpeg') }}"></a>         
-                                <div class="about_slider-title">
-                                    Раненого лосенка нашли во дворе сельской школы под Хабаровском  4
-                                </div>
-                                <div class="about_slider-text">
-                                    Во дворе сельской школы в районе Полины Осипенко Хабаровского края нашли раненого лосенка, который прятался от сторожевых собак. Он бегал под окнами образовательного учреждения, привлекая внимание людей. Поняв, что собаки ушли, лосенок скрылся в направлении леса.
-                                    По словам местных жителей, которые приводит ИА AmurMedia, животное было ранено в области шеи. Они не исключили, что лосенок забрел на сельскую базу, где его покусали собаки.
-                                    Об инциденте руководство школы рассказало главе местной администрации и участковому уполномоченному полиции. Дальнейшая судьба животного неизвестна.
-                                </div>
-                                    {% if is_granted('ROLE_ADMIN') %}
-                                    <div class="about_slider_btn">Управлять слайдером
-                                        <a  data-fancybox data-src="#hidden-content-slider-edit" href="javascript:;" class="default-btn-about">
-                                            Редактировать
-                                        </a>
-                                        <a  href="#" class="default-btn-about">
-                                            Удалить
-                                        </a>
-                                    </div> 
-                                    {% endif %}        
-                            </div>   
                             <div class="about_slider-item add">
                                 {% if is_granted('ROLE_ADMIN') %}
                                 <div class="about_slider-title add">
@@ -208,7 +190,7 @@
             <!--  блок отзывы -->
             <div class="about_items">
                 <div class="about_item reviews">
-                    <div class="about_title">
+                    <div class="about_title page">
                         Отзывы о нас и оценки
                     </div>
                     <div class="about_top">
@@ -224,7 +206,7 @@
                             </div>
                         </div>
                     </div>
-                    <div>
+                    {# <div>
                         <div class="about_item-text">
                             Наша оценка
                         </div>
@@ -250,7 +232,7 @@
                                 <label for="star-1" title="Оценка «1»"></label>
                             </div> 
                         </form>  
-                    </div>
+                    </div> #}
                     <!-- оставить отзыв-->
                     <div id="">
                     <h2>Написать отзыв </h2>
