@@ -7,10 +7,10 @@
         <div class="container">
             <div class="about_top">
                 <div class="about_title-box">
-                    <div class="about_title">
+                    <div class="about_title page">
                         О нас
                     </div>
-                    <div class="about_text">
+                    <div class="about_text page">
                         Мы не коммерческое партнерство, которое занимается организацией и проведением помощи животным
                     </div>
                 </div>
@@ -99,6 +99,37 @@
                         <div class="about_item-text">
                             {{ achievement.link }}
                         </div>
+                        <div class="about_item_document">
+                            {% for document in achievement.document %}
+                                {% if document.Document1 %}
+                                    <div class="about-document"> 
+                                        ссылка на документ:
+                                        <a href="{{ asset('uploads/files/' ~ document.Document1) }}">(PDF) {{ document.document1 }}</a>
+                                        <div class="achievement_about_embed">
+                                            <embed src="{{ asset('uploads/files/' ~ document.Document1) }}">
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if document.Document2 %}
+                                    <div class="about-document"> 
+                                        ссылка на документ: 
+                                        <a href="{{ asset('uploads/files/' ~ document.Document2) }}">(PDF) {{ document.Document2 }}</a>
+                                        <div class="achievement_about_embed">
+                                            <embed src="{{ asset('uploads/files/' ~ document.Document2) }}">
+                                        </div>
+                                    </div>
+                                {% endif %}    
+                                {% if document.Document3 %}
+                                    <div class="about-document"> 
+                                        ссылка на документ: 
+                                        <a href="{{ asset('uploads/files/' ~ document.Document3) }}">(PDF) {{ document.document3 }}</a>
+                                        <div class="achievement_about_embed">
+                                            <embed src="{{ asset('uploads/files/' ~ document.Document3) }}">
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                         {% if is_granted('ROLE_ADMIN') %}
                             <div class="about_item-btn">
                                 <a  href="{{ path('achievements_edit', {'id': achievement.id}) }}" class="default-btn-about admin">
@@ -145,7 +176,7 @@
                                     {{ press.text }}
                                 </div> 
                                 <div class="about_slider-title">
-                                    Источник: {{ press.created_at|date('d-m-Y') }}
+                                    Источник: {{ press.sources }}
                                 </div>
                                 <div class="about_slider-title">
                                     Дата: {{ press.created_at|date('d-m-Y') }}
@@ -172,6 +203,9 @@
                                 {% endif %}      
                             </div>
                         </div>
+                    </div>
+                    <div class="about_slider-title scroll">
+                        Прокрутите слайдер
                     </div>
                     <div class="about_item-btn">
                             {% if is_granted('ROLE_ADMIN') %} 
@@ -206,7 +240,7 @@
                             </div>
                         </div>
                     </div>
-                    {# <div>
+                    <div>
                         <div class="about_item-text">
                             Наша оценка
                         </div>
@@ -214,6 +248,8 @@
                         {% for i in range(1, rating_value-0) %}
                             <span class="active"><span class="active_value">{{ i }}</span></span>
                         {% endfor %}
+                        Общая оценка: 
+                            <span class=""><span class="active_value"></span>{{ rating_value }}</span>   
                         </div> 
                         <div class="about_item-text">
                             Оцените нашу деятельность 
@@ -232,7 +268,7 @@
                                 <label for="star-1" title="Оценка «1»"></label>
                             </div> 
                         </form>  
-                    </div> #}
+                    </div>
                     <!-- оставить отзыв-->
                     <div id="">
                     <h2>Написать отзыв </h2>

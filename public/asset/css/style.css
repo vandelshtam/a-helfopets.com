@@ -1659,7 +1659,7 @@ img.page_new_foto{
 .page_blog .servises_item-text{
     letter-spacing: 0.1px;
     padding: 0px 30px 30px;
-    margin-top: 70px;
+    margin-top: 0px;
 }
 .page_blog .servises_item-btn{
     position: relative;
@@ -1768,7 +1768,11 @@ img.page_new_foto{
 }
 .blog_slider-inner .slick-btn{
     top: auto;
-    bottom: -50px;
+    bottom: -70px;
+}
+.blog_item-text{
+    display: block;
+    margin-top: 100px;
 }
 .blog_slider-inner .slick-next{
     right: 0px;
@@ -1804,7 +1808,8 @@ img.page_new_foto{
 }
 .rating-area.blog {
 	overflow: hidden;
-	width: 465px;
+	max-width: 465px;
+    width: 100%;
 	margin: 0px 0px 70px -20px;
 }
 blog_show-rating.blog{
@@ -2290,6 +2295,10 @@ button.default-btn.blog{
     font-weight: bold;
     margin-bottom: 20px;
 }
+.about_slider-title.scroll{
+    opacity: 50%;
+    color:#A3ABB1;
+}
 .about_item-btn{
     display: inline-flex;
     position: relative;
@@ -2304,6 +2313,21 @@ button.default-btn.blog{
     background-color: #f9f9f9;
     box-shadow: 0px 7px 24.3px 2.7px rgba(91, 89, 89, 0.14);
     margin-bottom: 30px;
+}
+.about_item_document{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.about_item_document .achievement_about_embed{
+    max-width: 395px;
+    width: 100%;
+}
+.about-document{
+    display: block;
+    max-width: 395px;
+    width: 100%;
+    margin-right: 5px;
 }
 .about_item-string{
     margin-top: 40px;
@@ -2475,7 +2499,8 @@ button.default-btn.blog{
     margin: 0px 0px 30px 30px;
 }
 .rating-result {
-	width: 865px;
+	max-width: 865px;
+    width: 100%;
     margin: 0px 0px 30px 30px;
 }
 .rating-result span {
@@ -2492,6 +2517,10 @@ button.default-btn.blog{
 .rating-result > span.active {
 	color: gold;
 	text-shadow: 1px 1px #c60;
+}
+.add_new.custom-file-upload img{
+    max-width: 290px;
+    width: 100%;
 }
 /* ===== rating form ====== */
 .rating-area {

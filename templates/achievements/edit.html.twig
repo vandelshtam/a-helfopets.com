@@ -5,10 +5,20 @@
 {% block body %}
 <section class="add_new-form">
         <div class="container">
+            {% for label, messages in app.flashes(['success', 'notice']) %}
+                {% for message in messages %}
+                    {% if message %}
+                        <div class="flash-{{ label }} notice_message">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+{{ form_start(form) }}
                 <div class="form_content">
                     <div class="form_title-box">
                         <div class="form_title">
-                            Страница добавления карточки на странице Онас в блоке "Достижения, награды, деятельность"
+                            Страница редактирования карточки на странице Онас в блоке "Достижения, награды, деятельность"
                         </div>
                         <div class="form_text">
                             При заполнении формы,пожалуйста следуйте правилам публикации статей на сайте и подсказкам системы.

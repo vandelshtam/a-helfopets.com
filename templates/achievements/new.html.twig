@@ -5,6 +5,16 @@
 {% block body %}
 <section class="add_new-form">
         <div class="container">
+            {% for label, messages in app.flashes(['success', 'notice']) %}
+                {% for message in messages %}
+                    {% if message %}
+                        <div class="flash-{{ label }} notice_message">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+{{ form_start(form) }}
                 <div class="form_content">
                     <div class="form_title-box">
                         <div class="form_title">

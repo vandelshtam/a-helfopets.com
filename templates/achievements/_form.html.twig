@@ -3,7 +3,6 @@
         {{ form_errors(form) }}
     </div>
 {% endif %}
-{{ form_start(form) }}
     <div class="add_new-form form_box-inner">
         <div class="add_new-form form_box-left">
             <label for="">
@@ -13,9 +12,9 @@
                 текущая картинка 
                 {% if achievement.Img != null %}
                     <img src="{{ asset('uploads/img/' ~ achievement.Img) }}" alt="">
-                    {% else %}
+                {% else %}
                     <img src="{{ asset('asset/img/fon-foto-default-3.jpeg') }}" alt="">
-                    {% endif %}
+                {% endif %}
                 {{ form_row(form.img) }}
             </label>
             <label for="">
@@ -28,6 +27,33 @@
         <div class="add_new-form form_box-right">
             <label for="">
                  {{ form_row(form.text) }}
+            </label>
+            <label for="file-upload" class="add_new custom-file-upload">
+                текущая картинка 
+                {# {% if achievement.Img != null %} #}
+                    {# <img src="{{ asset('uploads/img/' ~ achievement.Img) }}" alt=""> #}
+                {# {% else %} #}
+                    <img src="{{ asset('asset/img/fon-foto-default-3.jpeg') }}" alt="">
+                {# {% endif %} #}
+                {{ form_row(form.document1) }}
+            </label>
+            <label for="file-upload" class="add_new custom-file-upload">
+                текущая картинка 
+                {# {% if achievement.Img != null %} #}
+                    {# <img src="{{ asset('uploads/img/' ~ achievement.Img) }}" alt=""> #}
+                {# {% else %} #}
+                    <img src="{{ asset('asset/img/fon-foto-default-3.jpeg') }}" alt="">
+                {# {% endif %} #}
+                {{ form_row(form.document2) }}
+            </label>
+            <label for="file-upload" class="add_new custom-file-upload">
+                текущая картинка 
+                {# {% if achievement.document.Document3 != null %} #}
+                    <img src="{{ asset('uploads/files/' ~ achievement.Img) }}" alt="">
+                {# {% else %} #}
+                    {# <img src="{{ asset('asset/img/fon-foto-default-3.jpeg') }}" alt=""> #}
+                {# {% endif %} #}
+                {{ form_row(form.document3) }}
             </label>
             <a href="{{ path('about_comtroller') }}" class="default-btn">Назад</a>
             {% if is_granted('ROLE_ADMIN') %}

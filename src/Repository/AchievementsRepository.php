@@ -60,4 +60,19 @@ class AchievementsRepository extends ServiceEntityRepository
         // returns an array of Product objects
         return $query;
     }
+
+    public function findOneByIdJoinedToDocument(int $achievementId): ?Achievements
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT a, c
+            FROM App\Entity\Achievements a
+            INNER JOIN a.document c
+            WHERE a.id = :id'
+        )->setParameter('id', $achievementId);
+
+        return $query->getOneOrNullResult();
+    }
+
 }

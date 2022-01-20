@@ -25,22 +25,22 @@ class Blog
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=755, nullable=true)
      */
     private $preview;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=755)
      */
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=2755,nullable=true)
      */
     private $text;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=2755, nullable=true)
      */
     private $text2;
 
@@ -65,27 +65,27 @@ class Blog
     private $fotoblog;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=755, nullable=true)
      */
     private $linltitle;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=755, nullable=true)
      */
     private $link;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=755, nullable=true)
      */
     private $titleslider;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=755, nullable=true)
      */
     private $descriptionslider;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=755, nullable=true)
      */
     private $linkslider;
 

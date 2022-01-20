@@ -22,7 +22,7 @@ class FotoblogType extends AbstractType
         ->add('foto', FileType::class, [
             'label' => 'Главная фотография поста. Пожалуйста выберите файл с расширением сооответствующим изображению (jpg, jpeg, webp  и т п) Поле обязательное для заполнения',
             'mapped' => false,
-            'required' => true,
+            'required' => false,
             'constraints' => [
                 new Image([
                     'maxSize' => '200000k',

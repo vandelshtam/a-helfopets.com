@@ -42,6 +42,11 @@ class Press
      */
     private $updated_at;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $sources;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +108,18 @@ class Press
     public function setUpdatedAt(?\DateTimeImmutable $updated_at): self
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getSources(): ?string
+    {
+        return $this->sources;
+    }
+
+    public function setSources(?string $sources): self
+    {
+        $this->sources = $sources;
 
         return $this;
     }

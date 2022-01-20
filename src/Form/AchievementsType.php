@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Achievements;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -44,6 +45,51 @@ class AchievementsType extends AbstractType
             ->add('text', TextareaType::class,[
                 'label' => 'Оновной текст блока  не более 1000 символов',
                 'required' => true,  
+            ])
+            ->add('document1', FileType::class, [
+                'label' => 'Пожалуйста выберите файл с расширением pdf',
+                'mapped' => false,
+                'required' => true,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2048k',
+                        'mimeTypes' => [
+                            'application/pdf',
+                            'application/x-pdf',
+                        ],
+                        'mimeTypesMessage' => 'Пожалуйста выберите файл имеющий расширение pdf',
+                    ])
+                ],
+            ])
+            ->add('document2', FileType::class, [
+                'label' => 'Пожалуйста выберите файл с расширением pdf',
+                'mapped' => false,
+                'required' => true,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2048k',
+                        'mimeTypes' => [
+                            'application/pdf',
+                            'application/x-pdf',
+                        ],
+                        'mimeTypesMessage' => 'Пожалуйста выберите файл имеющий расширение pdf',
+                    ])
+                ],
+            ])
+            ->add('document3', FileType::class, [
+                'label' => 'Пожалуйста выберите файл с расширением pdf',
+                'mapped' => false,
+                'required' => true,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2048k',
+                        'mimeTypes' => [
+                            'application/pdf',
+                            'application/x-pdf',
+                        ],
+                        'mimeTypesMessage' => 'Пожалуйста выберите файл имеющий расширение pdf',
+                    ])
+                ],
             ])
         ;
     }

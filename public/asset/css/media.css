@@ -61,6 +61,15 @@
         height: 735px;
         max-width: 1050px;
     }
+    .about_item_document .achievement_about_embed{
+        max-width: 280px;
+    }
+    .about-document{
+        max-width: 280px;
+    }
+    .achievement_about_embed embed {
+        max-width: 275px;
+    }  
 }
 @media (max-width: 900px){
     .slider .slick-btn{
@@ -130,9 +139,9 @@
     .page_blog .img_servises-1{
         margin-right: 20px; 
     }
-    .blog_slider-inner .slick-btn{
+    /* .blog_slider-inner .slick-btn{
         bottom: -20px;
-    }
+    } */
     .page_servise .slider_item-content img{
         height: 630px;
         max-width: 900px;
@@ -140,6 +149,15 @@
     .rewiews_block{
         max-width: 460px;
     }
+    .about_item_document .achievement_about_embed{
+        max-width: 235px;
+    }
+    .about-document{
+        max-width: 235px;
+    }
+    .achievement_about_embed embed {
+        max-width: 230px;
+    }  
 }
 @media (max-width: 800px){
     .blog_slider-inner .default-btn.admin.del,
@@ -154,6 +172,15 @@
         height: 560px;
         max-width: 800px;
     }
+    .about_item_document .achievement_about_embed{
+        max-width: 205px;
+    }
+    .about-document{
+        max-width: 205px;
+    }
+    .achievement_about_embed embed {
+        max-width: 200px;
+    }  
 @media (max-width: 700px){
     .header_btn{
         float: none;
@@ -266,6 +293,18 @@
     .about_item-btn{
         display: inline-block;
     }
+    .about_slider .slick-btn{
+        display: none !important;
+    }
+    .about_item_document .achievement_about_embed{
+        max-width: 170px;
+    }
+    .about-document{
+        max-width: 170px;
+    }
+    .achievement_about_embed embed {
+        max-width: 170px;
+    }  
 }
 @media (max-width: 600px){   
     .servises_item{
@@ -283,7 +322,32 @@
     }
     .rewiews_block{
         max-width: 300px;
-    }   
+    } 
+    .about_item_document{
+        display: block;
+        flex-direction: column;
+    }
+    .about_item_document .achievement_about_embed{
+        max-width: 450px;
+    }
+    .about-document{
+        display: block;
+        max-width: 450px;
+    } 
+    .about_item_document{
+        display: block;
+        flex-direction: none;
+        justify-content: none;
+    } 
+    .about_item_document .achievement_about_embed{
+        max-width: 550px;
+    }
+    .about-document{
+        max-width: 550px;
+    }
+    .achievement_about_embed embed {
+        max-width: 100%;
+    }  
 }
 @media (max-width: 540px){
     .add_new-form .form_box-inner input{
@@ -336,11 +400,20 @@
         margin: 5px;
     } 
     .about_item{
-        padding: 30px 0px 30px;
+        padding: 30px 5px 30px;
     }
     .rewiews_block .page.news_blog.none{   
         max-width: 94%;
-    }   
+    } 
+    .about_item_document .achievement_about_embed{
+        max-width: 450px;
+    }
+    .about-document{
+        max-width: 450px;
+    } 
+    /* .achievement_about_embed embed {
+        max-width: 250px;
+    }      */
 }
 @media (max-width: 414px){
     .slider_title{
@@ -362,7 +435,16 @@
     } 
     .rewiews_block{
         max-width: 200px;
-    }    
+    } 
+    .about_item_document .achievement_about_embed{
+        max-width: 410px;
+    }
+    .about-document{
+        max-width: 410px;
+    } 
+    /* .achievement_about_embed embed {
+        max-width: 405px;
+    }       */
 }
 @media (max-width: 400px){
     .advantages-item{
@@ -389,7 +471,16 @@
     .page_servise .slider_item-content img{
         height: 262px;
         max-width: 375px;
-    }    
+    } 
+    .about_item_document .achievement_about_embed{
+        max-width: 300px;
+    }
+    .about-document{
+        max-width: 300px;
+    } 
+    /* .achievement_about_embed embed {
+        max-width: 290px;
+    }    */
 }
 @media (max-width: 325px){
     .page_servise .servises_item{

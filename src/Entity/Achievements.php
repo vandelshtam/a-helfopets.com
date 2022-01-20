@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AchievementsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,6 +43,16 @@ class Achievements
      * @ORM\Column(type="string", length=1000, nullable=true)
      */
     private $text;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Document::class, mappedBy="achievements")
+     */
+    private $document;
+
+    public function __construct()
+    {
+        $this->document = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -103,6 +115,36 @@ class Achievements
     public function setText(?string $text): self
     {
         $this->text = $text;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Document[]
+     */
+    public function getDocument(): Collection
+    {
+        return $this->document;
+    }
+
+    public function addDocument(Document $document): self
+    {
+        if (!$this->document->contains($document)) {
+            $this->document[] = $document;
+            $document->setAchievements($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocument(Document $document): self
+    {
+        if ($this->document->removeElement($document)) {
+            // set the owning side to null (unless already changed)
+            if ($document->getAchievements() === $this) {
+                $document->setAchievements(null);
+            }
+        }
 
         return $this;
     }

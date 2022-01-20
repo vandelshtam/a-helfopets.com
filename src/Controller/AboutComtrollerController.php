@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Review;
 use App\Form\ReviewType;
 use App\Entity\Fotoreview;
+use App\Entity\Achievements;
 use App\Entity\FastConsultation;
 use App\Form\FastConsultationType;
 use App\Controller\ImageController;
@@ -37,17 +38,22 @@ class AboutComtrollerController extends AbstractController
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
-        if ($fast_consultation_form->isSubmitted() && $fast_consultation_form->isValid()) {
-            $textSendMail = $mailerController->textFastConsultationMail($fast_consultation);
-            $fast_consultation_meil -> fastSendMeil($request,$mailer,$fast_consultation,$mailerController,$entityManager,$textSendMail); 
-            return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);
-        }
+        $this -> fastConsultationSend($request,$entityManager,$doctrine,$slugger,$imageController,$mailerController,$fast_consultation,$mailer,$fast_consultation_form,$fast_consultation_meil);
 
         $reviews_all = $reviewRepository->findAll();
         $reviews = [];
         foreach($reviews_all as $elem){   
             $reviews[] = $doctrine->getRepository(Review::class)->findOneByIdJoinedToFotoreview($elem->getId());
         }
+        $achievements_all = $achievementsRepository->findAll();
+        $achievements = [];
+        foreach($achievements_all as $elem){   
+            $achievements[] = $doctrine->getRepository(Achievements::class)->findOneByIdJoinedToDocument($elem->getId());
+        }
+        // foreach($achievements as $elem){   
+        //     dd($elem->getDocument()->getDocument1;
+        // }
+
 	    $localIP = getHostByName(getHostName());
 
         $review = new Review();
@@ -57,7 +63,6 @@ class AboutComtrollerController extends AbstractController
         $fotoreview2 = new Fotoreview;
         $fotoreview3 = new Fotoreview;
         if ($form->isSubmitted() && $form->isValid()) {
-            //dd('проверка');
             $imageFile = $form->get('foto')->getData();
             $imageFile2 = $form->get('foto2')->getData();
             $imageFile3 = $form->get('foto3')->getData();
@@ -91,11 +96,12 @@ class AboutComtrollerController extends AbstractController
         $rating = $ratingRepository->findAllRating();
         $ratingSumm = $ratingController->ratingSumm($ratingRepository);
         $rating_value = $ratingController->rating($ratingSumm,$rating);
+
         return $this->renderForm('about_comtroller/index.html.twig', [
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
             'our_missions' => $ourMissionRepository->findAll(),
-            'achievements' => $achievementsRepository->findAll(),
+            'achievements' => $achievements,
             'presses' => $pressRepository->findAll(),
             'rating_value' => $rating_value,
             'form' => $form,
@@ -108,6 +114,15 @@ class AboutComtrollerController extends AbstractController
         if ($imageFile) {
             $newFilename = $imageController->uploadNewFileName($slugger, $imageFile,$nameDirectiry);
             $fotoreview->setFoto($newFilename);
+        }
+    }
+
+    private function fastConsultationSend($request,$entityManager,$doctrine,$slugger,$imageController,$mailerController,$fast_consultation,$mailer,$fast_consultation_form,$fast_consultation_meil){
+        
+        if ($fast_consultation_form->isSubmitted() && $fast_consultation_form->isValid()) {
+            $textSendMail = $mailerController->textFastConsultationMail($fast_consultation);
+            $fast_consultation_meil -> fastSendMeil($request,$mailer,$fast_consultation,$mailerController,$entityManager,$textSendMail); 
+            return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);
         }
     }
 }

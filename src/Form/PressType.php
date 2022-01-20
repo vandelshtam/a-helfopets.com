@@ -37,6 +37,10 @@ class PressType extends AbstractType
                 'label' => 'Оновной текст блока  не более 1000 символов',
                 'required' => true,  
             ])
+            ->add('sources', TextareaType::class,[
+                'label' => 'Источники информации  не более 250 символов',
+                'required' => true,  
+            ])
         ;
     }
 
