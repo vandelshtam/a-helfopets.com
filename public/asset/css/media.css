@@ -8,9 +8,8 @@
         min-height: 330px;
     }
     .form_inner{
-        background-size: 37%;
+        background-image: none;
     }
-    
     .news_inner{
         display: block;
     }
@@ -54,9 +53,7 @@
         margin-bottom: 30px;
         max-width: 460px;
     }
-    .form_inner{
-        background-size: 30%;
-    }
+
     .page_servise .slider_item-content img{
         height: 735px;
         max-width: 1050px;
@@ -69,7 +66,13 @@
     }
     .achievement_about_embed embed {
         max-width: 275px;
-    }  
+    } 
+    .servises_btn{
+        display: inline-block;
+    } 
+    .servises_btn.form{
+        display: flex;
+    } 
 }
 @media (max-width: 900px){
     .slider .slick-btn{
@@ -97,14 +100,13 @@
     }
     .servises_btn,
     .news_btn{
-        text-align: center;
+        /* text-align: center; */
+        text-align: left;
     }
     .add_new-form .form_box-inner{
         display: block;
     }
-    .form_inner{
-        background-image: none;
-    }
+    
     .form_box-inner{
         display: block;
     }
@@ -414,6 +416,14 @@
     /* .achievement_about_embed embed {
         max-width: 250px;
     }      */
+    .img_blogs-1{
+        max-height: 280px;
+        float: right;
+    }
+    .servises_btn,
+    .news_btn{
+        text-align: left;
+    }
 }
 @media (max-width: 414px){
     .slider_title{
@@ -445,6 +455,18 @@
     /* .achievement_about_embed embed {
         max-width: 405px;
     }       */
+    .img_blogs-1{
+        max-height: 230px;
+        float: right;
+    }
+    .page_blogs .blog_top{
+        display: inline-block;
+    }
+    .form_article-button{
+        display: block;
+        justify-content: flex-start;
+        text-align: left;
+    }
 }
 @media (max-width: 400px){
     .advantages-item{
@@ -453,7 +475,17 @@
     .page_servise .slider_item-content img{
         height: 280px;
         max-width: 400px;
-    }        
+    } 
+    .servises_btn.form{
+        display: inline-block;
+        justify-content:flex-start;
+        text-align: left;
+        align-items: flex-start;
+    } 
+    .page_blogs .servises_top
+{
+    display: block;
+}      
 }
 @media (max-width: 375px){
     .header_email{

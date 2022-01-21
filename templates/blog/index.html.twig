@@ -39,9 +39,9 @@
                 <div class="servises_item none" data-filter-tags="{{ blog.title }}">
                     <div class="blog_top">
                     {% if blog.Foto == null %}
-                    <img src="{{ asset('asset/img/blog-icone-anymals-1.webp') }}" alt="" class="img_servises-1">
+                    <img src="{{ asset('asset/img/blog-icone-anymals-1.webp') }}" alt="" class="img_blogs-1">
                     {% else %}
-                    <img src="{{ asset('uploads/img/galery/' ~ blog.Foto) }}" alt="" class="img_servises-1">
+                    <img src="{{ asset('uploads/img/galery/' ~ blog.Foto) }}" alt="" class="img_blogs-1">
                     {% endif %}
                     <div class="servises_item-title">
                         {{ blog.title }}
@@ -58,7 +58,7 @@
                     </div>
                     <div class="servises_item-btn">
                         <div class="servises_btn">
-                            <a href="{{ path('blog_show', {'id': blog.id}) }}" class="default-btn">
+                            <a href="{{ path('blog_show', {'id': blog.id}) }}" class="default-btn blog">
                             Открыть
                             </a>
                             {% if is_granted('ROLE_SUPER_ADMIN') %}

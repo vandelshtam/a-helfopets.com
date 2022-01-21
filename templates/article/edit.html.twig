@@ -3,9 +3,37 @@
 {% block title %}plumbInstall/Новости/Редактировать статью{% endblock %}
 
 {% block body %}
-    
-    {{ include('article/_form.html.twig', {'button_label': 'Update'}) }}
-
+<section class="add_new-form">   
+        <div class="container">
+            {% for label, messages in app.flashes(['success', 'notice']) %}
+                    {% for message in messages %}
+                        {% if message %}
+                            <div class="flash-{{ label }} notice_message">
+                                {{ message }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+            {% endfor %}    
+                <div class="form_content">
+                    <div class="form_title-box">
+                        <div class="form_title">
+                            Страница редактирования новостной статьи
+                        </div>
+                        <div class="form_text">
+                            При заполнении формы новостной статьи,пожалуйста следуйте правилам публикации статей на сайте и подсказкам системы.
+                        </div>
+                    </div>
+                    {% if form_errors(form) %}
+                    <div class="my-custom-class-for-errors">
+                        {{ form_errors(form) }}
+                    </div>
+                    {% endif %}
+                    <div class="add_new-form form_box">    
+                    {{ include('article/_form.html.twig', {'button_label': 'Update'}) }}    
+                    </div>   
+                </div>    
+        </div>
+    </section> 
 {% endblock %}
 
 {% block javascripts %}

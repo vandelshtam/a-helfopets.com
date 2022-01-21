@@ -24,7 +24,9 @@
                         </div>
                     </div>
                     <div class="form_box">
+                        {% if is_granted('ROLE_ADMIN') %}
                         {{ include('blog/_form.html.twig', {'button_label': 'Update'}) }}
+                        {% endif %}  
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
                         {{ include('blog/_delete_form.html.twig') }}
                         {% endif %}   

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Blog;
 use App\Entity\Article;
 use App\Form\ArticleType;
 use App\Service\FileUploader;
@@ -32,7 +33,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class ArticleController extends AbstractController
 {
     #[Route('/', name: 'article_index', methods: ['GET'])]
-    public function index(ArticleRepository $articleRepository,Request $request, EntityManagerInterface $entityManager,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
+    public function index(ArticleRepository $articleRepository,Request $request,ManagerRegistry $doctrine, EntityManagerInterface $entityManager,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
         $user = $this->getUser();
         $fast_consultation = new FastConsultation();
@@ -43,12 +44,13 @@ class ArticleController extends AbstractController
             $fast_consultation_meil -> fastSendMeil($request,$mailer,$fast_consultation,$mailerController,$entityManager,$textSendMail); 
             return $this->redirectToRoute('article_index', [], Response::HTTP_SEE_OTHER);
         }
-        
+        $blogs = $doctrine->getRepository(Blog::class)->findByExampleField();
         return $this->renderForm('article/index.html.twig', [
             'articles' => $articleRepository->findAll(),
             'user' => $user,
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
+            'blogs' => $blogs,
         ]);
     }
 

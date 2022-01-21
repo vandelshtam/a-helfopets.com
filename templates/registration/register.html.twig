@@ -7,17 +7,54 @@
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
 
-    <h1>Register</h1>
-
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+<section class="form">
+        <div class="container">
+            {% for label, messages in app.flashes(['success', 'notice']) %}
+                {% for message in messages %}
+                    {% if message %}
+                        <div class="flash-{{ label }} notice_message">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            <div class="form_inner">
+                <div class="form_content">
+                    <div class="form_title-box">
+                        <div class="form_title">
+                            Страница регистрации
+                        </div>
+                        <div class="form_text">
+                            Пожалуйста зарегестрируйтесь
+                        </div>
+                    </div>
+                    <div class="form_box">
+                        {{ form_start(registrationForm) }}  
+                            <div class="form_box-inner authentificate">       
+                                <div class="form_box-left authentificate">
+                                     {{ form_row(registrationForm.email) }}
+                                    {{ form_row(registrationForm.plainPassword, {
+                                        label: 'Password'
+                                    }) }}
+                                    <span class="form_agree-terms">
+                                        {{ form_row(registrationForm.agreeTerms) }}
+                                    </span>
+                                </div>
+                                {# If you want to control the URL the user is redirected to on success
+                                <input type="hidden" name="_target_path" value="/account"/> #}
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                                <div class="form_text">
+                                    В случае ошибок при  авторизации, пожалуйста  следуйте подсказкам системы
+                                </div>
+                                
+                            </div>
+                            <button class="default-btn authentificate" type="submit">Зарегистрироваться</button>        
+                        {{ form_end(registrationForm) }}   
+                    </div>   
+                </div>
+            </div>
+        </div>       
+    </section>
 {% endblock %}
 {% block footer %}
     {{ include('footer.html.twig') }}

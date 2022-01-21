@@ -49,8 +49,8 @@
                 {{ form_row(form.linkslider) }}
             </label>
             <div class="servises_item-btn">
-                <div class="servises_btn">
-                    <a href="{{ path('blog_index') }}" class="default-btn">
+                <div class="servises_btn form">
+                    <a href="{{ path('blog_index') }}" class="default-btn blog">
                     Назад
                     </a>
                     {% if is_granted('ROLE_SUPER_ADMIN') %}

@@ -67,7 +67,7 @@
                                     </div> 
                                     {% if is_granted('ROLE_SUPER_ADMIN') %}
                                     <div class="blog_slider-btn">    
-                                        <a href="{{ path('fotoblog_edit', {'id': fotoblog.id}) }}" class="default-btn blog">
+                                        <a href="{{ path('fotoblog_edit', {'id': fotoblog.id}) }}" class="default-btn admin">
                                             Редактировать
                                         </a>
                                         {{ include('fotoblog/_delete_form.html.twig') }}
@@ -144,17 +144,19 @@
                         </form>  
                     <div class="servises_item-btn">
                         <div class="servises_btn">
-                            <a href="{{ path('blog_index') }}" class="default-btn">
+                            <a href="{{ path('blog_index') }}" class="default-btn blog">
                                 Назад
                             </a>
                             {% if is_granted('ROLE_SUPER_ADMIN') %}
-                            <a href="{{ path('fotoblog_new', {'id': blog.id}) }}" class="default-btn">
+                            <a href="{{ path('fotoblog_new', {'id': blog.id}) }}" class="default-btn blog">
                                 Добавить слайдер
                             </a>
                             <a  href="{{ path('blog_edit', {'id': blog.id}) }}" class="default-btn admin">
                                 Редактировать
                             </a>
+                            <div class="delete_button_form_blog">
                                 {{ include('blog/_delete_form.html.twig') }}
+                            </div>   
                             {% endif %}
                         </div> 
                     </div>
