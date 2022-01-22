@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UsersController!{% endblock %}
+
+{% block body %}
+<section class="page news">
+        <div class="container">
+            <div class="news_top">
+                <div class="news_title-box">
+                    <div class="news_title">
+                        Страница пользователей
+                    </div>
+                    <div class="news_text">
+                        Это страница отображения пользователей с правом доступа к редактированию сайта
+                    </div>
+                </div>
+                <div class="servises_btn">
+                    <a href="{{ path('app_register') }}">
+                    Добавить
+                    </a>
+                </div>  
+            </div>
+            <div class="page_news-search">
+                <input type="text" id="elastic" name="filter-contacts" class="" placeholder="Поиск пользователя">
+            </div>
+            {% for label, messages in app.flashes(['success', 'notice']) %}
+                {% for message in messages %}
+                    {% if message %}
+                        <div class="flash-{{ label }} notice_message">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            <div class="page news_inner elastic" id="">
+                {% for user in userses %}
+                    <div class="page_user_inner none" data-filter-tags="{{ user.email }}">
+                    <a id="c_1" href="#" class="page_users" >
+                        <div class="user_avatar">
+                            <img src="{{ asset('asset/img/fon-default-avatar-1.png') }}" alt="">
+                        </div>
+                        <div class="news_blog-title">
+                            Логин: {{ user.email }}
+                        </div>
+                        <div class="news_blog-text">
+                            UserID: {{ user.id }} 
+                        </div> 
+                        <div class="news_blog-text">
+                            Роль пользователя: {{ user.roles[0] }}
+                        </div>  
+                    </a>
+                        <a href="{{ path('page_admin') }}" class="default-btn">
+                            Назад
+                        </a>  
+                        <a href="#" class="default-btn" onclick="return confirm('Вы действительно хотите удалить пользователя?');">
+                            Удалить
+                        </a> 
+                        <a href="#" class="default-btn" >
+                            Редактировать
+                        </a> 
+                    </div>
+                {% endfor %}
+                
+                
+                <div class="page_user_inner none" data-filter-tags="yellow">
+                    <a id="c_1" href="#" class="page_users" >
+                    <div class="user_avatar">
+                        <img src="img/slider-fon1.jpg" alt="">
+                    </div>
+                    <div class="news_blog-title">
+                        Логин (электронная почта)
+                    </div>
+                    <div class="news_blog-text">
+                       Имя 
+                    </div> 
+                    <div class="news_blog-text">
+                       Роль пользователя 
+                     </div>  
+                    </a>
+                    <a href="#"  onclick="return confirm('Вы действительно хотите удалить пользователя?');" >
+                        <button class="default-btn btn">Удалить</button>
+                    </a> 
+                    <a href="#" class="default-btn" >
+                        Редактировать
+                    </a> 
+                </div>    
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block footer %}
+    {{ include('footer.html.twig') }}
+{% endblock %}
+{% block javascripts %}
+    {{ include('js.html.twig') }}
+    <script>
+        document.querySelector('#elastic').oninput = function(){
+            let val = this.value.trim();
+            let elemNews = document.querySelectorAll('.elastic .none');
+            let elsticItems = document.querySelectorAll('.elastic page_user_inner.none');
+            if(val != ''){
+                elemNews.forEach(function(elem){
+                    let value = elem.getAttribute('data-filter-tags');
+                    if(value.search(val) == -1){
+                        elem.classList.add('hide');      
+                    }
+                    else{
+                        elem.classList.remove('hide');
+                    }
+                });
+            }
+            else{
+                elemNews.forEach(function(elem){
+                        elem.classList.remove('hide');      
+                    });
+            }
+        }
+    </script>
+{% endblock %}

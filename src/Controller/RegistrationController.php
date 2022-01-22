@@ -46,7 +46,7 @@ class RegistrationController extends AbstractController
         if ($fast_consultation_form->isSubmitted() && $fast_consultation_form->isValid()) {
             $textSendMail = $mailerController->textFastConsultationMail($fast_consultation);
             $fast_consultation_meil -> fastSendMeil($request,$mailer,$fast_consultation,$mailerController,$entityManager,$textSendMail); 
-            return $this->redirectToRoute('article_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_register', [], Response::HTTP_SEE_OTHER);
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -71,7 +71,7 @@ class RegistrationController extends AbstractController
             );
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('users');
         }
 
         return $this->render('registration/register.html.twig', [
@@ -97,6 +97,6 @@ class RegistrationController extends AbstractController
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Your email address has been verified.');
 
-        return $this->redirectToRoute('home');
+        return $this->redirectToRoute('users');
     }
 }

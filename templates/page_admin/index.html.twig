@@ -1,0 +1,128 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PageAdminController!{% endblock %}
+
+{% block body %}
+<section class="page news">
+        <div class="container">
+            <div class="news_top">
+                <div class="news_title-box">
+                    <div class="news_title">
+                        Страница Администратора
+                    </div>
+                    <div class="news_text">
+                        Это страница отображения вкладок для доступа к редактированию сайта
+                    </div>
+                </div>
+                <div class="servises_btn page_admin">
+                    <a href="{{ path('users') }}">
+                    Пользователи
+                    </a>
+                    <a href="{{ path('app_register') }}">
+                    Добавить
+                    </a>
+                </div>  
+            </div>
+            <div class="page_news-search">
+                <input type="text" id="elastic" name="filter-contacts" class="" placeholder="Поиск">
+            </div>
+            {% for label, messages in app.flashes(['success', 'notice']) %}
+                {% for message in messages %}
+                    {% if message %}
+                        <div class="flash-{{ label }} notice_message">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            {# <div class="page news_inner elastic" id="">
+                
+                    <div class="page_user_inner none" data-filter-tags="{{ user.email }}">
+                    <a id="c_1" href="#" class="page_users" >
+                        <div class="user_avatar">
+                            <img src="{{ asset('asset/img/fon-default-avatar-1.png') }}" alt="">
+                        </div>
+                        <div class="news_blog-title">
+                            Логин: {{ user.email }}
+                        </div>
+                        <div class="news_blog-text">
+                            UserID: {{ user.id }} 
+                        </div> 
+                        <div class="news_blog-text">
+                            Роль пользователя: {{ user.roles[0] }}
+                        </div>  
+                        </a> 
+                        <a href="#" class="default-btn" onclick="return confirm('Вы действительно хотите удалить пользователя?');">
+                            Удалить
+                        </a> 
+                        <a href="#" class="default-btn" >
+                            Редактировать
+                        </a> 
+                    </div>
+                  
+            </div> #}
+            <div class="servises_item none page_admin" data-filter-tags="{{ user.email }}">
+                    {# <img src="{{ asset('uploads/img/avatars/' ~ service.Avatar) }}" alt="" class="img_servises-1"> #}
+                    <img src="{{ asset('asset/img/fon-default-avatar-1.png') }}" alt="">
+                    <div class="servises_item-title">
+                        {{ user.email }}
+                    </div>
+                    <div class="servises_item-text">
+                         UserID: {{ user.id }} 
+                    </div>
+                    <div class="servises_item-text">
+                         Роль пользователя: {{ user.roles[0] }}
+                    </div>
+                    <a href="#" class="default-btn" onclick="return confirm('Вы действительно хотите удалить пользователя?');">
+                            Удалить
+                        </a> 
+                        <a href="#" class="default-btn" >
+                            Редактировать
+                        </a> 
+                    {# <div class="servises_item-btn">
+                        <a href="{{ path('service_show', {'id': service.id}) }}" class="servises_item-link">
+                            Подробнее
+                        </a>
+                        <a data-fancybox data-src="#hidden-content" href="javascript:;" class="default-btn">
+                            Заказать
+                        </a>
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <a href="{{ path('service_edit', {'id': service.id}) }}" class="default-btn">
+                            edit
+                        </a>
+                        {% endif %}
+                    </div> #}
+                </div>
+        </div>
+    </section>
+{% endblock %}
+{% block footer %}
+    {{ include('footer.html.twig') }}
+{% endblock %}
+{% block javascripts %}
+    {{ include('js.html.twig') }}
+    <script>
+        document.querySelector('#elastic').oninput = function(){
+            let val = this.value.trim();
+            let elemNews = document.querySelectorAll('.elastic .none');
+            let elsticItems = document.querySelectorAll('.elastic page_user_inner.none');
+            if(val != ''){
+                elemNews.forEach(function(elem){
+                    let value = elem.getAttribute('data-filter-tags');
+                    if(value.search(val) == -1){
+                        elem.classList.add('hide');      
+                    }
+                    else{
+                        elem.classList.remove('hide');
+                    }
+                });
+            }
+            else{
+                elemNews.forEach(function(elem){
+                        elem.classList.remove('hide');      
+                    });
+            }
+        }
+    </script>
+{% endblock %}
+

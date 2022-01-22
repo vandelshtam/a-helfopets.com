@@ -2767,3 +2767,23 @@ button.default-btn.blog.admin::after{
     top:10px;
     margin: 0px 0px 60px 0px;
 }
+/* ===== page-users ======= */
+/* .page_news-search input{
+    margin-bottom: 24px;
+    outline: none;
+    height: 60px;
+    border: 1px solid#e6e6e6;
+    padding: 0px 10px;
+    max-width: 100%;
+    width: 100%;
+} */
+/* ==== page_admin ====== */
+.servises_item.none.page_admin{
+    max-width: 1140px;
+}
+.servises_btn.page_admin a{
+    margin: 2px;
+}
+.servises_item.none.page_admin .default-btn{
+    color: #212020;
+}

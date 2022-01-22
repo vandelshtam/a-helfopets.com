@@ -59,6 +59,9 @@
                                 <li><a href="{{ path('service_index') }}">Услуги</a></li>
                                 <li><a href="{{ path('blog_index') }}">Посты</a></li>
                                 <li><a href="{{ path('contact') }}">Контакты</a></li>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                <li><a href="{{ path('page_admin') }}">Админ</a></li>
+                                {% endif %}
                             </ul>
                         </nuv>
                     </div>
