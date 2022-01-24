@@ -35,37 +35,17 @@
                     {% endif %}
                 {% endfor %}
             {% endfor %}
-            {# <div class="page news_inner elastic" id="">
-                
-                    <div class="page_user_inner none" data-filter-tags="{{ user.email }}">
-                    <a id="c_1" href="#" class="page_users" >
-                        <div class="user_avatar">
-                            <img src="{{ asset('asset/img/fon-default-avatar-1.png') }}" alt="">
-                        </div>
-                        <div class="news_blog-title">
-                            Логин: {{ user.email }}
-                        </div>
-                        <div class="news_blog-text">
-                            UserID: {{ user.id }} 
-                        </div> 
-                        <div class="news_blog-text">
-                            Роль пользователя: {{ user.roles[0] }}
-                        </div>  
-                        </a> 
-                        <a href="#" class="default-btn" onclick="return confirm('Вы действительно хотите удалить пользователя?');">
-                            Удалить
-                        </a> 
-                        <a href="#" class="default-btn" >
-                            Редактировать
-                        </a> 
-                    </div>
-                  
-            </div> #}
             <div class="servises_item none page_admin" data-filter-tags="{{ user.email }}">
-                    {# <img src="{{ asset('uploads/img/avatars/' ~ service.Avatar) }}" alt="" class="img_servises-1"> #}
+                {%if user.Avatar != NULL %}
+                    <img src="{{ asset('uploads/img/avatars/' ~ user.Avatar) }}" alt="" class="img_servises-1">
+                {% else %}
                     <img src="{{ asset('asset/img/fon-default-avatar-1.png') }}" alt="">
+                {% endif %}
                     <div class="servises_item-title">
                         {{ user.email }}
+                    </div>
+                    <div class="servises_item-title">
+                         {{ user.name|default('undefined') }}
                     </div>
                     <div class="servises_item-text">
                          UserID: {{ user.id }} 
@@ -73,25 +53,14 @@
                     <div class="servises_item-text">
                          Роль пользователя: {{ user.roles[0] }}
                     </div>
-                    <a href="#" class="default-btn" onclick="return confirm('Вы действительно хотите удалить пользователя?');">
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <a href="{{ path('users_delete', {'id': user.id}) }}" class="default-btn" onclick="return confirm('Вы действительно хотите удалить пользователя?');">
                             Удалить
                         </a> 
-                        <a href="#" class="default-btn" >
+                        <a href="{{ path('users_edit', {'id': user.id}) }}" class="default-btn" >
                             Редактировать
-                        </a> 
-                    {# <div class="servises_item-btn">
-                        <a href="{{ path('service_show', {'id': service.id}) }}" class="servises_item-link">
-                            Подробнее
                         </a>
-                        <a data-fancybox data-src="#hidden-content" href="javascript:;" class="default-btn">
-                            Заказать
-                        </a>
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
-                        <a href="{{ path('service_edit', {'id': service.id}) }}" class="default-btn">
-                            edit
-                        </a>
-                        {% endif %}
-                    </div> #}
+                    {% endif %} 
                 </div>
         </div>
     </section>

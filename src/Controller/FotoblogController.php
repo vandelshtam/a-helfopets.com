@@ -111,7 +111,7 @@ class FotoblogController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'fotoblog_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'fotoblog_delete', methods: ['GET','POST'])]
     public function delete(Request $request, Fotoblog $fotoblog, EntityManagerInterface $entityManager,ImageController $imageController): Response
     {
         $blog_id = $fotoblog->getBlog()->getId();

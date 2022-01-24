@@ -41,6 +41,9 @@
         height: 805px;
         max-width: 1150px;
     }
+    .about_item.reviews .img_about img{
+        max-width: 150px;
+    }
 }
 @media (max-width: 1050px){
     .footer_inner{
@@ -159,7 +162,10 @@
     }
     .achievement_about_embed embed {
         max-width: 230px;
-    }  
+    } 
+    .about_item.reviews .img_about img{
+        max-width: 100px;
+    } 
 }
 @media (max-width: 800px){
     .blog_slider-inner .default-btn.admin.del,
@@ -349,7 +355,10 @@
     }
     .achievement_about_embed embed {
         max-width: 100%;
-    }  
+    } 
+    .about_item.reviews .img_about img{
+        max-width: 85px;
+    } 
 }
 @media (max-width: 540px){
     .add_new-form .form_box-inner input{
@@ -424,6 +433,9 @@
     .news_btn{
         text-align: left;
     }
+    .about_item.reviews .img_about img{
+        max-width: 75px;
+    }
 }
 @media (max-width: 414px){
     .slider_title{
@@ -466,6 +478,12 @@
         display: block;
         justify-content: flex-start;
         text-align: left;
+    }
+    .about_item.reviews .img_about img{
+        max-width: 150px;
+    }
+    .img_about.rewiews{
+        display: block;
     }
 }
 @media (max-width: 400px){

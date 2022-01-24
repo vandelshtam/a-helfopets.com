@@ -51,12 +51,14 @@
                     <a href="{{ path('about_comtroller') }}" class="default-btn-about">
                         Назад
                     </a>
+                    {% if is_granted('ROLE_ADMIN') %}
                     <a  href="{{ path('press_edit', {'id': press.id}) }}" class="default-btn-about admin">
                         Редактировать
                     </a>
-                    <a  href="#" class="default-btn-about admin">
-                        Удалить
-                    </a>    
+                    <a  href="#">
+                         {{ include('press/_delete_form.html.twig') }} 
+                    </a> 
+                    {% endif %}   
                 </div>
             {% endfor %}    
             </div>

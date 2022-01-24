@@ -46,9 +46,19 @@ security:
         ROLE_ADMIN:       ROLE_USER
         ROLE_SUPER_ADMIN: [ROLE_ADMIN]
 
-    access_control:
-         - { path: '/edit', roles: ROLE_SUPER_ADMIN }
+    access_control: 
          # or require ROLE_ADMIN or IS_AUTHENTICATED_FULLY for /admin*
-         - { path: '^/register', roles: [IS_AUTHENTICATED_FULLY, ROLE_SUPER_ADMIN] }
-        # - { path: ^/home, roles: ROLE_ADMIN }
+         - { path: '^/users', roles: ROLE_ADMIN }
+         - { path: '^/page/admin', roles: ROLE_ADMIN }
+         - { path: '/banned', roles: ROLE_ADMIN }
+         - { path: '/new', roles: ROLE_ADMIN }
+        # - { path: '/register', roles: [ ROLE_SUPER_ADMIN] }
+        # - { path: '^/register', roles: [ROLE_SUPER_ADMIN] }
+        # matches /users/edit/*
+         - { path: '/edit', roles: [ROLE_SUPER_ADMIN] }
+        # - { path: '^/users/\d+$/edit', roles: [ ROLE_SUPER_ADMIN ] }
+         - { path: '/delete', roles: [ROLE_SUPER_ADMIN] }
+        # - { path: '/users', roles: [ ROLE_SUPER_ADMIN ] }
+        
+        # - { path: '^/home', roles: ROLE_SUPER_ADMIN }
         # - { path: ^/admin/login, roles: PUBLIC_ACCESS }

@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {% if is_granted('ROLE_ADMIN') %}
             <div class="create_new">
                 <a href="{{ path('article_new') }}" class="default-btn">
                     Добавить
@@ -77,7 +77,7 @@
                                 {{ article.preview }}
                             </div>        
                         </a> 
-                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    {% if is_granted('ROLE_ADMIN') %}
                         <a href="{{ path('article_edit', {'id': article.id}) }}" class="default-btn">
                             Редактировать
                         </a>

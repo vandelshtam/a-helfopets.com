@@ -173,7 +173,7 @@ class BlogController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'blog_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'blog_delete', methods: ['POST'])]
     public function delete(Request $request, Blog $blog, ManagerRegistry $doctrine, EntityManagerInterface $entityManager,int $id,ImageController $imageController): Response
     {
         if ($this->isCsrfTokenValid('delete'.$blog->getId(), $request->request->get('_token'))) {

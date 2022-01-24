@@ -147,9 +147,10 @@ class AchievementsController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'achievements_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'achievements_delete', methods: ['POST'])]
     public function delete(Request $request, Achievements $achievement,ManagerRegistry $doctrine, EntityManagerInterface $entityManager,ImageController $imageController, int $id): Response
     {
+        dd('привет');
         if ($this->isCsrfTokenValid('delete'.$achievement->getId(), $request->request->get('_token'))) {
             $achievements_count = $doctrine->getRepository(Achievements::class)->countFindAllAchievements();
             if($achievements_count <= 1){

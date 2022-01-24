@@ -23,7 +23,7 @@ class RatingblogController extends AbstractController
         ]);
     }
 
-    #[Route('/ratingblog/new/{id}', name: 'ratingblog_new', methods: ['GET', 'POST'])]
+    #[Route('/ratingblog/grade/{id}', name: 'ratingblog_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine, RatingblogRepository $ratingblogRepository, int $id): Response
     {
         $localIP = getHostByName(getHostName());
@@ -41,7 +41,6 @@ class RatingblogController extends AbstractController
         }
             
         $value = $request->request->get('rating');
-        //dd($value);
         $entityManager = $doctrine->getManager();
         $ratingblog = new Ratingblog();
         $ratingblog->setRating($value);

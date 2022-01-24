@@ -125,9 +125,10 @@ class PressController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'press_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'press_delete', methods: ['GET','POST'])]
     public function delete(Request $request, Press $press, EntityManagerInterface $entityManager,ImageController $imageController, MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
+        dd('привет');
         if ($this->isCsrfTokenValid('delete'.$press->getId(), $request->request->get('_token'))) {
             $getImageFile = 'getImg';
             $setImageFile = 'setImg';

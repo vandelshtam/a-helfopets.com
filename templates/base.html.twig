@@ -31,7 +31,11 @@
                         <a class="header_phone" href="tel:79957771830">+7(995) 777 18 30</a>
                         <a class="header_email" href="#">mvlju977@gmail.com</a>
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                        <span>login:{{ app.user.email }}</span>
+                            {% if app.user.name != null %}
+                                <span>username:{{ app.user.name }}</span>
+                            {% else %}
+                                <span>login:{{ app.user.email }}</span>
+                            {% endif %}
                         <a class="header_email" href="{{ path('app_logout') }}">Выйти</a>
                         {% else %}
                         <a class="header_email" href="{{ path('login') }}">Войти</a>

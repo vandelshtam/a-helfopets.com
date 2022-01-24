@@ -57,6 +57,10 @@ class ArticleController extends AbstractController
     #[Route('/new', name: 'article_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager,SluggerInterface $slugger,ImageController $imageController,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        
+        //$this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
+        
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
@@ -177,9 +181,10 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'article_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'article_delete', methods: ['POST'])]
     public function delete(Request $request, Article $article,ManagerRegistry $doctrine, EntityManagerInterface $entityManager,ImageController $imageController, int $id): Response
     {
+        dd('ghbdtn');
         if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
 
             $sarticle_count = $doctrine->getRepository(Article::class)->countFindAllArticle();

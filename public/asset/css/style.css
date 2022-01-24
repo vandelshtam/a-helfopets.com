@@ -2533,7 +2533,7 @@ button.default-btn.blog.admin::after{
     max-width: 80px;
 }
 .about_item.reviews .img_about img{
-    max-width: 100px;
+    max-width: 175px;
 }
 .about_text.page{   
     color:#212020;   
@@ -2557,8 +2557,8 @@ button.default-btn.blog.admin::after{
 .hidden_form{
     display: none;
 }
-/* ==== raiting======= */
-/* rating render =======*/
+/* ===== raiting ============ */
+/* ===== rating render =======*/
 .active_value{
     display: none;
 }
@@ -2631,7 +2631,7 @@ button.default-btn.blog.admin::after{
 .rate-area > label:active {
 	position: relative;
 }
-/*======== About ===================*/
+/*======== About ===========*/
 .about_item.reviews .form_box-inner{
     flex-direction: column;
     align-items: center;
@@ -2723,6 +2723,11 @@ button.default-btn.blog.admin::after{
     margin-top: 0px;
     top: 300px;
     left: 50px;
+}
+.about_rewiews{
+    display: flex;
+    flex-direction: column;
+
 }
 /*============ рейтинг мини версия ==========*/
 .rating-mini {

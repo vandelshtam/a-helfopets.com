@@ -21,7 +21,7 @@ class RatingController extends AbstractController
         ]);
     }
 
-    #[Route('/rating/new', name: 'rating_new', methods: ['GET', 'POST'])]
+    #[Route('/rating/grade', name: 'rating_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine): Response
     {
         $localIP = getHostByName(getHostName());

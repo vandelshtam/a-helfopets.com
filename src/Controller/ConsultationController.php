@@ -20,7 +20,7 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 #[Route('/consultation')]
 class ConsultationController extends AbstractController
 {
-    #[Route('/new', name: 'consultation_new', methods: ['GET', 'POST'])]
+    #[Route('/', name: 'consultation_new', methods: ['GET', 'POST'])]
     public function newConsultationSend(Request $request,MailerInterface $mailer,$consultation,MailerController $mailerController,$entityManager,$textSendMail)
     {
         $entityManager->persist($consultation);

@@ -29,7 +29,7 @@ class ReviewController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'review_new', methods: ['GET', 'POST'])]
+    #[Route('/send', name: 'review_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine, FotoreviewRepository $fotoreviewRepository,SluggerInterface $slugger,ReviewRepository $reviewRepository)
     {
         $localIP = getHostByName(getHostName());
@@ -84,7 +84,7 @@ class ReviewController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'review_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'review_delete', methods: ['POST'])]
     public function delete(Request $request, Review $review, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$review->getId(), $request->request->get('_token'))) {
@@ -96,7 +96,7 @@ class ReviewController extends AbstractController
         }
         return $this->redirectToRoute('about_comtroller', [], Response::HTTP_SEE_OTHER);
     }
-    #[Route('/{id}/bannedToggle', name: 'edit_banned_toggle', methods: ['GET', 'POST'])]
+    #[Route('/{id}/banned', name: 'edit_banned_toggle', methods: ['GET', 'POST'])]
     public function bannedToggle(Request $request, Review $review, EntityManagerInterface $entityManager,int $id,ReviewRepository $reviewRepository): Response
     {
         $banned = $reviewRepository->find($id)->getBanned();

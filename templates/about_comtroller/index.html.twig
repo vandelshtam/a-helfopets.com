@@ -49,15 +49,14 @@
                         </div>
                         {% if is_granted('ROLE_ADMIN') %}
                             <div class="about_item-btn">
-                                {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                <a  href="{{ path('our_mission_new') }}" class="default-btn-about admin">
-                                    Заполнить
-                                </a>
-                                {% endif %}
-                                {% if is_granted('ROLE_ADMIN') %}
-                                <a  href="{{ path('our_mission_edit', {'id': our_mission.id}) }}" class="default-btn-about admin">
-                                    Редактировать
-                                </a>
+                                {% if our_mission != null %}
+                                    <a  href="{{ path('our_mission_edit', {'id': our_mission.id}) }}" class="default-btn-about admin">
+                                        Редактировать
+                                    </a>
+                                {% else %}
+                                    <a  href="{{ path('our_mission_new') }}" class="default-btn-about admin">
+                                        Заполнить
+                                    </a>
                                 {% endif %}    
                             </div>
                         {% endif %}                                    
@@ -193,15 +192,15 @@
                                 {% endif %}     
                             </div>
                             {% endfor %} 
-                            <div class="about_slider-item add">
-                                {% if is_granted('ROLE_ADMIN') %}
-                                <div class="about_slider-title add">
-                                    <a  href="{{ path('press_new') }}" class="default-btn-about admin">  
-                                    Добваить сладер
-                                    </a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <div class="about_slider-item add">
+                                    <div class="about_slider-title add">
+                                        <a  href="{{ path('press_new') }}" class="default-btn-about admin">  
+                                        Добваить сладер
+                                        </a>
+                                    </div>        
                                 </div>
-                                {% endif %}      
-                            </div>
+                            {% endif %} 
                         </div>
                     </div>
                     <div class="about_slider-title scroll">
@@ -213,7 +212,7 @@
                                 Управлять слайдером
                             </a>
                             {% endif %} 
-                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            {% if is_granted('ROLE_ADMIN') %}
                             <a  href="#" class="default-btn-about admin">
                                 Редактировать блок
                             </a>
@@ -277,7 +276,7 @@
                     <!--отзывы-->
                     <div class="page_reviews">
                         {% for review in reviews %}
-                            {% if review.banned == null %}
+                            {% if review.banned == 0 %}
                                 {% if review.ip != ip %}
                                     <div class="rewiews_block">
                                         {% if review.answerId != null %}
@@ -313,23 +312,23 @@
                                                 {{ review.text }}
                                             </div>   
                                         </a>
-                                        {% for foto in review.fotoreview %}
-                                        {# {% if fotoreview_foto != null %} #}
-                                        <div class="img_about rewiews">
-                                                <img src="{{ asset('uploads/img/' ~ foto.Foto) }}" alt="">
-                                        </div>
-                                        {# {% endif %} #}
-                                        {% endfor %}
-                                        <div class="about_item-btn">
-                                                <a  href="#" onclick="showStuff('answer{{ review.id }}'); return false;" class="default-btn-about admin" >
-                                                    Ответить
-                                                </a>
-                                                {% if is_granted('ROLE_ADMIN') %}
-                                                <a  href="{{ path('edit_banned_toggle', {'id': review.id}) }}" class="default-btn-about admin">
-                                                    Заблокировать
-                                                </a>
-                                                    {{ include('review/_delete_form.html.twig') }}
-                                                {% endif %}   
+                                        <div class="about_rewiews">
+                                            <div class="img_about rewiews">
+                                                    {% for foto in review.fotoreview %}
+                                                        <img src="{{ asset('uploads/img/' ~ foto.Foto) }}" alt="">
+                                                    {% endfor %}    
+                                            </div>
+                                            <div class="about_item-btn">
+                                                    <a  href="#" onclick="showStuff('answer{{ review.id }}'); return false;" class="default-btn-about admin" >
+                                                        Ответить
+                                                    </a>
+                                                    {% if is_granted('ROLE_ADMIN') %}
+                                                    <a  href="{{ path('edit_banned_toggle', {'id': review.id}) }}" class="default-btn-about admin">
+                                                        Заблокировать
+                                                    </a>
+                                                        {{ include('review/_delete_form.html.twig') }}
+                                                    {% endif %}   
+                                            </div>
                                         </div>
                                         <form action="{{ path('review_new') }}"  id="answer{{ review.id }}" class="hidden_form" method="post" enctype="multipart/form-data">    
                                             <div class="form_box-inner">
@@ -350,7 +349,7 @@
                                         </form>
                                     </div>
                                 {% endif %}
-                                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                {# {% if is_granted('IS_AUTHENTICATED_FULLY') %} #}
                                     {% if review.ip == ip %}
                                         <div class="rewiews_block rewiews_user">
                                             {% if review.answerId != null %}
@@ -386,23 +385,23 @@
                                                     {{ review.text }} 
                                                 </div>   
                                             </a>
-                                            {% for foto in review.fotoreview %}
-                                            {# {% if fotoreview_foto != null %} #}
-                                            <div class="img_about rewiews">
-                                                    <img src="{{ asset('uploads/img/' ~ foto.Foto) }}" alt="">
-                                            </div>
-                                            {# {% endif %} #}
-                                            {% endfor %}
-                                            <div class="about_item-btn">
-                                                    <a  href="#" onclick="showStuff('answer{{ review.id }}'); return false;" class="default-btn-about admin" >
-                                                        Ответить
-                                                    </a>
-                                                    {% if is_granted('ROLE_ADMIN') %}
-                                                    <a  href="{{ path('edit_banned_toggle', {'id': review.id}) }}" class="default-btn-about admin">
-                                                        Заблокировать
-                                                    </a>
-                                                        {{ include('review/_delete_form.html.twig') }}
-                                                    {% endif %}   
+                                            <div class="about_rewiews">   
+                                                <div class="img_about rewiews">
+                                                    {% for foto in review.fotoreview %}
+                                                        <img src="{{ asset('uploads/img/' ~ foto.Foto) }}" alt="">
+                                                    {% endfor %}    
+                                                </div>
+                                                <div class="about_item-btn">
+                                                        <a  href="#" onclick="showStuff('answer{{ review.id }}'); return false;" class="default-btn-about admin" >
+                                                            Ответить
+                                                        </a>
+                                                        {% if is_granted('ROLE_ADMIN') %}
+                                                        <a  href="{{ path('edit_banned_toggle', {'id': review.id}) }}" class="default-btn-about admin">
+                                                            Заблокировать
+                                                        </a>
+                                                            {{ include('review/_delete_form.html.twig') }}
+                                                        {% endif %}   
+                                                </div>
                                             </div>
                                             <form action="{{ path('review_new') }}"  id="answer{{ review.id }}" class="hidden_form" method="post" enctype="multipart/form-data">    
                                                 <div class="form_box-inner">
@@ -423,7 +422,7 @@
                                             </form>
                                         </div>
                                     {% endif %} 
-                                {% endif %}
+                                {# {% endif %} #}
                             {% endif %}
                             {% if review.banned == 1 %}
                             <div class="rewiews_block">           
@@ -454,13 +453,13 @@
                             {% endif %}
                         {% endfor %}          
             </div>
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {# {% if is_granted('ROLE_SUPER_ADMIN') %}
             <div class="about_item-btn">
                 <a  href="#" class="default-btn-about admin">
                     Редактировать
                 </a>
             </div> 
-            {% endif %}   
+            {% endif %}    #}
         </div>    
         </div>    
     </section>

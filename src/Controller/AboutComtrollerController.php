@@ -50,10 +50,7 @@ class AboutComtrollerController extends AbstractController
         foreach($achievements_all as $elem){   
             $achievements[] = $doctrine->getRepository(Achievements::class)->findOneByIdJoinedToDocument($elem->getId());
         }
-        // foreach($achievements as $elem){   
-        //     dd($elem->getDocument()->getDocument1;
-        // }
-
+        
 	    $localIP = getHostByName(getHostName());
 
         $review = new Review();
@@ -81,7 +78,6 @@ class AboutComtrollerController extends AbstractController
             $review->addFotoreview($fotoreview);
             $review->addFotoreview($fotoreview2);
             $review->addFotoreview($fotoreview3);
-            // $review->setReview(0);
             $entityManager = $doctrine->getManager();
             $entityManager->persist($fotoreview);
             $entityManager->persist($fotoreview2);

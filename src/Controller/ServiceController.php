@@ -157,6 +157,9 @@ class ServiceController extends AbstractController
     #[Route('/{id}/edit', name: 'service_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Service $service,ManagerRegistry $doctrine, EntityManagerInterface $entityManager,SluggerInterface $slugger, int $id,ImageController $imageController, MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
+        
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
@@ -275,7 +278,7 @@ class ServiceController extends AbstractController
            'id' => $service_id), Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{id}/edition/galery', name: 'service_edition_galery', methods: ['POST','GET'])]
+    #[Route('/{id}/edit/galery', name: 'service_edition_galery', methods: ['POST','GET'])]
     public function editionGalery(Request $request,Category $category, EntityManagerInterface $entityManager, int $id, ManagerRegistry $doctrine, SluggerInterface $slugger,ImageController $imageController, MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer,FormcreatController $formcreatController): Response
     {
         $category = $doctrine->getRepository(Category::class)->find($id);

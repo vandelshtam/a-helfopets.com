@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="servises_items elastic">
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {% if is_granted('ROLE_ADMIN') %}
             <a href="{{ path('service_new') }}" class="default-btn-create_service">
                 Добавить
             </a>
@@ -49,9 +49,9 @@
                         <a data-fancybox data-src="#hidden-content" href="javascript:;" class="default-btn">
                             Заказать
                         </a>
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        {% if is_granted('ROLE_ADMIN') %}
                         <a href="{{ path('service_edit', {'id': service.id}) }}" class="default-btn">
-                            edit
+                            Редактировать
                         </a>
                         {% endif %}
                     </div>

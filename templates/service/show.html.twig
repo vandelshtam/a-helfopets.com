@@ -42,7 +42,7 @@
                                         <div class="slider_text">
                                             {{ foto.comment }}
                                         </div> 
-                                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                        {% if is_granted('ROLE_ADMIN') %}
                                             {% if foto.Foto!= null %}
                                                 <a href="{{ path('service_delete_galery', {'id': foto.id}) }}" onclick="return confirm('Are you sure you want to delete this item?');" class="default-btn-galery_service" >
                                                         Удалить фото и комментарий
@@ -58,7 +58,7 @@
                             </div>
                         </div>
                     </div>
-                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    {% if is_granted('ROLE_ADMIN') %}
                     <div class="servises_item-title">
                         Галерея
                         {{ form_start(form,{'action': path('service_show',{'id': service.id} )}) }}
@@ -103,7 +103,7 @@
                         <a data-fancybox data-src="#hidden-content" href="javascript:;" class="default-btn service">
                             Заказать услугу
                         </a>
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        {% if is_granted('ROLE_ADMIN') %}
                         <a href="{{ path('service_edit', {'id': service.id}) }}" class="default-btn service">
                             Редактировать
                         </a>

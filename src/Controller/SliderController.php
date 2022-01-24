@@ -120,7 +120,7 @@ class SliderController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'slider_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'slider_delete', methods: ['POST'])]
     public function delete(Request $request, Slider $slider, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$slider->getId(), $request->request->get('_token'))) {
@@ -130,33 +130,4 @@ class SliderController extends AbstractController
 
         return $this->redirectToRoute('slider_index', [], Response::HTTP_SEE_OTHER);
     }
-
-//     private function fast_message($fast_consultation,$mailer)
-//     {
-//             //dd($fast_consultation);
-           
-//             $email = (new Email())
-//             ->from('hello@example.com')
-//             ->to('you@example.com')
-//             //->cc('cc@example.com')
-//             //->bcc('bcc@example.com')
-//             //->replyTo('fabien@example.com')
-//             //->priority(Email::PRIORITY_HIGH)
-//             ->subject('Time for Symfony Mailer!')
-//             ->text($fast_consultation->getName())
-//             ->html('<h1>Здравствуйте, я  {{ '.$fast_consultation->getName().' }} пожалуйста проконсультируйте меня !</h1>
-//             <p>
-//                 Прошу связаться со мной по номеру телефона {{ '.$fast_consultation->getPhone().' }} 
-//             </p>')
-//             ;
-//             try {
-//                 $mailer->send($email);
-//             } catch (TransportExceptionInterface $e) {
-//                 // some error prevented the email sending; display an
-//                 // error message or try to resend the message
-//             }       
-//             return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
-       
-        
-//     }
 }

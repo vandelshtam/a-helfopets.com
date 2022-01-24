@@ -137,7 +137,7 @@ class OurMissionController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'our_mission_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'our_mission_delete', methods: ['POST'])]
     public function delete(Request $request, OurMission $ourMission, EntityManagerInterface $entityManager,ImageController $imageController): Response
     {
         if ($this->isCsrfTokenValid('delete'.$ourMission->getId(), $request->request->get('_token'))) {
