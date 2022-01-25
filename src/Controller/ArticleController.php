@@ -58,6 +58,7 @@ class ArticleController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager,SluggerInterface $slugger,ImageController $imageController,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         
         //$this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
         
@@ -130,6 +131,8 @@ class ArticleController extends AbstractController
     #[Route('/{id}/edit', name: 'article_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Article $article, EntityManagerInterface $entityManager,SluggerInterface $slugger,ImageController $imageController,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
         $user = $this->getUser();
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
@@ -184,7 +187,8 @@ class ArticleController extends AbstractController
     #[Route('/delete/{id}', name: 'article_delete', methods: ['POST'])]
     public function delete(Request $request, Article $article,ManagerRegistry $doctrine, EntityManagerInterface $entityManager,ImageController $imageController, int $id): Response
     {
-        dd('ghbdtn');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
         if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
 
             $sarticle_count = $doctrine->getRepository(Article::class)->countFindAllArticle();

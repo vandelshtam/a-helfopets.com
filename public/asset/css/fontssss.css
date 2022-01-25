@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('../fonts/icomoon.eot?y3tmdu');
-  src:  url('../fonts/icomoon.eot?y3tmdu#iefix') format('embedded-opentype'),
-    url('../fonts/icomoon.ttf?y3tmdu') format('truetype'),
-    url('../fonts/icomoon.woff?y3tmdu') format('woff'),
-    url('../fonts/icomoon.svg?y3tmdu#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?5obi9f');
+  src:  url('fonts/icomoon.eot?5obi9f#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?5obi9f') format('truetype'),
+    url('fonts/icomoon.woff?5obi9f') format('woff'),
+    url('fonts/icomoon.svg?5obi9f#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,14 +25,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* .icon-telegram1:before {
-  content: "\e900";
-  color: #2ca5e0;
-}
-.icon-whatsapp1:before {
-  content: "\e901";
-  color: #25d366;
-} */
 .icon-envelope-o:before {
   content: "\f003";
 }

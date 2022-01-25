@@ -20,6 +20,7 @@ class PageAdminController extends AbstractController
     public function index(Request $request,UserRepository $userRepository,EntityManagerInterface $entityManager, MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);

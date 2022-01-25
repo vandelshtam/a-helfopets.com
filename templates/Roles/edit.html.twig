@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Roles{% endblock %}
+
+{% block body %}   
+<section class="add_new-form">
+    <div class="container">    
+        <div class="form_content">
+            <div class="form_title-box">
+                <div class="form_title">
+                    Страница редактирования ролей пользователя
+                </div>
+                <div class="form_text">
+                    При заполнении формы новостной статьи,пожалуйста следуйте правилам публикации статей на сайте и подсказкам системы.
+                </div>
+            </div>
+            <div class="add_new-form form_box">
+            {{ include('roles/_form.html.twig', {'button_label': 'Update'}) }}
+            {# {{ include('users/_delete_form.html.twig') }}  #}
+            </div>   
+        </div>   
+    </div>
+</section>
+{% endblock %}
+{% block javascripts %}
+    {{ include('js.html.twig') }}
+{% endblock %}

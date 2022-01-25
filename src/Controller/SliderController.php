@@ -44,6 +44,8 @@ class SliderController extends AbstractController
     #[Route('/new', name: 'slider_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $slider = new Slider();
         $form = $this->createForm(SliderType::class, $slider);
         $form->handleRequest($request);
@@ -94,6 +96,9 @@ class SliderController extends AbstractController
     #[Route('/{id}/edit', name: 'slider_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Slider $slider, EntityManagerInterface $entityManager, MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer, int $id): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
+
         $form = $this->createForm(SliderType::class, $slider);
         $form->handleRequest($request);
 
@@ -123,6 +128,9 @@ class SliderController extends AbstractController
     #[Route('/delete/{id}', name: 'slider_delete', methods: ['POST'])]
     public function delete(Request $request, Slider $slider, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
+        
         if ($this->isCsrfTokenValid('delete'.$slider->getId(), $request->request->get('_token'))) {
             $entityManager->remove($slider);
             $entityManager->flush();

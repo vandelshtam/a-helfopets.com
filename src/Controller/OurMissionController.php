@@ -46,7 +46,8 @@ class OurMissionController extends AbstractController
     #[Route('/new', name: 'our_mission_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager,SluggerInterface $slugger,ImageController $imageController,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
-
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
@@ -103,6 +104,8 @@ class OurMissionController extends AbstractController
     #[Route('/{id}/edit', name: 'our_mission_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, OurMission $ourMission, EntityManagerInterface $entityManager,SluggerInterface $slugger,ImageController $imageController, MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer, int $id): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
@@ -140,6 +143,8 @@ class OurMissionController extends AbstractController
     #[Route('/delete/{id}', name: 'our_mission_delete', methods: ['POST'])]
     public function delete(Request $request, OurMission $ourMission, EntityManagerInterface $entityManager,ImageController $imageController): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
         if ($this->isCsrfTokenValid('delete'.$ourMission->getId(), $request->request->get('_token'))) {
             $getImageFile = 'getImg';
             $setImageFile = 'setImg';

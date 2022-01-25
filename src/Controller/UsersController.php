@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\RolesType;
 use App\Form\UserActionType;
 use App\Entity\FastConsultation;
 use App\Form\FastConsultationType;
@@ -46,9 +47,9 @@ class UsersController extends AbstractController
             'fast_consultation_form' => $fast_consultation_form,
         ]);
     }
-    #[Route('/{id}/edit', name: 'users_edit', methods: ['GET', 'POST'])]
+    #[Route('/users/{id}/edit', name: 'users_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager,SluggerInterface $slugger,ImageController $imageController, MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer, int $id): Response
-    {
+    {dd('ghbdtn');
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if($this->getUser()->getId() != $id){
              $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
@@ -72,6 +73,7 @@ class UsersController extends AbstractController
             $nameDirectiry = 'avatar_directory';
             $this->deleteFiles($imageFile,$user,$getImageFile,$setImageFile,$nameDirectiry,$imageController);
             $this->uploadsImageFile($slugger,$imageFile,$nameDirectiry,$imageController,$user,$setImageFile);
+
             $entityManager->flush();
             $this->addFlash(
                 'success',
@@ -87,14 +89,56 @@ class UsersController extends AbstractController
         ]);
     }
 
-    #[Route('/delete/{id}', name: 'users_delete', methods: ['GET','POST'])]
-    public function delete(Request $request, User $user, EntityManagerInterface $entityManager,ImageController $imageController, int $id): Response
+    #[Route('/{id}/roles/edit', name: 'users_roles', methods: ['GET', 'POST'])]
+    public function rolesEdit(Request $request, User $user,UserRepository $userRepository, EntityManagerInterface $entityManager,SluggerInterface $slugger,ImageController $imageController, MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer, int $id): Response
     {
+        dd('ghbdtn');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
+        
+        $fast_consultation = new FastConsultation();
+        $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
+        $fast_consultation_form->handleRequest($request);
+        if ($fast_consultation_form->isSubmitted() && $fast_consultation_form->isValid()) {
+            $textSendMail = $mailerController->textFastConsultationMail($fast_consultation);
+            $fast_consultation_meil -> fastSendMeil($request,$mailer,$fast_consultation,$mailerController,$entityManager,$textSendMail); 
+            return $this->redirectToRoute('users_edit', ['id' => $id], Response::HTTP_SEE_OTHER);
+        }
+
+        $form = $this->createForm(RolesType::class, $user);
+        $form->handleRequest($request);
+
+        $weaving_role = $userRepository->find($id)->getRoles();
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $value = $request->get('roles');
+            $roles[] = $value['role'];
+            $user->setRoles($roles);
+            $user->setRole($weaving_role[0]);
+            $entityManager->persist($user);
+            $entityManager->flush();
+            $this->addFlash(
+                'success',
+                'Вы успешно изменили роль пользователя'); 
+            return $this->redirectToRoute('page_admin_user', ['id' => $id], Response::HTTP_SEE_OTHER);
+        }
+        return $this->renderForm('roles/edit.html.twig', [
+            'user' => $user,
+            'form' => $form,
+            'weaving_role' => $weaving_role[0],
+            'fast_consultation' => $fast_consultation,
+            'fast_consultation_form' => $fast_consultation_form,
+        ]);
+    }
+
+
+    #[Route('/users/delete/{id}', name: 'users_delete', methods: ['GET','POST'])]
+    public function delete(Request $request, User $user, EntityManagerInterface $entityManager,ImageController $imageController, int $id): Response
+    {dd('ghbdtn');
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if($this->getUser()->getId() != $id){
              $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
         }
-        dd('привет');
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $getImageFile = 'getAvatar';
             $setImageFile = 'setAvatar';
@@ -104,10 +148,10 @@ class UsersController extends AbstractController
             $entityManager->flush();
             $this->addFlash(
             'success',
-            'Вы успешно информацию из  блока номер 1 на странице "О нас"'); 
+            'Вы успешно удалили пользователя'); 
         }
         
-        return $this->redirectToRoute('our_mission_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('users', [], Response::HTTP_SEE_OTHER);
     }
 
     private function uploadsImageFile($slugger,$imageFile,$nameDirectiry,$imageController,$article,$setImageFile){

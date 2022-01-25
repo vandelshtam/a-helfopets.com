@@ -35,10 +35,10 @@ class ConsultationType extends AbstractType
             ])
             ->add('category', ChoiceType::class, [
                 'choices'  => [
-                    'Кошки' => 1,
-                    'Собаки' => 2,
-                    'Птицы' => 3,
-                    'Другие животные' => 4,
+                    'Кошки' => 'Кошки',
+                    'Собаки' => 'Собаки',
+                    'Птицы' => 'Птицы',
+                    'Другие животные' => 'Другие животные',
                 ]
             ])
             ->add('message',TextareaType::class, [

@@ -87,6 +87,8 @@ class ReviewController extends AbstractController
     #[Route('/delete/{id}', name: 'review_delete', methods: ['POST'])]
     public function delete(Request $request, Review $review, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
         if ($this->isCsrfTokenValid('delete'.$review->getId(), $request->request->get('_token'))) {
             $entityManager->remove($review);
             $entityManager->flush();
@@ -99,6 +101,8 @@ class ReviewController extends AbstractController
     #[Route('/{id}/banned', name: 'edit_banned_toggle', methods: ['GET', 'POST'])]
     public function bannedToggle(Request $request, Review $review, EntityManagerInterface $entityManager,int $id,ReviewRepository $reviewRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $banned = $reviewRepository->find($id)->getBanned();
         if($banned == 1){
             $value = 0;

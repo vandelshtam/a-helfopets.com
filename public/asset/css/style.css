@@ -54,7 +54,7 @@ header{
     clear: both;
     display: block;
 }
-.header_phone,.header_email,.header_logout{
+.header_phone,.header_email,.header_logout,.header_exit,.header_signin{
     color: #cbcacb;
     letter-spacing: 0.25px;
     line-height: 45px;
@@ -74,11 +74,26 @@ header{
     left: 0;
     color: #ffc222;
 }
-.header_email{
+.header_email, .header_exit, .header_signin{
     padding-left: 24px;
+    margin-right: 20px;
 }
 .header_email::before{
     content: "\f003";
+    font-family: 'icomoon';
+    position: absolute;
+    left: 0;
+    color: #ffc222;
+}
+.header_exit::before{
+    content: "\f08b";
+    font-family: 'icomoon';
+    position: absolute;
+    left: 0;
+    color: #ffc222;
+}
+.header_signin::before{
+    content: "\f090";
     font-family: 'icomoon';
     position: absolute;
     left: 0;
@@ -855,6 +870,14 @@ a .news_slider-text{
     content:"\f041";
     left: 3px;
 }
+.footer_list .footer_telegramm::before{
+    content: "\f2c6";
+    left: 3px;
+}
+.footer_list .footer_whatss::before{
+    content: "\f232";
+    left: 3px;
+}
 .footer_copy{
     background-color: #303030;
     text-align: center;
@@ -1342,7 +1365,6 @@ img.page_new_foto{
     border: 1px solid#ad800d;
     border-right-width: 20px;
 }
-/*===============*/
 .page_servises .default-btn.service:hover{
     border: 1px solid#ad800d;
     border-right-width: 20px;
@@ -1974,7 +1996,7 @@ button.default-btn.blog.admin::after{
     margin-right: 50px;
 }
 .user_avatar img{
-    max-width: 130px;
+    max-height: 180px;
 }
 .page_user_inner{
     padding-bottom: 20px;
@@ -2145,6 +2167,41 @@ button.default-btn.blog.admin::after{
     content:"\f041";
     left: 3px;
 }
+.icon-whatsapp1,.icon-telegram1 {
+    content:"";
+}
+.icon-whatsapp1:before{
+    content: "\f232";
+    color: #25d366;
+    background-color: #e0e5e9;
+    left: 0;
+    font-size: 45px;
+    padding:0px 5px;
+    margin: 5px;
+}
+.icon-telegram1:before{
+    content: "\f2c6";
+    color: #2ca5e0;
+    background-color: #e0e5e9;
+    left: 0;
+    font-size: 37px;
+    padding: 4px 5px;
+    margin: 5px;
+}
+#sicials_span{
+    display: flex;
+    flex-direction: row;
+    align-items:center;
+    justify-content: flex-start;
+}
+/* a.sicials_span a.icon-whatsapp1:before{
+    color: #8525d3;
+    background-color: #d32525;
+}   */
+/* .icon-whatsapp1:hover {
+    color: #d3258a;
+    background-color: #ec0d50;
+}   */
 .contacts_item-btn{
     position: relative;
     bottom: 40px;
@@ -2553,6 +2610,7 @@ button.default-btn.blog.admin::after{
     float: left;
     margin-right: 10px;
     margin-bottom: 10px;
+    max-height: 250px;
 }
 .hidden_form{
     display: none;

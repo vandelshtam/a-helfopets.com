@@ -53,10 +53,13 @@
                     <div class="servises_item-text">
                          Роль пользователя: {{ user.roles[0] }}
                     </div>
-                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('users_delete', {'id': user.id}) }}" class="default-btn" onclick="return confirm('Вы действительно хотите удалить пользователя?');">
                             Удалить
                         </a> 
+                        <a href="{{ path('users_roles', {'id': user.id}) }}" class="default-btn" >
+                            Роль
+                        </a>
                         <a href="{{ path('users_edit', {'id': user.id}) }}" class="default-btn" >
                             Редактировать
                         </a>

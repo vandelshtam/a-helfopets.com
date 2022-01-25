@@ -70,7 +70,7 @@ class MailerController extends AbstractController
                 или по телефону:  '.$consultation->getPhone().' 
             </p>
             </p>
-                тема вопроса:  '.$consultation->getPhone().' 
+                тема вопроса:  '.$consultation->getCategory().' 
             </p>
             <p> 
                 Мой вопрос:  '.$consultation->getMessage().' 

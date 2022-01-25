@@ -54,6 +54,9 @@ class ServiceController extends AbstractController
     #[Route('/new', name: 'service_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager,SluggerInterface $slugger, ManagerRegistry $doctrine,ImageController $imageController, MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $category = new Category();
         
         $service = new Service();
@@ -215,6 +218,9 @@ class ServiceController extends AbstractController
     #[Route('/{id}/delete', name: 'service_delete', methods: ['POST','GET'])]
     public function delete(Request $request, Service $service,  EntityManagerInterface $entityManager, int $id, ManagerRegistry $doctrine,ImageController $imageController): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
+
         if ($this->isCsrfTokenValid('delete'.$service->getId(), $request->request->get('_token'))) {
             $service_count = $doctrine->getRepository(Service::class)->countFindAllService();
             if($service_count <= 3){
@@ -246,8 +252,11 @@ class ServiceController extends AbstractController
     #[Route('/{id}/delete/galery', name: 'service_delete_galery', methods: ['POST','GET'])]
     public function deleteGalery(Category $category, EntityManagerInterface $entityManager, int $id, ManagerRegistry $doctrine,ImageController $imageController): Response
     {
-       $categorys = $doctrine->getRepository(Category::class)->findOneByIdJoinedToService($id);
-       $services = $categorys->getServices();
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
+
+        $categorys = $doctrine->getRepository(Category::class)->findOneByIdJoinedToService($id);
+        $services = $categorys->getServices();
         foreach($services as $service){
             $service_id = $service->getId();
         }
@@ -281,12 +290,15 @@ class ServiceController extends AbstractController
     #[Route('/{id}/edit/galery', name: 'service_edition_galery', methods: ['POST','GET'])]
     public function editionGalery(Request $request,Category $category, EntityManagerInterface $entityManager, int $id, ManagerRegistry $doctrine, SluggerInterface $slugger,ImageController $imageController, MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer,FormcreatController $formcreatController): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
+
         $category = $doctrine->getRepository(Category::class)->find($id);
         $form = $formcreatController->formCreatedGaleryService($category);
         $form->handleRequest($request);
 
-         $services = $category->getServices();
-         foreach($services as $service){
+        $services = $category->getServices();
+        foreach($services as $service){
              $service_id = $service->getId();
         }       
         if ($form->isSubmitted() && $form->isValid()) {

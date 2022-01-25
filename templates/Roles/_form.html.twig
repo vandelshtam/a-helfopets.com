@@ -1,0 +1,26 @@
+{% if form_errors(form) %}
+    <div class="my-custom-class-for-errors">
+        {{ form_errors(form) }}
+    </div>
+{% endif %}
+{{ form_start(form) }}
+    <div class="add_new-form form_box-inner">
+        <div class="add_new-form form_box-left">
+            <label for="">                
+                {{ form_row(form.role) }}
+            </label>    
+        </div>
+        <div class="add_new-form form_box-right">   
+            <label for="" > 
+                Текущая роль пользователя:              
+            </label>
+            <label for="" >            
+                {{ weaving_role }}
+            </label>      
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <button class="default-btn" type="submit">Сохранить</button>
+            {% endif %}
+            <a href="{{ path('users') }}" class="default-btn">Назад</a>  
+        </div>
+    </div>    
+{{ form_end(form) }}      

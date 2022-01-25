@@ -34,6 +34,8 @@ class FotoblogController extends AbstractController
     #[Route('/new/{id}', name: 'fotoblog_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager,ManagerRegistry $doctrine, int $id,SluggerInterface $slugger,MailerInterface $mailer,ImageController $imageController): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $fotoblog = new Fotoblog();
         $form = $this->createForm(FotoblogType::class, $fotoblog);
         $form->handleRequest($request);
@@ -79,6 +81,8 @@ class FotoblogController extends AbstractController
     #[Route('/{id}/edit', name: 'fotoblog_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Fotoblog $fotoblog, EntityManagerInterface $entityManager,SluggerInterface $slugger,MailerInterface $mailer,ImageController $imageController): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
         $form = $this->createForm(FotoblogType::class, $fotoblog);
         $form->handleRequest($request);
         $blog_id = $fotoblog->getBlog()->getId();
@@ -114,6 +118,8 @@ class FotoblogController extends AbstractController
     #[Route('/delete/{id}', name: 'fotoblog_delete', methods: ['GET','POST'])]
     public function delete(Request $request, Fotoblog $fotoblog, EntityManagerInterface $entityManager,ImageController $imageController): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
         $blog_id = $fotoblog->getBlog()->getId();
         if ($this->isCsrfTokenValid('delete'.$fotoblog->getId(), $request->request->get('_token'))) {
             $getImageFile = 'getFoto';

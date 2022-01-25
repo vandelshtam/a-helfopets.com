@@ -61,6 +61,11 @@
                             <a href="{{ path('page_admin') }}" class="default-btn">
                                 Назад
                             </a>
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}      
+                            <a href="{{ path('users_roles', {'id': user.id}) }}" class="default-btn" >
+                                Роль
+                            </a>
+                        {% endif %}    
                         {% if is_granted('ROLE_ADMIN') %}      
                             <a href="{{ path('users_edit', {'id': user.id}) }}" class="default-btn" >
                                 Редактировать

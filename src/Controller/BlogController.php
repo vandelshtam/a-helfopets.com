@@ -49,6 +49,8 @@ class BlogController extends AbstractController
     #[Route('/new', name: 'blog_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager,SluggerInterface $slugger, ManagerRegistry $doctrine,ImageController $imageController,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $fotoblog = new Fotoblog();
         $blog = new Blog();
         $form = $this->createForm(BlogType::class, $blog);
@@ -129,6 +131,8 @@ class BlogController extends AbstractController
     #[Route('/{id}/edit', name: 'blog_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Blog $blog, EntityManagerInterface $entityManager,ImageController $imageController,SluggerInterface $slugger,ManagerRegistry $doctrine, int $id,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
         $blog = $doctrine->getRepository(Blog::class)->findOneByIdJoinedToFotoblog($id);
         $fotoblog_id = [];
         foreach($blog->getFotoblog() as $fotoblog){
@@ -176,6 +180,8 @@ class BlogController extends AbstractController
     #[Route('/delete/{id}', name: 'blog_delete', methods: ['POST'])]
     public function delete(Request $request, Blog $blog, ManagerRegistry $doctrine, EntityManagerInterface $entityManager,int $id,ImageController $imageController): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
         if ($this->isCsrfTokenValid('delete'.$blog->getId(), $request->request->get('_token'))) {
             $blog_count = $doctrine->getRepository(Blog::class)->countFindAllBlog();
             if($blog_count <= 2){

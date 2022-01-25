@@ -37,6 +37,8 @@ class AchievementsController extends AbstractController
     #[Route('/new', name: 'achievements_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine, SluggerInterface $slugger,ImageController $imageController,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $achievement = new Achievements();
         $document = new Document;
         $form = $this->createForm(AchievementsType::class, $achievement);
@@ -96,6 +98,8 @@ class AchievementsController extends AbstractController
     #[Route('/{id}/edit', name: 'achievements_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Achievements $achievement, ManagerRegistry $doctrine, EntityManagerInterface $entityManager,SluggerInterface $slugger,ImageController $imageController,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer, int $id): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
@@ -150,7 +154,8 @@ class AchievementsController extends AbstractController
     #[Route('/delete/{id}', name: 'achievements_delete', methods: ['POST'])]
     public function delete(Request $request, Achievements $achievement,ManagerRegistry $doctrine, EntityManagerInterface $entityManager,ImageController $imageController, int $id): Response
     {
-        dd('привет');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
         if ($this->isCsrfTokenValid('delete'.$achievement->getId(), $request->request->get('_token'))) {
             $achievements_count = $doctrine->getRepository(Achievements::class)->countFindAllAchievements();
             if($achievements_count <= 1){

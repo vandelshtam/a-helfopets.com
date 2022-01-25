@@ -28,7 +28,7 @@ class ServiceType extends AbstractType
             ->add('avatar', FileType::class, [
                 'label' => 'Пожалуйста выберите файл с расширением сооответствующим изображению (jpg, jpeg  и т п) Поле обязательное для заполнения',
                 'mapped' => false,
-                'required' => true,
+                'required' => false,
                 'constraints' => [
                     new Image([
                         'maxSize' => '200000k',
@@ -43,7 +43,7 @@ class ServiceType extends AbstractType
             ->add('image', FileType::class, [
                 'label' => 'Пожалуйста выберите файл с расширением сооответствующим изображению (jpg, jpeg  и т п) Поле обязательное для заполнения',
                 'mapped' => false,
-                'required' => true,
+                'required' => false,
                 'constraints' => [
                     new Image([
                         'maxSize' => '200000k',
@@ -66,7 +66,7 @@ class ServiceType extends AbstractType
             ->add('document', FileType::class, [
                 'label' => 'Пожалуйста выберите файл с расширением pdf',
                 'mapped' => false,
-                'required' => true,
+                'required' => false,
                 'constraints' => [
                     new File([
                         'maxSize' => '2048k',
