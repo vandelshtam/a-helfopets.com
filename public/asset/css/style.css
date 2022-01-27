@@ -68,7 +68,7 @@ header{
     padding-left: 20px;
 }
 .header_phone::before{
-    content: "\f10b";
+    content: "\f095";
     font-family: 'icomoon';
     position: absolute;
     left: 0;
@@ -176,6 +176,7 @@ header{
 } */
 .default-btn::after{
     content: "\f105";
+    /* content: "\f054"; */
     font-family: 'icomoon';
     position: absolute;
     top: 50%;
@@ -212,13 +213,15 @@ header{
     color: #fff;    
 }
 .slick-next::before{
-    content: "\f105";   
+    content: "\f105";
+    /* content: "\f054";      */
 }
 .slick-next{
     right: 0;
 }
 .slick-prev::before{
     content: "\f104";
+    /* content: "\f055";   */
 }
 .slick-prev{
     left: 0;
