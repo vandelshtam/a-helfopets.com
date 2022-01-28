@@ -62,3 +62,4 @@ security:
         
         # - { path: '^/home', roles: ROLE_SUPER_ADMIN }
         # - { path: ^/admin/login, roles: PUBLIC_ACCESS }
+         - { path: '^/register', roles: PUBLIC_ACCESS }
