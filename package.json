@@ -3,6 +3,6 @@
     "@fancyapps/ui": "^4.0.12"
   },
   "engines": {
-    "node": "14.x"
+    "yarn": "^0.14.0"
   }
 }
