@@ -42,6 +42,22 @@ header{
     font-size: 16px;
     position: relative;
 }
+.header_btn.weather{
+    float: right;
+    line-height: 36px;
+    color: #1b1b1b;
+    background-color: #f3eee2;
+    padding: 5px 20px 4px 50px;
+    font-size: 14px;
+    position: relative;
+}
+.header_btn.weather::before{
+    content: "\f1be";
+    font-family: 'icomoon';
+    position: absolute;
+    left: 22px;
+    color: #1b1b1b;
+}
 .header_btn::before{
     content: "\f0b1";
     font-family: 'icomoon';
@@ -49,10 +65,17 @@ header{
     left: 22px;
     color: #1b1b1b;
 }
-.header_contacts::after{
+.header_contacts::after,
+.header_weather::after{
     content: "";
     clear: both;
     display: block;
+}
+.weather_temperature,.weather_humidity,.weather_cloud{
+    color: #7e7d7e;
+    letter-spacing: 0.25px;
+    line-height: 45px;
+    position: relative;
 }
 .header_phone,.header_email,.header_logout,.header_exit,.header_signin{
     color: #cbcacb;
@@ -63,12 +86,33 @@ header{
 .header_contacts span{
     margin: 0px 20px 0px 20px
 }
-.header_phone{
+.header_phone,.weather_temperature,.weather_humidity,.weather_cloud{
     padding-right: 30px;
     padding-left: 20px;
 }
 .header_phone::before{
     content: "\f095";
+    font-family: 'icomoon';
+    position: absolute;
+    left: 0;
+    color: #ffc222;
+}
+.weather_temperature::before{
+    content: "\f2c7";
+    font-family: 'icomoon';
+    position: absolute;
+    left: 0;
+    color: #ffc222;
+}
+.weather_humidity::before{
+    content: "\f2cc";
+    font-family: 'icomoon';
+    position: absolute;
+    left: 0;
+    color: #ffc222;
+}
+.weather_cloud::before{
+    content: "\f289";
     font-family: 'icomoon';
     position: absolute;
     left: 0;
@@ -154,6 +198,14 @@ header{
     font-size: 18;
     color: #d3d2d2;
     margin-bottom: 50px;
+}
+.slider_text.swipe{
+    display: none;
+    line-height: 24px;
+    font-size: 18;
+    color: #d3d2d2;
+    margin-bottom: 5px;
+    opacity: 30%;
 }
 .default-btn{
     display: inline-block;
@@ -368,7 +420,7 @@ header{
     padding: 30px;
 }
 .form_inner{
-    padding-bottom: 40px;
+    padding-bottom: 50px;
     background-image: url(../img/form_fon_1.jpeg);
     min-height: 610px;
     background-repeat: no-repeat;
@@ -2651,6 +2703,27 @@ button.default-btn.blog.admin::after{
     max-width: 290px;
     width: 100%;
 }
+/* ===== raiting mini ===== */
+.hidden-mini-rating{
+    display: none;
+}
+.rating-mini {
+	display: inline-block;
+	font-size: 0;
+    padding-left: 30px;
+}
+.rating-mini span {
+	padding: 0;
+	font-size: 20px;
+	line-height: 1;
+	color: lightgrey;
+}
+.rating-mini > span:before {
+	content: '★';
+}
+.rating-mini > span.active {
+	color: gold;
+}
 /* ===== rating form ====== */
 .rating-area {
 	overflow: hidden;
@@ -2690,6 +2763,56 @@ button.default-btn.blog.admin::after{
 	text-shadow: 1px 1px goldenrod;
 }
 .rate-area > label:active {
+	position: relative;
+}
+/* ===== rating form mini====== */
+.rating-area-mini.hidden-mini-rating,
+rating-area-mini.hidden-mini-rating.blog,
+.hidden-mini-rating {
+	display: none;
+}
+.rating-area-mini {
+	overflow: hidden;
+	width: 265px;
+	margin: 0px 0px 5px -120px;
+}
+.rating-area-mini.blog {
+	margin: 0px 0px 20px -20px;
+    padding-bottom: 20px;
+}
+.rating-area-mini:not(:checked) > input {
+	display: none;
+}
+.rating-area-mini:not(:checked) > label {
+	float: right;
+	width: 22px;
+	padding: 0;
+	cursor: pointer;
+	font-size: 20px;
+	line-height: 20px;
+	color: lightgrey;
+	text-shadow: 1px 1px #bbb;
+}
+.rating-area-mini:not(:checked) > label:before {
+	content: '★';
+}
+.rating-area-mini > input:checked ~ label {
+	color: gold;
+	text-shadow: 1px 1px #c60;
+}
+.rating-area-mini:not(:checked) > label:hover,
+.rating-area-mini:not(:checked) > label:hover ~ label {
+	color: gold;
+}
+.rating-area-mini > input:checked + label:hover,
+.rating-area-mini > input:checked + label:hover ~ label,
+.rating-area-mini > input:checked ~ label:hover,
+.rating-area-mini > input:checked ~ label:hover ~ label,
+.rating-area-mini > label:hover ~ input:checked ~ label {
+	color: gold;
+	text-shadow: 1px 1px goldenrod;
+}
+.rate-area-mini > label:active {
 	position: relative;
 }
 /*======== About ===========*/

@@ -243,18 +243,46 @@
                         <div class="about_item-text">
                             Наша оценка
                         </div>
-                        <div class="rating-result">
-                        {% for i in range(1, rating_value-0) %}
-                            <span class="active"><span class="active_value">{{ i }}</span></span>
-                        {% endfor %}
-                        Общая оценка: 
+                        {% if rating_value == 0 %}
+                            <span class=""><span class="active_value"></span></span>
+                        {% else %}
+                        <div class="rating-result hidden-rating">
+                        Рейтинг: 
+                            {% for i in range(1, rating_value-0) %}
+                                <span class="active"><span class="active_value">{{ i }}</span></span>    
+                            {% endfor %}
+                            Общая оценка: 
                             <span class=""><span class="active_value"></span>{{ rating_value }}</span>   
-                        </div> 
+                        </div>
+                        <div class="hidden-mini-rating">
+                            <div class="rating-mini">
+                            Рейтинг:
+                                {% for i in range(1, rating_value-0) %}
+                                    <span class="active"><span class="active_value">{{ i }}</span></span>
+                                {% endfor %}
+                            </div>
+                            <div class="rating-mini">
+                                <span class=""><span class="active_value"></span>{{ rating_value }}</span>
+                            </div>
+                        </div>   
+                    {% endif %}
                         <div class="about_item-text">
                             Оцените нашу деятельность 
                         </div>
                         <form action="{{ path('rating_new') }}" method="POST">  
-                            <div class="rating-area">
+                            <div class="rating-area hidden-rating">
+                                <input type="radio" id="star-5" name="ratin" value="5">
+                                <label for="star-5" title="Оценка «5»"></label>	
+                                <input type="radio" id="star-4" name="ratin" value="4">
+                                <label for="star-4" title="Оценка «4»"></label>    
+                                <input type="radio" id="star-3" name="ratin" value="3">
+                                <label for="star-3" title="Оценка «3»"></label>  
+                                <input type="radio" id="star-2" name="ratin" value="2">
+                                <label for="star-2" title="Оценка «2»"></label>    
+                                <input type="radio" id="star-1" name="ratin" value="1">
+                                <label for="star-1" title="Оценка «1»"></label>
+                            </div> 
+                            <div class="rating-area-mini hidden-mini-rating">
                                 <input type="radio" id="star-5" name="ratin" value="5">
                                 <label for="star-5" title="Оценка «5»"></label>	
                                 <input type="radio" id="star-4" name="ratin" value="4">

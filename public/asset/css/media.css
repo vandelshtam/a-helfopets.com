@@ -9,6 +9,7 @@
     }
     .form_inner{
         background-image: none;
+        min-height: 0px;
     }
     .news_inner{
         display: block;
@@ -81,9 +82,23 @@
     .slider .slick-btn{
         display: none !important;
     }
+    .slider_text.swipe{
+        display: block;
+    }
     .servises_top,
     .news_top{
         display: block;
+    }
+    .rating-area-mini.hidden-mini-rating,
+    .rating-area-mini.hidden-mini-rating.blog,
+    .hidden-mini-rating {
+	    display: block;
+    }
+    .rating-area.hidden-rating.blog,
+    .rating-area.hidden-rating,
+    .rating-result.hidden-rating,
+    .rating-result.hidden-rating.blog{
+        display: none; 
     }
     .servises_title-box,
     .form_title-box,
