@@ -97,29 +97,56 @@
                             <a href="{{ blog.link }}">{{ blog.linltitle }}</a>
                         </div>
                     </div>
-                    {# <div class="blog_show-rating blog"> #}
-                        <div class="rating-result blog">
-                        Рейтинг: 
-                        {% if rating_value == 0 %}
+                    {% if rating_value == 0 %}
                             <span class=""><span class="active_value"></span></span>
                         {% else %}
+                        <div class="rating-result hidden-rating blog ">
+                        Рейтинг: 
                             {% for i in range(1, rating_value-0) %}
                                 <span class="active"><span class="active_value">{{ i }}</span></span>    
                             {% endfor %}
-                        {% endif %}
-                        {# <div class="rating-result blog"> #}
                             Общая оценка: 
                             <span class=""><span class="active_value"></span>{{ rating_value }}</span>   
-                        {# </div>          #}
                         </div>
-                        
-                    {# </div> #}
-                    
+                        <div class="hidden-mini-rating">
+                            <div class="rating-mini">
+                            Рейтинг:
+                                {% for i in range(1, rating_value-0) %}
+                                    <span class="active"><span class="active_value">{{ i }}</span></span>
+                                {% endfor %}
+                            </div>
+                            <div class="rating-mini">
+                                <span class=""><span class="active_value"></span>{{ rating_value }}</span>
+                            </div>
+                        </div>   
+                    {% endif %}
                     <div class="about_item-text">
                             Оценить: 
                         </div>
                         <form action="{{ path('ratingblog_new', {'id': blog.id}) }}" method="POST">  
-                            <div class="rating-area blog">
+                            <div class="rating-area hidden-rating blog">
+                                <input type="radio" id="star-10" name="rating" value="10">
+                                <label for="star-10" title="Оценка «10»"></label>	
+                                <input type="radio" id="star-9" name="rating" value="9">
+                                <label for="star-9" title="Оценка «9»"></label>    
+                                <input type="radio" id="star-8" name="rating" value="8">
+                                <label for="star-8" title="Оценка «8»"></label>  
+                                <input type="radio" id="star-7" name="rating" value="7">
+                                <label for="star-7" title="Оценка «7»"></label>    
+                                <input type="radio" id="star-6" name="rating" value="6">
+                                <label for="star-6" title="Оценка «6»"></label>
+                                <input type="radio" id="star-5" name="rating" value="5">
+                                <label for="star-5" title="Оценка «5»"></label>	
+                                <input type="radio" id="star-4" name="rating" value="4">
+                                <label for="star-4" title="Оценка «4»"></label>    
+                                <input type="radio" id="star-3" name="rating" value="3">
+                                <label for="star-3" title="Оценка «3»"></label>  
+                                <input type="radio" id="star-2" name="rating" value="2">
+                                <label for="star-2" title="Оценка «2»"></label>    
+                                <input type="radio" id="star-1" name="rating" value="1">
+                                <label for="star-1" title="Оценка «1»"></label>
+                            </div> 
+                            <div class="rating-area-mini hidden-mini-rating blog">
                                 <input type="radio" id="star-10" name="rating" value="10">
                                 <label for="star-10" title="Оценка «10»"></label>	
                                 <input type="radio" id="star-9" name="rating" value="9">

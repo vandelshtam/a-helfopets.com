@@ -10,7 +10,20 @@
         </div>
     {% endfor %}
 {% endfor %}
-<section class="slider">
+<div class="weather">
+                <div class="container">
+                    <div class="header_weather">
+                        <span class="weather_temperature" href="tel:">Air temperature - {{ tempCelsius }}&deg;C</span>
+                        <span class="weather_humidity" href="tel:">Relative humidity - {{ openWeather['main']['humidity'] }}%</span>
+                        {# <a class="header_phone" href="tel:">Precipitation - {{ openWeather['main']['humidity'] }}</a> #}
+                        {# <a class="header_phone" href="tel:">Pressure - {{ openWeather['main']['pressure'] }}</a> #}
+                        {# <a class="header_phone" href="tel:">Wind speed - {{ openWeather['wind']['speed'] }}</a> #}
+                        <span class="weather_cloud" href="#">Cloudiness - {{ openWeather['weather'][0]['main'] }},{{ openWeather['weather'][0]['description'] }}</span>
+                        <a class="header_btn weather">Antalya Weather {{ data }}</a>     
+                    </div>    
+                </div>
+            </div>
+    <section class="slider">
         <div class="container">
             <div class="slider_inner">
             {% for slider in sliders %}
@@ -24,16 +37,18 @@
                         </div>
                         <a data-fancybox data-src="#hidden-content" href="javascript:;" class="slider_btn default-btn">
                             Оставить заявку
-                        </a>
-                        
-                    </div>    
+                        </a> 
+                        <div class="slider_text swipe">
+                        сделайте свайп по слайдеру
+                        </div>     
+                    </div>      
                 </div>
                 {% endfor %}
             </div>
             {% if is_granted('ROLE_ADMIN') %}
             <a class="default-btn" href="{{ path('slider_index') }}">Edition</a>
             {% endif %}
-        </div>
+        </div>   
     </section>
     <section class="servises">
         <div class="container">

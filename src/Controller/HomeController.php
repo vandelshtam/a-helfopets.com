@@ -18,6 +18,7 @@ use App\Repository\BlogRepository;
 use App\Controller\MailerController;
 use App\Repository\SliderRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Controller\OpenWeatherController;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Controller\ConsultationController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,6 +31,12 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 class HomeController extends AbstractController
 {
+    #[Route('/h', name: 'homepage')]
+    public function homepage()
+    {   
+        return new Response('What a bewitching controller we have conjured!');
+    }
+
     #[Route('/home', name: 'home')]
     public function index(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer, SliderRepository $sliderRepository,ManagerRegistry $doctrine, BlogRepository $blogRepository,FastConsultationController $fast_consultation_meil, ConsultationController $consultation_mail, MailerController $mailerController): Response
     {
@@ -53,18 +60,33 @@ class HomeController extends AbstractController
             $fast_consultation_meil -> fastSendMeil($request,$mailer,$fast_consultation,$mailerController,$entityManager,$textSendMail); 
             return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
         }
+
+        //эксперимент с погодой
+        $open = new OpenWeatherController();
+        $openWeather = $open->openWeather();
+        $kelvin = $openWeather['main']['temp'];
+        $tempCelsius = $kelvin - 273.15;
+        date_default_timezone_set("UTC"); // Устанавливаем часовой пояс по Гринвичу
+        $time = time(); // Вот это значение отправляем в базу
+        $offset = 3; // Допустим, у пользователя смещение относительно Гринвича составляет +3 часа
+        $time += 3 * 3600; // Добавляем 3 часа к времени по Гринвичу
+        
+        $today = date("F j, Y, g:i a", $time);
         return $this->renderForm('home/index.html.twig', [
             'consultation' => $consultation,
             'form' => $form,
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
-            'title' => 'PlumbInstall',
+            'title' => 'Helfopets home',
             'user'  => $user,
             'sliders' => $sliderRepository->findAll(),
             'controller_name' => 'HomeController',
             'articles' => $articles,
             'blogs' => $blogs,
             'services' => $services,
+            'openWeather' => $openWeather,
+            'data' => $today,
+            'tempCelsius' => $tempCelsius, 
         ]);
     }
 }
