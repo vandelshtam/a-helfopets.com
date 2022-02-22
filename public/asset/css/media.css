@@ -43,7 +43,7 @@
         max-width: 1150px;
     }
     .about_item.reviews .img_about img{
-        max-width: 150px;
+        max-width: 170px;
     }
 }
 @media (max-width: 1050px){
@@ -179,7 +179,7 @@
         max-width: 230px;
     } 
     .about_item.reviews .img_about img{
-        max-width: 100px;
+        max-width: 140px;
     } 
 }
 @media (max-width: 800px){
@@ -203,6 +203,9 @@
     }
     .achievement_about_embed embed {
         max-width: 200px;
+    } 
+    .about_item.reviews .img_about img{
+        max-width: 130px;
     }  
 @media (max-width: 700px){
     .header_btn{
@@ -327,7 +330,10 @@
     }
     .achievement_about_embed embed {
         max-width: 170px;
-    }  
+    }
+    .about_item.reviews .img_about img{
+        max-width: 100px;
+    }    
 }
 @media (max-width: 600px){   
     .servises_item{
@@ -422,7 +428,7 @@
         max-width: 500px;
     } 
     .rewiews_block{
-        max-width: 260px;
+        /* max-width: 260px; */
         margin: 5px;
     } 
     .about_item{
@@ -449,7 +455,7 @@
         text-align: left;
     }
     .about_item.reviews .img_about img{
-        max-width: 75px;
+        max-width: 85px;
     }
 }
 @media (max-width: 414px){
@@ -471,7 +477,7 @@
         max-width: 414px;
     } 
     .rewiews_block{
-        max-width: 200px;
+        max-width: 290px;
     } 
     .about_item_document .achievement_about_embed{
         max-width: 410px;
@@ -495,7 +501,7 @@
         text-align: left;
     }
     .about_item.reviews .img_about img{
-        max-width: 150px;
+        max-width: 280px;
     }
     .img_about.rewiews{
         display: block;
@@ -557,7 +563,7 @@
         max-width: 325px;
     } 
     .rewiews_block{
-        max-width: 180px;
+        /* max-width: 180px; */
     }    
 }
 @media (min-width: 700px){

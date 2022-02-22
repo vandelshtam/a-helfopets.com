@@ -18,6 +18,7 @@ class RatingController extends AbstractController
     {
         return $this->render('rating/index.html.twig', [
             'controller_name' => 'RatingController',
+            'title' => 'Helfopets rating',
         ]);
     }
 

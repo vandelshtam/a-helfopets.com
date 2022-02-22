@@ -25,7 +25,7 @@ class MailerController extends AbstractController
     {
         $email = (new Email())
             ->from('hello@example.com')
-            ->to('you@example.com')
+            ->to('helfopets@gmail.com')
             ->subject('Time for Symfony Mailer!')
             ->text($consultation->getMessage())
             ->html($textSendMail);
@@ -45,7 +45,7 @@ class MailerController extends AbstractController
     {
         $email = (new Email())
             ->from('hello@example.com')
-            ->to('you@example.com')
+            ->to('helfopets@gmail.com')
             ->subject('Time for Symfony Mailer!')
             ->text($fast_consultation->getName())
             ->html($textSendMail);
@@ -76,10 +76,10 @@ class MailerController extends AbstractController
                 Мой вопрос:  '.$consultation->getMessage().' 
             </p>
             <p>
-                <code>{{ email.to[0].address }}</code>
+                <code>mailto:'.$consultation->getEmail().' </code>
             </p>
             <p>
-                <a href="#">Click here to activate your account</a>    
+                <a href="mailto:'.$consultation->getEmail().'">Click here to activate your account email</a>    
             </p>';
         return $textConsultation;
     }

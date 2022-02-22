@@ -45,14 +45,16 @@ class UsersController extends AbstractController
             'userses' => $userses,
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets users',
         ]);
     }
     #[Route('/users/{id}/edit', name: 'users_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager,SluggerInterface $slugger,ImageController $imageController, MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer, int $id): Response
-    {dd('ghbdtn');
+    {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        if($this->getUser()->getId() != $id){
-             $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
+        if($this->getUser()->getId() != $id)
+        {
+            $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
         }
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
@@ -86,13 +88,13 @@ class UsersController extends AbstractController
             'form' => $form,
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets users edit',
         ]);
     }
 
     #[Route('/{id}/roles/edit', name: 'users_roles', methods: ['GET', 'POST'])]
     public function rolesEdit(Request $request, User $user,UserRepository $userRepository, EntityManagerInterface $entityManager,SluggerInterface $slugger,ImageController $imageController, MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer, int $id): Response
     {
-        dd('ghbdtn');
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
         
@@ -128,13 +130,14 @@ class UsersController extends AbstractController
             'weaving_role' => $weaving_role[0],
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets users roles',
         ]);
     }
 
 
     #[Route('/users/delete/{id}', name: 'users_delete', methods: ['GET','POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager,ImageController $imageController, int $id): Response
-    {dd('ghbdtn');
+    {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if($this->getUser()->getId() != $id){
              $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
@@ -150,7 +153,6 @@ class UsersController extends AbstractController
             'success',
             'Вы успешно удалили пользователя'); 
         }
-        
         return $this->redirectToRoute('users', [], Response::HTTP_SEE_OTHER);
     }
 

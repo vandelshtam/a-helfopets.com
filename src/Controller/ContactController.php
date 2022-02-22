@@ -33,6 +33,7 @@ class ContactController extends AbstractController
         return $this->renderForm('contact/index.html.twig', [
             'controller_name' => 'ContactController',
             'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets contacts',
         ]);
     }
 }

@@ -29,13 +29,13 @@
                 <div class="container">
                     <div class="header_contacts">
                         <a class="header_phone" href="tel:">+7(xxx) xxx-xx-xx</a>
-                        <a class="header_email" href="#">@gmail.com</a>
+                        <a class="header_email" href="mailto:helfopets@gmail.com">helfopets@gmail.com</a>
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                            {# {% if app.user.name != null %}
+                            {% if app.user.name != null %}
                                 <span>username:{{ app.user.name }}</span>
                             {% else %}
                                 <span>login:{{ app.user.email }}</span>
-                            {% endif %} #}
+                            {% endif %}
                         <a class="header_exit" href="{{ path('app_logout') }}">Выйти</a>
                         {% else %}
                         <a class="header_signin" href="{{ path('login') }}">Войти</a>

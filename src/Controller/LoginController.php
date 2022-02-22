@@ -36,6 +36,7 @@ class LoginController extends AbstractController
                   'error'         => $error,
                   'fast_consultation' => $fast_consultation,
                   'fast_consultation_form' => $fast_consultation_form,
+                  'title' => 'Helfopets login',
                   ]);
             $this->addFlash(
                     'notice',

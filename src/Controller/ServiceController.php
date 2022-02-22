@@ -48,6 +48,7 @@ class ServiceController extends AbstractController
             'services' => $serviceRepository->findAll(),
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets service',
         ]);
     }
 
@@ -105,6 +106,7 @@ class ServiceController extends AbstractController
             'form' => $form,
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets service new',
         ]);
     }
 
@@ -154,6 +156,7 @@ class ServiceController extends AbstractController
             'categoryFoto' => $categoryFoto,
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets service show',
         ]);
     }
 
@@ -211,6 +214,7 @@ class ServiceController extends AbstractController
             'form' => $form,
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets service edit',
         ]);
         
 }
@@ -333,6 +337,7 @@ class ServiceController extends AbstractController
         'form' => $form,
         'fast_consultation' => $fast_consultation,
         'fast_consultation_form' => $fast_consultation_form,
+        'title' => 'Helfopets service edit galery',
         ]);
     }
     private function deleteAllGaleryFile($categoryFotos,$entityManager){

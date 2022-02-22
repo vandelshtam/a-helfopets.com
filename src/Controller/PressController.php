@@ -34,6 +34,7 @@ class PressController extends AbstractController
             'presses' => $pressRepository->findAll(),
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets press',
         ]);
     }
 
@@ -73,6 +74,7 @@ class PressController extends AbstractController
             'form' => $form,
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets press new',
         ]);
     }
 
@@ -87,6 +89,7 @@ class PressController extends AbstractController
             'press' => $press,
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets press show',
         ]);
     }
 
@@ -126,6 +129,7 @@ class PressController extends AbstractController
             'form' => $form,
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets press edit',
         ]);
     }
 

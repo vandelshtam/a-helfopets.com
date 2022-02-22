@@ -26,6 +26,7 @@ class ReviewController extends AbstractController
     {
         return $this->render('review/index.html.twig', [
             'reviews' => $reviewRepository->findAll(),
+            'title' => 'Helfopets review',
         ]);
     }
 
@@ -65,6 +66,7 @@ class ReviewController extends AbstractController
     {
         return $this->render('review/show.html.twig', [
             'review' => $review,
+            'title' => 'Helfopets review new',
         ]);
     }
 
@@ -81,6 +83,7 @@ class ReviewController extends AbstractController
         return $this->renderForm('review/edit.html.twig', [
             'review' => $review,
             'form' => $form,
+            'title' => 'Helfopets review edit',
         ]);
     }
 

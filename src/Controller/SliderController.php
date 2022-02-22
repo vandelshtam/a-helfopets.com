@@ -37,7 +37,8 @@ class SliderController extends AbstractController
         return $this->renderForm('slider/index.html.twig', [
             'sliders' => $sliderRepository->findAll(),
             'fast_consultation' => $fast_consultation,
-            'fast_consultation_form' => $fast_consultation_form
+            'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets slider',
         ]);
     }
 
@@ -70,7 +71,8 @@ class SliderController extends AbstractController
             'slider' => $slider,
             'form' => $form,
             'fast_consultation' => $fast_consultation,
-            'fast_consultation_form' => $fast_consultation_form
+            'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets slider new',
         ]);
     }
 
@@ -89,7 +91,8 @@ class SliderController extends AbstractController
         return $this->renderForm('slider/show.html.twig', [
             'slider' => $slider,
             'fast_consultation' => $fast_consultation,
-            'fast_consultation_form' => $fast_consultation_form
+            'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets slider show',
         ]);
     }
 
@@ -121,7 +124,8 @@ class SliderController extends AbstractController
             'slider' => $slider,
             'form' => $form,
             'fast_consultation' => $fast_consultation,
-            'fast_consultation_form' => $fast_consultation_form
+            'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets slider edit',
         ]);
     }
 

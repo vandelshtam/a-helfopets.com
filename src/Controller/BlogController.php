@@ -43,6 +43,7 @@ class BlogController extends AbstractController
         return $this->renderForm('blog/index.html.twig', [
             'blogs' => $blogRepository->findAll(),
             'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets blog',
         ]);
     }
 
@@ -98,6 +99,7 @@ class BlogController extends AbstractController
             'blog' => $blog,
             'form' => $form,
             'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets blog new',
         ]);
     }
 
@@ -125,6 +127,7 @@ class BlogController extends AbstractController
             'id' => $id,
             'rating_value' => $rating_value,
             'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets blog show',
         ]);
     }
 
@@ -174,6 +177,7 @@ class BlogController extends AbstractController
             'blog' => $blog,
             'form' => $form,
             'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets blog edit',
         ]);
     }
 

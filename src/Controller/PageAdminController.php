@@ -37,6 +37,7 @@ class PageAdminController extends AbstractController
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
             'user' => $user,
+            'title' => 'Helfopets page admin',
         ]);
     }
     #[Route('/page/admin/{id}/', name: 'page_admin_user')]
@@ -62,6 +63,7 @@ class PageAdminController extends AbstractController
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
             'user' => $user,
+            'title' => 'Helfopets page admin show',
         ]);
     }
 }

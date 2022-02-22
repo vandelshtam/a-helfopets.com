@@ -32,14 +32,13 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
-        // $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        // $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         //$user = $this->getUser();
-
         $fast_consultation = new FastConsultation();
         $fast_consultation_form = $this->createForm(FastConsultationType::class, $fast_consultation);
         $fast_consultation_form->handleRequest($request);
@@ -58,7 +57,6 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-            //dd($user);
             $roles[] = 'ROLE_ADMIN';
             $user->setRoles($roles);
             $entityManager->persist($user);
@@ -69,19 +67,19 @@ class RegistrationController extends AbstractController
             // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
-                    ->from(new Address('mailer@your-domain.com', '"Acme Mail Bot"'))
+                    ->from(new Address('helfopets@gmail.com', '"Acme Mail Bot"'))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
             // do anything else you need here, like send an email
-
             return $this->redirectToRoute('users');
         }
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
-            'fast_consultation_form' => $fast_consultation_form->createView(),    
+            'fast_consultation_form' => $fast_consultation_form->createView(), 
+            'title' => 'Helfopets register',   
         ]);
     }
 
@@ -89,19 +87,15 @@ class RegistrationController extends AbstractController
     public function verifyUserEmail(Request $request): Response
     {
         // $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
         // validate email confirmation link, sets User::isVerified=true and persists
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
-        } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('verify_email_error', $exception->getReason());
-
-            return $this->redirectToRoute('app_register');
-        }
-
+            } catch (VerifyEmailExceptionInterface $exception) {
+                $this->addFlash('verify_email_error', $exception->getReason());
+                return $this->redirectToRoute('app_register');
+            }
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Ваш адрес электронной почты подтвержден');
-
         return $this->redirectToRoute('users');
     }
 }

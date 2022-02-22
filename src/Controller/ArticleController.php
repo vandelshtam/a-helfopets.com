@@ -47,6 +47,7 @@ class ArticleController extends AbstractController
         $blogs = $doctrine->getRepository(Blog::class)->findByExampleField();
         return $this->renderForm('article/index.html.twig', [
             'articles' => $articleRepository->findAll(),
+            'title' => 'Helfopets article',
             'user' => $user,
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
@@ -103,6 +104,7 @@ class ArticleController extends AbstractController
         }
         return $this->renderForm('article/new.html.twig', [
             'article' => $article,
+            'title' => 'Helfopets article new',
             'form' => $form,
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
@@ -123,6 +125,7 @@ class ArticleController extends AbstractController
         }
         return $this->renderForm('article/show.html.twig', [
             'article' => $article,
+            'title' => 'Helfopets article show',
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
         ]);
@@ -178,6 +181,7 @@ class ArticleController extends AbstractController
 
         return $this->renderForm('article/edit.html.twig', [
             'article' => $article,
+            'title' => 'Helfopets article edit',
             'form' => $form,
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,

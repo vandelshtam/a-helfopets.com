@@ -97,6 +97,7 @@ class AboutComtrollerController extends AbstractController
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
             'our_missions' => $ourMissionRepository->findAll(),
+            'title' => 'Helfopets about',
             'achievements' => $achievements,
             'presses' => $pressRepository->findAll(),
             'rating_value' => $rating_value,

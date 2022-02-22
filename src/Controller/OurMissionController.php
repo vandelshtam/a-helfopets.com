@@ -40,6 +40,7 @@ class OurMissionController extends AbstractController
             'our_missions' => $ourMissionRepository->findAll(),
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets our mission',
         ]);
     }
 
@@ -79,6 +80,7 @@ class OurMissionController extends AbstractController
             'form' => $form,
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets our mission new',
         ]);
     }
 
@@ -98,6 +100,7 @@ class OurMissionController extends AbstractController
             'our_mission' => $ourMission,
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets our mission show',
         ]);
     }
 
@@ -137,6 +140,7 @@ class OurMissionController extends AbstractController
             'form' => $form,
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
+            'title' => 'Helfopets our mission edit',
         ]);
     }
 

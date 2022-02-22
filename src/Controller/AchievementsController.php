@@ -31,6 +31,7 @@ class AchievementsController extends AbstractController
     {
         return $this->render('achievements/index.html.twig', [
             'achievements' => $achievementsRepository->findAll(),
+            'title' => 'Helfopets achievements',
         ]);
     }
 
@@ -81,6 +82,7 @@ class AchievementsController extends AbstractController
         
         return $this->renderForm('achievements/new.html.twig', [
             'achievement' => $achievement,
+            'title' => 'Helfopets achievements new',
             'form' => $form,
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,
@@ -145,6 +147,7 @@ class AchievementsController extends AbstractController
         
         return $this->renderForm('achievements/edit.html.twig', [
             'achievement' => $achievement,
+            'title' => 'Helfopets achievements show',
             'form' => $form,
             'fast_consultation' => $fast_consultation,
             'fast_consultation_form' => $fast_consultation_form,

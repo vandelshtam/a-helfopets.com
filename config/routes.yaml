@@ -5,3 +5,8 @@ controllers:
 kernel:
     resource: ../src/Kernel.php
     type: annotation
+
+# homepage
+# home:
+#     path: /
+#     controller: App\Controller\homeController::home
