@@ -222,10 +222,10 @@ class BlogController extends AbstractController
             $entityManager->remove($fotoblogFoto);
         }
     }
-    private function uploadsImageFile($slugger,$imageFile,$nameDirectiry,$imageController,$article,$setImageFile){
+    private function uploadsImageFile($slugger,$imageFile,$nameDirectiry,$imageController,$name_entity,$setImageFile){
         if ($imageFile) {
             $newFilename = $imageController->uploadNewFileName($slugger,$imageFile,$nameDirectiry);
-            $article->$setImageFile($newFilename);
+            $name_entity->$setImageFile($newFilename);
         }
     }
     private function deleteFiles($imageFile,$nameObject,$getImageFile,$setImageFile,$nameDirectiry,$imageController){
