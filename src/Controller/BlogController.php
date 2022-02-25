@@ -134,8 +134,8 @@ class BlogController extends AbstractController
     #[Route('/{id}/edit', name: 'blog_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Blog $blog, EntityManagerInterface $entityManager,ImageController $imageController,SluggerInterface $slugger,ManagerRegistry $doctrine, int $id,MailerController $mailerController,FastConsultationController $fast_consultation_meil,MailerInterface $mailer): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
+        //$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        //$this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
         $blog = $doctrine->getRepository(Blog::class)->findOneByIdJoinedToFotoblog($id);
         $fotoblog_id = [];
         foreach($blog->getFotoblog() as $fotoblog){
