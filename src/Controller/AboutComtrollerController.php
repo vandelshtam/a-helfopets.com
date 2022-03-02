@@ -65,23 +65,43 @@ class AboutComtrollerController extends AbstractController
             $imageFile3 = $form->get('foto3')->getData();
             
             $nameDirectiry = 'img_directory';
-            $this->uploadsImageFile($slugger,$imageFile,$nameDirectiry,$imageController,$fotoreview);
+            if($imageFile != NULL){
+                $this->uploadsImageFile($slugger,$imageFile,$nameDirectiry,$imageController,$fotoreview);
+            }
+            if($imageFile2 != NULL){
+                $this->uploadsImageFile($slugger,$imageFile2,$nameDirectiry,$imageController,$fotoreview);
+            }
+            if($imageFile3 != NULL){
+                $this->uploadsImageFile($slugger,$imageFile3,$nameDirectiry,$imageController,$fotoreview);
+            }
             
-            $nameDirectiry = 'img_directory';
-            $this->uploadsImageFile($slugger,$imageFile2,$nameDirectiry,$imageController,$fotoreview2);
-                
-            $nameDirectiry = 'img_directory';
-            $this->uploadsImageFile($slugger,$imageFile3,$nameDirectiry,$imageController,$fotoreview3);
+            // $this->uploadsImageFile($slugger,$imageFile2,$nameDirectiry,$imageController,$fotoreview2);
+            // $this->uploadsImageFile($slugger,$imageFile3,$nameDirectiry,$imageController,$fotoreview3);
                 
             $review->setIp($localIP);
-            
-            $review->addFotoreview($fotoreview);
-            $review->addFotoreview($fotoreview2);
-            $review->addFotoreview($fotoreview3);
+            if($fotoreview != NULL){
+                $review->addFotoreview($fotoreview);
+            }
+            if($fotoreview2 != NULL){
+                $review->addFotoreview($fotoreview2);
+            }
+            if($fotoreview3 != NULL){
+                $review->addFotoreview($fotoreview3);
+            }
+            //$review->addFotoreview($fotoreview2);
+            //$review->addFotoreview($fotoreview3);
             $entityManager = $doctrine->getManager();
-            $entityManager->persist($fotoreview);
-            $entityManager->persist($fotoreview2);
-            $entityManager->persist($fotoreview3);
+            if($fotoreview != NULL){
+                $entityManager->persist($fotoreview);
+            }
+            if($fotoreview2 != NULL){
+                $entityManager->persist($fotoreview);
+            }
+            if($fotoreview3 != NULL){
+                $entityManager->persist($fotoreview);
+            }
+            //$entityManager->persist($fotoreview2);
+            //$entityManager->persist($fotoreview3);
             $entityManager->persist($review);
             $entityManager->flush();
             $this->addFlash(
