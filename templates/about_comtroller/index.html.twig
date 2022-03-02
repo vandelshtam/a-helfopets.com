@@ -416,7 +416,9 @@
                                             <div class="about_rewiews">   
                                                 <div class="img_about rewiews">
                                                     {% for foto in review.fotoreview %}
+                                                        {% if foto.Foto != NULL %}
                                                         <img src="{{ asset('uploads/img/' ~ foto.Foto) }}" alt="">
+                                                        {% endif %}
                                                     {% endfor %}    
                                                 </div>
                                                 <div class="about_item-btn">
