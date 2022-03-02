@@ -20,7 +20,7 @@ class Review
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Fotoreview::class, mappedBy="review")
+     * @ORM\OneToMany(targetEntity=Fotoreview::class, mappedBy="review",cascade={"persist"})
      */
     private $fotoreview;
 

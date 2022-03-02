@@ -28,7 +28,7 @@ class Fotoreview
     private $created_at;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Review::class, inversedBy="fotoreview")
+     * @ORM\ManyToOne(targetEntity=Review::class, inversedBy="fotoreview",cascade={"persist"})
      */
     private $review;
 
