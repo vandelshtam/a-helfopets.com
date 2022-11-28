@@ -1,7 +1,8 @@
 # Project - "Helfopets", charitable society for helping animals
 
 ## host link:
-helfopets.com
+http://www.helfopets.com/
+
 
 # Symfony 6
 https://symfony.com/doc/current/index.html   
