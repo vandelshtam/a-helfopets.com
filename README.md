@@ -1,14 +1,14 @@
 # Project - "Helfopets", charitable society for helping animals
 
 ## host link:
-http://helfopets.com
+helfopets.com
 
 # Symfony 6
 https://symfony.com/doc/current/index.html   
 ## Project - Cometa affiliate program for the acquisition and exchange of tokens "Cometa Point"
 
 ## Applied technologies:
-### bootsprap:
+### api acuwe:
 https://getbootstrap.com/docs/5.2/getting-started/introduction/
 ### js, j-query
 
