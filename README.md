@@ -9,9 +9,13 @@ https://symfony.com/doc/current/index.html
 ## Project - Cometa affiliate program for the acquisition and exchange of tokens "Cometa Point"
 
 ## Applied technologies:
+## html, css:
+- https://icomoon.io/app/#/select/font
 ### api acuwe:
 https://getbootstrap.com/docs/5.2/getting-started/introduction/
 ### js, j-query
+- https://web.archive.org/web/20210325170940/https://fancyapps.com/fancybox/3/docs/#media_types
+
 
 ## How to install:
 - clone this project
