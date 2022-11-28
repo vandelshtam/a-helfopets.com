@@ -11,9 +11,9 @@ https://symfony.com/doc/current/index.html
 ## Applied technologies:
 ## html, css:
 - https://icomoon.io/app/#/select/font
-### api acuwe:
-https://getbootstrap.com/docs/5.2/getting-started/introduction/
-### js, j-query
+### Weather API:
+- https://openweathermap.org/api
+### js, j-query, ajax
 - https://web.archive.org/web/20210325170940/https://fancyapps.com/fancybox/3/docs/#media_types
 
 
